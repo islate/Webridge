@@ -1,0 +1,40 @@
+<html>
+<head>
+<script language="javascript" src="webridge.js"></script>
+<script language="javascript" type="text/javascript">
+function wbNativeToHTML(object) {
+    var person={"name":object.name, "year":31, "gender":"male"};
+    return person;
+}
+
+function wbCallback(object) {
+    document.getElementById("name").innerHTML = object.result.name;
+    document.getElementById("year").innerHTML = object.result.year;
+    document.getElementById("gender").innerHTML = object.result.gender;
+    document.getElementById("error").innerHTML = object.error;
+}
+
+window.onload = function() {
+    wbHTMLToNative("queryPerson", {"name":"jane"}, "wbCallback");
+};
+</script>
+</head>
+<body>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <h1>name:</h1>
+    <h1 id="name"></h1>
+    <br/>
+    <h1>year:</h1>
+    <h1 id="year"></h1>
+    <br/>
+    <h1>gender:</h1>
+    <h1 id="gender"></h1>
+    <br/>
+    <h1>error:</h1>
+    <h1 id="error"></h1>
+    <br/>
+</body>
+</html>

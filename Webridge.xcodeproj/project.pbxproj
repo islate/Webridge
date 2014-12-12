@@ -1,0 +1,471 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		81CCB8451A38221D0014D551 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8441A38221D0014D551 /* main.m */; };
+		81CCB8481A38221D0014D551 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8471A38221D0014D551 /* AppDelegate.m */; };
+		81CCB84B1A38221D0014D551 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB84A1A38221D0014D551 /* ViewController.m */; };
+		81CCB84E1A38221D0014D551 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81CCB84C1A38221D0014D551 /* Main.storyboard */; };
+		81CCB8501A38221D0014D551 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81CCB84F1A38221D0014D551 /* Images.xcassets */; };
+		81CCB8531A38221D0014D551 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81CCB8511A38221D0014D551 /* LaunchScreen.xib */; };
+		81CCB85F1A38221D0014D551 /* WebridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB85E1A38221D0014D551 /* WebridgeTests.m */; };
+		81CCB8AA1A3A78D40014D551 /* URIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8A91A3A78D40014D551 /* URIHandler.m */; };
+		81CCB8AD1A3A79420014D551 /* WebridgeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8AC1A3A79420014D551 /* WebridgeDelegate.m */; };
+		81CCB8AF1A3A7DF70014D551 /* html.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 81CCB8AE1A3A7DF70014D551 /* html.bundle */; };
+		81CCB8B91A3A89450014D551 /* WBURI.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B41A3A89450014D551 /* WBURI.m */; };
+		81CCB8BA1A3A89450014D551 /* WBWebridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B61A3A89450014D551 /* WBWebridge.m */; };
+		81CCB8BB1A3A89450014D551 /* WBWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B81A3A89450014D551 /* WBWebView.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		81CCB8591A38221D0014D551 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81CCB8371A38221D0014D551 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 81CCB83E1A38221D0014D551;
+			remoteInfo = Webridge;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		81CCB83F1A38221D0014D551 /* Webridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Webridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		81CCB8431A38221D0014D551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81CCB8441A38221D0014D551 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		81CCB8461A38221D0014D551 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		81CCB8471A38221D0014D551 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		81CCB8491A38221D0014D551 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		81CCB84A1A38221D0014D551 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		81CCB84D1A38221D0014D551 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		81CCB84F1A38221D0014D551 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		81CCB8521A38221D0014D551 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
+		81CCB8581A38221D0014D551 /* WebridgeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WebridgeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		81CCB85D1A38221D0014D551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81CCB85E1A38221D0014D551 /* WebridgeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebridgeTests.m; sourceTree = "<group>"; };
+		81CCB8A81A3A78D40014D551 /* URIHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URIHandler.h; sourceTree = "<group>"; };
+		81CCB8A91A3A78D40014D551 /* URIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URIHandler.m; sourceTree = "<group>"; };
+		81CCB8AB1A3A79420014D551 /* WebridgeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebridgeDelegate.h; sourceTree = "<group>"; };
+		81CCB8AC1A3A79420014D551 /* WebridgeDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebridgeDelegate.m; sourceTree = "<group>"; };
+		81CCB8AE1A3A7DF70014D551 /* html.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = html.bundle; sourceTree = "<group>"; };
+		81CCB8B31A3A89450014D551 /* WBURI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBURI.h; sourceTree = "<group>"; };
+		81CCB8B41A3A89450014D551 /* WBURI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBURI.m; sourceTree = "<group>"; };
+		81CCB8B51A3A89450014D551 /* WBWebridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBWebridge.h; sourceTree = "<group>"; };
+		81CCB8B61A3A89450014D551 /* WBWebridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBWebridge.m; sourceTree = "<group>"; };
+		81CCB8B71A3A89450014D551 /* WBWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBWebView.h; sourceTree = "<group>"; };
+		81CCB8B81A3A89450014D551 /* WBWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBWebView.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		81CCB83C1A38221D0014D551 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81CCB8551A38221D0014D551 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		81CCB8361A38221D0014D551 = {
+			isa = PBXGroup;
+			children = (
+				81CCB8B21A3A89450014D551 /* Classes */,
+				81CCB8AE1A3A7DF70014D551 /* html.bundle */,
+				81CCB8411A38221D0014D551 /* Webridge */,
+				81CCB85B1A38221D0014D551 /* WebridgeTests */,
+				81CCB8401A38221D0014D551 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		81CCB8401A38221D0014D551 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				81CCB83F1A38221D0014D551 /* Webridge.app */,
+				81CCB8581A38221D0014D551 /* WebridgeTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		81CCB8411A38221D0014D551 /* Webridge */ = {
+			isa = PBXGroup;
+			children = (
+				81CCB8461A38221D0014D551 /* AppDelegate.h */,
+				81CCB8471A38221D0014D551 /* AppDelegate.m */,
+				81CCB8491A38221D0014D551 /* ViewController.h */,
+				81CCB84A1A38221D0014D551 /* ViewController.m */,
+				81CCB8A81A3A78D40014D551 /* URIHandler.h */,
+				81CCB8A91A3A78D40014D551 /* URIHandler.m */,
+				81CCB8AB1A3A79420014D551 /* WebridgeDelegate.h */,
+				81CCB8AC1A3A79420014D551 /* WebridgeDelegate.m */,
+				81CCB84C1A38221D0014D551 /* Main.storyboard */,
+				81CCB84F1A38221D0014D551 /* Images.xcassets */,
+				81CCB8511A38221D0014D551 /* LaunchScreen.xib */,
+				81CCB8421A38221D0014D551 /* Supporting Files */,
+			);
+			path = Webridge;
+			sourceTree = "<group>";
+		};
+		81CCB8421A38221D0014D551 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				81CCB8431A38221D0014D551 /* Info.plist */,
+				81CCB8441A38221D0014D551 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		81CCB85B1A38221D0014D551 /* WebridgeTests */ = {
+			isa = PBXGroup;
+			children = (
+				81CCB85E1A38221D0014D551 /* WebridgeTests.m */,
+				81CCB85C1A38221D0014D551 /* Supporting Files */,
+			);
+			path = WebridgeTests;
+			sourceTree = "<group>";
+		};
+		81CCB85C1A38221D0014D551 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				81CCB85D1A38221D0014D551 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		81CCB8B21A3A89450014D551 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				81CCB8B31A3A89450014D551 /* WBURI.h */,
+				81CCB8B41A3A89450014D551 /* WBURI.m */,
+				81CCB8B51A3A89450014D551 /* WBWebridge.h */,
+				81CCB8B61A3A89450014D551 /* WBWebridge.m */,
+				81CCB8B71A3A89450014D551 /* WBWebView.h */,
+				81CCB8B81A3A89450014D551 /* WBWebView.m */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		81CCB83E1A38221D0014D551 /* Webridge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81CCB8621A38221D0014D551 /* Build configuration list for PBXNativeTarget "Webridge" */;
+			buildPhases = (
+				81CCB83B1A38221D0014D551 /* Sources */,
+				81CCB83C1A38221D0014D551 /* Frameworks */,
+				81CCB83D1A38221D0014D551 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Webridge;
+			productName = Webridge;
+			productReference = 81CCB83F1A38221D0014D551 /* Webridge.app */;
+			productType = "com.apple.product-type.application";
+		};
+		81CCB8571A38221D0014D551 /* WebridgeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81CCB8651A38221D0014D551 /* Build configuration list for PBXNativeTarget "WebridgeTests" */;
+			buildPhases = (
+				81CCB8541A38221D0014D551 /* Sources */,
+				81CCB8551A38221D0014D551 /* Frameworks */,
+				81CCB8561A38221D0014D551 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				81CCB85A1A38221D0014D551 /* PBXTargetDependency */,
+			);
+			name = WebridgeTests;
+			productName = WebridgeTests;
+			productReference = 81CCB8581A38221D0014D551 /* WebridgeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		81CCB8371A38221D0014D551 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0610;
+				ORGANIZATIONNAME = eletech;
+				TargetAttributes = {
+					81CCB83E1A38221D0014D551 = {
+						CreatedOnToolsVersion = 6.1.1;
+					};
+					81CCB8571A38221D0014D551 = {
+						CreatedOnToolsVersion = 6.1.1;
+						TestTargetID = 81CCB83E1A38221D0014D551;
+					};
+				};
+			};
+			buildConfigurationList = 81CCB83A1A38221D0014D551 /* Build configuration list for PBXProject "Webridge" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 81CCB8361A38221D0014D551;
+			productRefGroup = 81CCB8401A38221D0014D551 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				81CCB83E1A38221D0014D551 /* Webridge */,
+				81CCB8571A38221D0014D551 /* WebridgeTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		81CCB83D1A38221D0014D551 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81CCB8AF1A3A7DF70014D551 /* html.bundle in Resources */,
+				81CCB84E1A38221D0014D551 /* Main.storyboard in Resources */,
+				81CCB8531A38221D0014D551 /* LaunchScreen.xib in Resources */,
+				81CCB8501A38221D0014D551 /* Images.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81CCB8561A38221D0014D551 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		81CCB83B1A38221D0014D551 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81CCB8BB1A3A89450014D551 /* WBWebView.m in Sources */,
+				81CCB8AD1A3A79420014D551 /* WebridgeDelegate.m in Sources */,
+				81CCB84B1A38221D0014D551 /* ViewController.m in Sources */,
+				81CCB8AA1A3A78D40014D551 /* URIHandler.m in Sources */,
+				81CCB8B91A3A89450014D551 /* WBURI.m in Sources */,
+				81CCB8BA1A3A89450014D551 /* WBWebridge.m in Sources */,
+				81CCB8481A38221D0014D551 /* AppDelegate.m in Sources */,
+				81CCB8451A38221D0014D551 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		81CCB8541A38221D0014D551 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81CCB85F1A38221D0014D551 /* WebridgeTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		81CCB85A1A38221D0014D551 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 81CCB83E1A38221D0014D551 /* Webridge */;
+			targetProxy = 81CCB8591A38221D0014D551 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		81CCB84C1A38221D0014D551 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				81CCB84D1A38221D0014D551 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		81CCB8511A38221D0014D551 /* LaunchScreen.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				81CCB8521A38221D0014D551 /* Base */,
+			);
+			name = LaunchScreen.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		81CCB8601A38221D0014D551 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		81CCB8611A38221D0014D551 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		81CCB8631A38221D0014D551 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Webridge/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		81CCB8641A38221D0014D551 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = Webridge/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		81CCB8661A38221D0014D551 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = WebridgeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Webridge.app/Webridge";
+			};
+			name = Debug;
+		};
+		81CCB8671A38221D0014D551 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = WebridgeTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Webridge.app/Webridge";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		81CCB83A1A38221D0014D551 /* Build configuration list for PBXProject "Webridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81CCB8601A38221D0014D551 /* Debug */,
+				81CCB8611A38221D0014D551 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		81CCB8621A38221D0014D551 /* Build configuration list for PBXNativeTarget "Webridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81CCB8631A38221D0014D551 /* Debug */,
+				81CCB8641A38221D0014D551 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		81CCB8651A38221D0014D551 /* Build configuration list for PBXNativeTarget "WebridgeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81CCB8661A38221D0014D551 /* Debug */,
+				81CCB8671A38221D0014D551 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 81CCB8371A38221D0014D551 /* Project object */;
+}
