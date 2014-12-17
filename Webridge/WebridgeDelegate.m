@@ -28,11 +28,17 @@
 
 #pragma mark - WBWebridgeDelegate
 
-- (NSString *)queryPerson:(id)params
+- (NSString *)nativeGetPerson:(id)params
 {
     NSString *name = [params objectForKey:@"name"];
     id person = [_personDict objectForKey:name];
     return person;
+}
+
+- (void)nativeShowAlert:(NSString *)message
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
 }
 
 @end
