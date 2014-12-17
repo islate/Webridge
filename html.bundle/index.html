@@ -3,20 +3,30 @@
     <meta charset='utf-8'>
 <script language="javascript" src="webridge.js"></script>
 <script language="javascript" type="text/javascript">
-function wbNativeToHTML(object) {
+function jsGetPerson(object) {
     var person={"name":object.name, "year":31, "gender":"male"};
     return person;
 }
 
-function wbCallback(object) {
+function getPersonCallback(object) {
     document.getElementById("name").innerHTML = object.result.name;
     document.getElementById("year").innerHTML = object.result.year;
     document.getElementById("gender").innerHTML = object.result.gender;
     document.getElementById("error").innerHTML = object.error;
 }
 
+function wbGetPerson(name) {
+    wbHTMLToNative("nativeGetPerson", {"name":name}, "getPersonCallback");
+}
+
+function wbAlert(message) {
+    wbHTMLToNative("nativeShowAlert", message, null);
+}
+
 window.onload = function() {
-    wbHTMLToNative("queryPerson", {"name":"jane"}, "wbCallback");
+    wbGetPerson("jane");
+    
+    wbAlert("测试弹出提示框");
 };
 </script>
 </head>
