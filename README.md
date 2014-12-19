@@ -18,7 +18,6 @@ Webridge iOS
 	[scheme]://[command]/[param1]/[param2]/[param3]
 
 	兼容HTTP格式
-
 	http://[host]/[scheme]/[command]/[param1]/[param2]/[param3]
 	
 	分为scheme、command、params三部分，这三部分都可以由外部自定义。
