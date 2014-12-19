@@ -14,17 +14,18 @@ Webridge iOS
 
 1.1 WBURI基本格式
 
-原始格式
-[scheme]://[command]/[param1]/[param2]/[param3]
+	原始格式
+	[scheme]://[command]/[param1]/[param2]/[param3]
 
-兼容HTTP格式
-http://[host]/[scheme]/[command]/[param1]/[param2]/[param3]
+	兼容HTTP格式
 
-分为scheme、command、params三部分，这三部分都可以由外部自定义。
-
-scheme 方案
-command 命令
-params 参数
+	http://[host]/[scheme]/[command]/[param1]/[param2]/[param3]
+	
+	分为scheme、command、params三部分，这三部分都可以由外部自定义。
+	
+	scheme 方案
+	command 命令
+	params 参数
 
 1.2 WBWebBridge调用机制
 
@@ -67,6 +68,7 @@ params 参数
 
 	1 将WBURI WBWebView WBWebridge三个类添加到工程
 	2 使用WBWebView作为网页容器，指定webridgeDelegate
-	3 使用[WBURI openURI:]打开网页内触发的uri
-	4 网页中引入webridge.js，使得网页可调用webridgeDelegate的方法
+	3 注册URIHandler
+	4 使用[WBURI openURI:]打开网页内触发的各种WBURI
+	5 网页中引入webridge.js，使得网页可调用webridgeDelegate的方法
 
