@@ -67,6 +67,7 @@ params 参数
 
 	1 将WBURI WBWebView WBWebridge三个类添加到工程
 	2 使用WBWebView作为网页容器，指定webridgeDelegate
-	3 使用[WBURI openURI:]打开网页内触发的uri
-	4 网页中引入webridge.js，使得网页可调用webridgeDelegate的方法
+	3 注册URIHandler
+	4 使用[WBURI openURI:]打开网页内触发的各种WBURI
+	5 网页中引入webridge.js，使得网页可调用webridgeDelegate的方法
 
