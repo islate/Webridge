@@ -8,16 +8,7 @@
 
 #import "ViewController.h"
 
-#import "WBURI.h"
-#import "WBWebView.h"
-#import "WBWebridge.h"
-#import "WebridgeDelegate.h"
-
 @interface ViewController () <WKScriptMessageHandler, WKNavigationDelegate>
-
-@property (nonatomic, strong) WBWebView *webView;
-@property (nonatomic, strong) WBWebridge *webridge;
-@property (nonatomic, strong) WebridgeDelegate *webridgeDelegate;
 
 @end
 
@@ -46,6 +37,14 @@
     [self.webView evaluateJavaScript:@"wbNativeToHTML('jsGetPerson', {'name':'linyize'})" completionHandler:^(id object, NSError *error) {
         NSLog(@"object:%@ error:%@", object, error);
     }];
+    
+    _webViewLoaded = YES;
+    
+    if (self.webViewFinishedBlock)
+    {
+        NSLog(@"self.webViewFinishedBlock");
+        self.webViewFinishedBlock();
+    }
 }
 
 #pragma mark - WKScriptMessageHandler
@@ -61,6 +60,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _webViewLoaded = NO;
 
     WKWebViewConfiguration *conf = [[WKWebViewConfiguration alloc] init];
     WKUserContentController *controller = [[WKUserContentController alloc] init];

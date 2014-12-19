@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		812125701A42BD1E00BA6B7B /* TestWebridgeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8121256F1A42BD1E00BA6B7B /* TestWebridgeDelegate.m */; };
+		812125731A42BD5D00BA6B7B /* MockWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 812125721A42BD5D00BA6B7B /* MockWebView.m */; };
+		812125761A42BD8100BA6B7B /* MockWKScriptMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 812125751A42BD8100BA6B7B /* MockWKScriptMessage.m */; };
+		812125791A42BDB100BA6B7B /* TestURIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 812125781A42BDB100BA6B7B /* TestURIHandler.m */; };
 		81CCB8451A38221D0014D551 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8441A38221D0014D551 /* main.m */; };
 		81CCB8481A38221D0014D551 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8471A38221D0014D551 /* AppDelegate.m */; };
 		81CCB84B1A38221D0014D551 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB84A1A38221D0014D551 /* ViewController.m */; };
@@ -33,6 +37,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8121256E1A42BD1E00BA6B7B /* TestWebridgeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestWebridgeDelegate.h; sourceTree = "<group>"; };
+		8121256F1A42BD1E00BA6B7B /* TestWebridgeDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestWebridgeDelegate.m; sourceTree = "<group>"; };
+		812125711A42BD5D00BA6B7B /* MockWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockWebView.h; sourceTree = "<group>"; };
+		812125721A42BD5D00BA6B7B /* MockWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockWebView.m; sourceTree = "<group>"; };
+		812125741A42BD8100BA6B7B /* MockWKScriptMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockWKScriptMessage.h; sourceTree = "<group>"; };
+		812125751A42BD8100BA6B7B /* MockWKScriptMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MockWKScriptMessage.m; sourceTree = "<group>"; };
+		812125771A42BDB100BA6B7B /* TestURIHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestURIHandler.h; sourceTree = "<group>"; };
+		812125781A42BDB100BA6B7B /* TestURIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestURIHandler.m; sourceTree = "<group>"; };
 		81CCB83F1A38221D0014D551 /* Webridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Webridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81CCB8431A38221D0014D551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		81CCB8441A38221D0014D551 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -129,6 +141,14 @@
 			isa = PBXGroup;
 			children = (
 				81CCB85E1A38221D0014D551 /* WebridgeTests.m */,
+				812125771A42BDB100BA6B7B /* TestURIHandler.h */,
+				812125781A42BDB100BA6B7B /* TestURIHandler.m */,
+				812125741A42BD8100BA6B7B /* MockWKScriptMessage.h */,
+				812125751A42BD8100BA6B7B /* MockWKScriptMessage.m */,
+				812125711A42BD5D00BA6B7B /* MockWebView.h */,
+				812125721A42BD5D00BA6B7B /* MockWebView.m */,
+				8121256E1A42BD1E00BA6B7B /* TestWebridgeDelegate.h */,
+				8121256F1A42BD1E00BA6B7B /* TestWebridgeDelegate.m */,
 				81CCB85C1A38221D0014D551 /* Supporting Files */,
 			);
 			path = WebridgeTests;
@@ -272,6 +292,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				81CCB85F1A38221D0014D551 /* WebridgeTests.m in Sources */,
+				812125701A42BD1E00BA6B7B /* TestWebridgeDelegate.m in Sources */,
+				812125761A42BD8100BA6B7B /* MockWKScriptMessage.m in Sources */,
+				812125791A42BDB100BA6B7B /* TestURIHandler.m in Sources */,
+				812125731A42BD5D00BA6B7B /* MockWebView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

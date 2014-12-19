@@ -11,124 +11,13 @@
 
 #import "WBURI.h"
 #import "WBWebridge.h"
+#import "TestURIHandler.h"
+#import "TestWebridgeDelegate.h"
+#import "MockWebView.h"
+#import "MockWKScriptMessage.h"
 
-typedef NS_ENUM(NSInteger, TestURIHandlerStatus) {
-    TestURIHandlerStatusUnknownURI = 0,
-    TestURIHandlerStatusUnknownCommand,
-    TestURIHandlerStatusWebCommand,
-    TestURIHandlerStatusArticleCommand,
-};
-
-@interface TestURIHandler : NSObject <WBURIHandler>
-
-@property (nonatomic, assign) TestURIHandlerStatus status;
-@property (nonatomic, strong) NSString *currentCommand;
-@property (nonatomic, strong) NSString *currentParams;
-@property (nonatomic, strong) NSArray *currentParamsArray;
-
-@end
-
-@implementation TestURIHandler
-
-- (NSString *)scheme
-{
-    return @"slate";
-}
-
-- (void)unknownURI:(NSString *)uri
-{
-    NSLog(@"未能识别的uri %@", uri);
-    
-    _status = TestURIHandlerStatusUnknownURI;
-    _currentCommand = nil;
-    _currentParams = nil;
-    _currentParamsArray = nil;
-}
-
-- (void)unknownCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
-{
-    NSLog(@"未能识别的command %@\n params %@\n paramsArray %@", command, params, paramsArray);
-    
-    _status = TestURIHandlerStatusUnknownCommand;
-    _currentCommand = command;
-    _currentParams = params;
-    _currentParamsArray = paramsArray;
-}
-
-- (void)webCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
-{
-    NSLog(@"识别webCommand  params %@\n paramsArray %@", params, paramsArray);
-    
-    _status = TestURIHandlerStatusWebCommand;
-    _currentCommand = command;
-    _currentParams = params;
-    _currentParamsArray = paramsArray;
-}
-
-- (void)articleCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
-{
-    NSLog(@"识别articleCommand  params %@\n paramsArray %@", params, paramsArray);
-    
-    _status = TestURIHandlerStatusArticleCommand;
-    _currentCommand = command;
-    _currentParams = params;
-    _currentParamsArray = paramsArray;
-}
-
-@end
-
-
-@interface TestWebridgeDelegate : NSObject
-
-@property (nonatomic, strong) id params;
-
-@end
-
-@implementation TestWebridgeDelegate
-
-- (NSString *)getPerson:(id)params
-{
-    NSLog(@"getPerson:%@", params);
-    _params = params;
-    return @"123";
-}
-
-@end
-
-@interface MockWKWebView : NSObject
-
-@property (nonatomic, strong) NSString *javaScriptString;
-
-- (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^)(id, NSError *))completionHandler;
-
-@end
-
-@implementation MockWKWebView
-
-- (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^)(id, NSError *))completionHandler
-{
-    NSLog(@"MockWKWebView evaluateJavaScript %@ ", javaScriptString);
-    
-    _javaScriptString = javaScriptString;
-    
-    if (completionHandler) {
-        completionHandler(@"123", nil);
-    }
-}
-
-@end
-
-@interface MockWKScriptMessage : NSObject
-
-@property (nonatomic, strong) id body;
-
-@property (nonatomic, weak) MockWKWebView *webView;
-
-@end
-
-@implementation MockWKScriptMessage
-
-@end
+#import "ViewController.h"
+#import "AppDelegate.h"
 
 @interface WebridgeTests : XCTestCase
 
@@ -377,24 +266,30 @@ typedef NS_ENUM(NSInteger, TestURIHandlerStatus) {
     XCTAssert(YES, @"Pass");
 }
 
-- (void)testBridge {
+/*
+ * 要点：
+ * 1、使用Mock方式进行单元测试
+ *
+ */
+- (void)testBridge_jsToNative_peter {
+    
+    NSString *name = @"peter";
 
     MockWKWebView *webView = [MockWKWebView new];
     
     MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
-    mockMessage.body = @{@"body":@{@"command":@"getPerson",@"params":@{@"name":@"peter"},@"callback":@"wbCallback"}};
+    mockMessage.body = @{@"body":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"callback":@"testCallback"}};
     mockMessage.webView = webView;
     
     [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
     
-    NSString *name = @"peter";
     if (![[_bridgeDelegate.params objectForKey:@"name"] isEqualToString:name])
     {
         XCTAssert(NO, @"params name not match");
         return;
     }
     
-    NSString *jsString = @"wbCallback({\"result\":\"123\",\"error\":\"\"})";
+    NSString *jsString = @"testCallback({\"result\":{\"name\":\"peter\",\"year\":18,\"gender\":\"male\"},\"error\":\"\"})";
     if (![webView.javaScriptString isEqualToString:jsString])
     {
         XCTAssert(NO, @"callback not match");
@@ -402,6 +297,275 @@ typedef NS_ENUM(NSInteger, TestURIHandlerStatus) {
     }
     
     XCTAssert(YES, @"Pass");
+}
+
+- (void)testBridge_jsToNative_jane {
+    
+    NSString *name = @"jane";
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"body":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"callback":@"testCallback"}};
+    mockMessage.webView = webView;
+    
+    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    
+    if (![[_bridgeDelegate.params objectForKey:@"name"] isEqualToString:name])
+    {
+        XCTAssert(NO, @"params name not match");
+        return;
+    }
+    
+    NSString *jsString = @"testCallback({\"result\":{\"name\":\"jane\",\"year\":21,\"gender\":\"female\"},\"error\":\"\"})";
+    if (![webView.javaScriptString isEqualToString:jsString])
+    {
+        XCTAssert(NO, @"callback not match");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
+- (void)testBridge_jsToNative_nobody {
+    
+    NSString *name = @"nobody";
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"body":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"callback":@"testCallback"}};
+    mockMessage.webView = webView;
+    
+    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    
+    if (![[_bridgeDelegate.params objectForKey:@"name"] isEqualToString:name])
+    {
+        XCTAssert(NO, @"params name not match");
+        return;
+    }
+    
+    NSString *jsString = @"testCallback({\"result\":\"\",\"error\":\"\"})";
+    NSLog(@"%@", webView.javaScriptString);
+    if (![webView.javaScriptString isEqualToString:jsString])
+    {
+        XCTAssert(NO, @"callback not match");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
+- (void)testBridge_jsToNative_wrongCommandName {
+    
+    NSString *name = @"peter";
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"body":@{@"command":@"testGetPerson1",@"params":@{@"name":name},@"callback":@"testCallback"}};
+    mockMessage.webView = webView;
+    
+    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    
+    NSString *jsString = @"testCallback({\"result\":\"\",\"error\":\"TestWebridgeDelegate doesn't know method: testGetPerson1:\"})";
+    //NSLog(@"%@", webView.javaScriptString);
+    if (![webView.javaScriptString isEqualToString:jsString])
+    {
+        XCTAssert(NO, @"callback not match");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
+- (void)testBridge_jsToNative_wrongParams_exception {
+
+    MockWKWebView *webView = [MockWKWebView new];
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"body":@{@"command":@"testGetPerson",@"params":@(111),@"callback":@"testCallback"}};
+    mockMessage.webView = webView;
+    
+    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    
+    NSString *jsStringPrefix = @"testCallback({\"result\":\"\",\"error\":\"TestWebridgeDelegate exception on method: testGetPerson:";
+    if (![webView.javaScriptString hasPrefix:jsStringPrefix])
+    {
+        XCTAssert(NO, @"callback not match");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
+
+/*
+ * 要点：
+ * 1、测试异步操作
+ * 2、测试宿主App中的对象
+ *
+ */
+- (void)testBridge_nativeToJS_ok {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJS"];
+    
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+
+        [weakViewController.webView evaluateJavaScript:@"wbNativeToHTML('jsGetPerson', {'name':'linyize'})" completionHandler:^(id object, NSError *error) {
+            
+            [jsExpectation fulfill];
+            
+            if (![[object objectForKey:@"name"] isEqualToString:@"linyize"]) {
+                XCTAssert(NO, @"name not match");
+                return;
+            }
+            
+            if (![[object objectForKey:@"gender"] isEqualToString:@"male"]) {
+                XCTAssert(NO, @"gender not match");
+                return;
+            }
+            
+            if ([[object objectForKey:@"year"] integerValue] != 31) {
+                XCTAssert(NO, @"year not match");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_nativeToJS_wrongJSCommand {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJS_wrongJSCommand"];
+    
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+        
+        [weakViewController.webView evaluateJavaScript:@"wbNativeToHTML('jsGetPerson1', {'name':'linyize'})" completionHandler:^(id object, NSError *error) {
+            
+            [jsExpectation fulfill];
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if (object != nil) {
+                XCTAssert(NO, @"object should be nil");
+                return;
+            }
+            
+            if (error.code != 4) {
+                XCTAssert(NO, @"error code should be Code=4 \"A JavaScript exception occurred\"");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_nativeToJS_nullJSParams {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJS_nullJSParams"];
+    
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+        
+        [weakViewController.webView evaluateJavaScript:@"wbNativeToHTML('jsGetPerson', null)" completionHandler:^(id object, NSError *error) {
+            
+            [jsExpectation fulfill];
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if (object != nil) {
+                XCTAssert(NO, @"object should be nil");
+                return;
+            }
+            
+            if (error.code != 4) {
+                XCTAssert(NO, @"error code should be Code=4 \"A JavaScript exception occurred\"");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_nativeToJS_wrongJSParams {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJS_wrongJSParams"];
+    
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+        
+        [weakViewController.webView evaluateJavaScript:@"wbNativeToHTML('jsGetPerson', 'eeee')" completionHandler:^(id object, NSError *error) {
+            
+            [jsExpectation fulfill];
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if ([object objectForKey:@"name"] != nil) {
+                XCTAssert(NO, @"name should be nil");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }
 
 
