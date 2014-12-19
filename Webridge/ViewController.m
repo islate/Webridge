@@ -41,9 +41,7 @@
     
     // for unit test
     _webViewLoaded = YES;
-    if (self.webViewFinishedBlock)
-    {
-        NSLog(@"self.webViewFinishedBlock");
+    if (self.webViewFinishedBlock) {
         self.webViewFinishedBlock();
     }
 }
