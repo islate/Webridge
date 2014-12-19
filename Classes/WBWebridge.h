@@ -7,8 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
-#import "WBWebView.h"
+#import <WebKit/WebKit.h>
 
 @interface WBWebridge : NSObject
 

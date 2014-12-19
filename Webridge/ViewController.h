@@ -18,7 +18,6 @@ typedef void (^WebViewFinishedBlock)(void);
 @interface ViewController : UIViewController
 
 @property (nonatomic, strong) WBWebView *webView;
-@property (nonatomic, strong) WBWebridge *webridge;
 @property (nonatomic, strong) WebridgeDelegate *webridgeDelegate;
 
 // for unit test

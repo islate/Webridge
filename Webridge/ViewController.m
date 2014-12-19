@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController () <WKScriptMessageHandler, WKNavigationDelegate>
+@interface ViewController () <WKNavigationDelegate>
 
 @end
 
@@ -38,22 +38,14 @@
         NSLog(@"object:%@ error:%@", object, error);
     }];
     
-    _webViewLoaded = YES;
     
+    // for unit test
+    _webViewLoaded = YES;
     if (self.webViewFinishedBlock)
     {
         NSLog(@"self.webViewFinishedBlock");
         self.webViewFinishedBlock();
     }
-}
-
-#pragma mark - WKScriptMessageHandler
-
-- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message
-{
-    NSLog(@"body: %@", message.body);
-    
-    [self.webridge executeFromMessage:message];
 }
 
 #pragma mark -
@@ -62,13 +54,9 @@
     [super viewDidLoad];
     
     _webViewLoaded = NO;
+    _webridgeDelegate = [WebridgeDelegate new];
 
-    WKWebViewConfiguration *conf = [[WKWebViewConfiguration alloc] init];
-    WKUserContentController *controller = [[WKUserContentController alloc] init];
-    [controller addScriptMessageHandler:self name:@"webridge"];
-    [conf setUserContentController:controller];
-    
-    self.webView = [[WBWebView alloc] initWithFrame:self.view.bounds configuration:conf];
+    self.webView = [[WBWebView alloc] initWithFrame:self.view.bounds webridgeDelegate:self.webridgeDelegate];
     self.webView.navigationDelegate = self;
     [self.view addSubview:self.webView];
     
@@ -77,11 +65,6 @@
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     
     [self.webView loadRequest:request];
-    
-    self.webridge = [WBWebridge bridge];
-    self.webridgeDelegate = [WebridgeDelegate new];
-    self.webridge.delegate = self.webridgeDelegate;
-    
 }
 
 @end

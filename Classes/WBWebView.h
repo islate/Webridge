@@ -10,4 +10,6 @@
 
 @interface WBWebView : WKWebView
 
+- (instancetype)initWithFrame:(CGRect)frame webridgeDelegate:(id)webridgeDelegate;
+
 @end

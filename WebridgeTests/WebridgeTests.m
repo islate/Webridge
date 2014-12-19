@@ -439,7 +439,7 @@
     
     WebViewFinishedBlock block = ^ {
 
-        [weakViewController.webView evaluateJavaScript:@"wbNativeToHTML('jsGetPerson', {'name':'linyize'})" completionHandler:^(id object, NSError *error) {
+        [weakViewController.webView evaluateJavaScript:@"wbNativeToJS('jsGetPerson', {'name':'linyize'})" completionHandler:^(id object, NSError *error) {
             
             [jsExpectation fulfill];
             
@@ -483,7 +483,7 @@
     
     WebViewFinishedBlock block = ^ {
         
-        [weakViewController.webView evaluateJavaScript:@"wbNativeToHTML('jsGetPerson1', {'name':'linyize'})" completionHandler:^(id object, NSError *error) {
+        [weakViewController.webView evaluateJavaScript:@"wbNativeToJS('jsGetPerson1', {'name':'linyize'})" completionHandler:^(id object, NSError *error) {
             
             [jsExpectation fulfill];
             
@@ -524,7 +524,7 @@
     
     WebViewFinishedBlock block = ^ {
         
-        [weakViewController.webView evaluateJavaScript:@"wbNativeToHTML('jsGetPerson', null)" completionHandler:^(id object, NSError *error) {
+        [weakViewController.webView evaluateJavaScript:@"wbNativeToJS('jsGetPerson', null)" completionHandler:^(id object, NSError *error) {
             
             [jsExpectation fulfill];
             
@@ -565,7 +565,7 @@
     
     WebViewFinishedBlock block = ^ {
         
-        [weakViewController.webView evaluateJavaScript:@"wbNativeToHTML('jsGetPerson', 'eeee')" completionHandler:^(id object, NSError *error) {
+        [weakViewController.webView evaluateJavaScript:@"wbNativeToJS('jsGetPerson', 'eeee')" completionHandler:^(id object, NSError *error) {
             
             [jsExpectation fulfill];
             
