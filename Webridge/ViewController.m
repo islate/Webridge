@@ -34,7 +34,7 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation
 {
-    [self.webView evaluateJavaScript:@"wbNativeToHTML('jsGetPerson', {'name':'linyize'})" completionHandler:^(id object, NSError *error) {
+    [self.webView evaluateJavaScript:@"wbNativeToJS('jsGetPerson', {'name':'linyize'})" completionHandler:^(id object, NSError *error) {
         NSLog(@"object:%@ error:%@", object, error);
     }];
     

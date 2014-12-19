@@ -356,6 +356,29 @@
     XCTAssert(YES, @"Pass");
 }
 
+- (void)testBridge_jsToNative_nullCommandName {
+    
+    NSString *name = @"peter";
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"body":@{@"command":@"",@"params":@{@"name":name},@"callback":@"testCallback"}};
+    mockMessage.webView = webView;
+    
+    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    
+    NSString *jsString = @"testCallback({\"result\":\"\",\"error\":\"TestWebridgeDelegate doesn't know method: :\"})";
+    //NSLog(@"%@", webView.javaScriptString);
+    if (![webView.javaScriptString isEqualToString:jsString])
+    {
+        XCTAssert(NO, @"callback not match");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
 - (void)testBridge_jsToNative_wrongCommandName {
     
     NSString *name = @"peter";

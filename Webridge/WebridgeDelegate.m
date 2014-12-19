@@ -8,9 +8,11 @@
 
 #import "WebridgeDelegate.h"
 
+#import <AddressBook/AddressBook.h>
+
 @interface WebridgeDelegate ()
 
-@property (nonatomic, strong) NSDictionary *personDict;
+@property (nonatomic, strong) NSMutableDictionary *contacts;
 
 @end
 
@@ -20,19 +22,90 @@
 {
     self = [super init];
     if (self) {
-        _personDict = @{ @"peter":@{@"name": @"peter", @"year":@(18), @"gender":@"male"},
-                         @"jane":@{@"name": @"jane", @"year":@(21), @"gender":@"female"}};
+        _contacts = [NSMutableDictionary new];
+        
+        CFErrorRef err;
+        
+        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &err);
+        
+        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+            
+            // ABAddressBook doesn'tgaurantee execution of this block on main thread, but we want our callbacks tobe
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                
+                if (!granted) {
+
+                    NSLog(@"error: %@", error);
+                    
+                } else {
+                    
+                    [self readAddressBookContacts:addressBook];
+                    
+                }
+                
+                CFRelease(addressBook);
+                
+            });
+            
+        });
     }
     return self;
 }
 
+- (void)readAddressBookContacts:(ABAddressBookRef)addressBook
+{
+    CFArrayRef results = ABAddressBookCopyArrayOfAllPeople(addressBook);
+    for(int i = 0; i < CFArrayGetCount(results); i++)
+    {
+        NSMutableDictionary *personDict = [NSMutableDictionary new];
+        
+        ABRecordRef person = CFArrayGetValueAtIndex(results, i);
+        
+        // 读取firstname
+        NSString *personName = (__bridge NSString*)ABRecordCopyValue(person, kABPersonFirstNameProperty);
+        if (!personName) {
+            continue;
+        }
+        
+        [personDict setObject:personName forKey:@"name"];
+        
+        NSString *phoneNumber = nil;
+        
+        // 读取电话
+        ABMultiValueRef phone = ABRecordCopyValue(person, kABPersonPhoneProperty);
+        if (ABMultiValueGetCount(phone) > 0) {
+            phoneNumber = (__bridge NSString*)ABMultiValueCopyValueAtIndex(phone, 0);
+        }
+        
+        if (phoneNumber) {
+            [personDict setObject:phoneNumber forKey:@"phone"];
+        }
+        
+        
+        // 读取生日
+        NSDate *birthday = (__bridge NSDate*)ABRecordCopyValue(person, kABPersonBirthdayProperty);
+        if (birthday) {
+            [personDict setObject:[NSString stringWithFormat:@"%@", birthday] forKey:@"birthday"];
+        }
+        
+        [_contacts setObject:personDict forKey:personName];
+    }
+    
+    CFRelease(results);
+}
+
 #pragma mark - WBWebridgeDelegate
 
-- (NSString *)nativeGetPerson:(id)params
+- (id)nativeGetPhoneContacts:(id)params
+{
+    return _contacts;
+}
+
+- (id)nativeGetPerson:(id)params
 {
     NSString *name = [params objectForKey:@"name"];
-    id person = [_personDict objectForKey:name];
-    return person;
+    return [_contacts objectForKey:name];
 }
 
 - (void)nativeShowAlert:(NSString *)message

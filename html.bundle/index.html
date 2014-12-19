@@ -1,58 +1,85 @@
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
     <meta charset='utf-8'>
 <script language="javascript" src="webridge.js"></script>
 <script language="javascript" type="text/javascript">
+    
 function jsGetPerson(object) {
-    var person={"name":object.name, "year":31, "gender":"male"};
+    var person = {"name":object.name, "year":31, "gender":"male"};
     return person;
 }
 
+// 获取某个手机联系人的回调函数
 function getPersonCallback(object) {
-    document.getElementById("name").innerHTML = object.result.name;
-    document.getElementById("year").innerHTML = object.result.year;
-    document.getElementById("gender").innerHTML = object.result.gender;
-    document.getElementById("error").innerHTML = object.error;
+    var person = object.result;
+    var error = object.error;
+    if (error.length > 0) {
+        document.getElementById('person').innerHTML = error;
+    }
+    else {
+        var html = '<p>name: ' + person.name + '</p>';
+        html += '<p>phone: ' + person.phone + '</p>';
+        html += '<p>birthday: ' + person.birthday + '</p>';
+        document.getElementById('person').innerHTML = html;
+    }
 }
 
-function wbGetPerson(name) {
-    wbHTMLToNative("nativeGetPerson", {"name":name}, "getPersonCallback");
+// 获取手机联系人列表的回调函数
+function getPhoneContactsCallback(object) {
+    var contacts = object.result;
+    var error = object.error;
+    if (error.length > 0) {
+        document.getElementById('contacts').innerHTML = error;
+    }
+    else {
+        var html = '';
+        for (var key in contacts) {
+            var person = contacts[key];
+            html += '<p>' + person.name + ' ' + person.phone + '</p>';
+        }
+        document.getElementById('contacts').innerHTML = html;
+    }
 }
 
+// 获取某个手机联系人
+function wbGetPerson(personName) {
+    wbJSToNative("nativeGetPerson", {'name':personName}, "getPersonCallback");
+}
+
+// 获取手机联系人列表
+function wbGetPhoneContacts() {
+    wbJSToNative("nativeGetPhoneContacts", null, "getPhoneContactsCallback");
+}
+
+// 弹出原生alert
 function wbAlert(message) {
-    wbHTMLToNative("nativeShowAlert", message, null);
+    wbJSToNative("nativeShowAlert", message, null);
 }
 
 window.onload = function() {
-    wbGetPerson("jane");
-    
-    wbAlert("测试弹出提示框");
+
 };
 </script>
 </head>
 <body>
     <br/>
+    <h2>URI Examples:</h2>
+    <a href=slate://article/1/2/3/4>slate://article/1/2/3/4</a>
+    <br/><br/>
+    <a href=slate://web/http://www.baidu.com>slate://web/http://www.baidu.com</a>
     <br/>
     <br/>
+    <h2>Bridge Examples:</h2>
+    <a href="javascript:wbAlert(document.getElementById('alertText').value)">弹出框</a><br/>
+    <input type="text" id="alertText" value="测试111"/>
     <br/>
-    <h1>name:</h1>
-    <h1 id="name"></h1>
     <br/>
-    <h1>year:</h1>
-    <h1 id="year"></h1>
+    <a href="javascript:wbGetPerson(document.getElementById('personName').value)">获取手机单个联系人</a><br/>
+    <input type="text" id="personName" value="John"/><br/>
+    <div id="person"></div>
     <br/>
-    <h1>gender:</h1>
-    <h1 id="gender"></h1>
-    <br/>
-    <h1>error:</h1>
-    <h1 id="error"></h1>
-    <br/>
-    <br/><br/><br/><br/><br/>
-    <h1>URITests:</h1>
-    <br/>
-    <a href=slate://article/1/2/3/4>打开文章</a>
-    <br/>
-    <a href=slate://web/http://www.baidu.com>打开内置浏览器</a>
-    <br/>
+    <a href="javascript:wbGetPhoneContacts()">获取手机全部联系人</a><br/>
+    <div id="contacts"></div>
 </body>
 </html>
