@@ -8,7 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TestWebridgeDelegate : NSObject
+#import "WBWebridge.h"
+
+@interface TestWebridgeDelegate : NSObject <WBWebridgeDelegate>
 
 @property (nonatomic, strong) NSDictionary *personDict;
 @property (nonatomic, strong) NSDictionary *params;

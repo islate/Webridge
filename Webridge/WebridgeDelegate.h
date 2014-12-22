@@ -10,6 +10,6 @@
 
 #import "WBWebridge.h"
 
-@interface WebridgeDelegate : NSObject
+@interface WebridgeDelegate : NSObject <WBWebridgeDelegate>
 
 @end
