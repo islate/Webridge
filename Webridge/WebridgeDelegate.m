@@ -24,31 +24,31 @@
     if (self) {
         _contacts = [NSMutableDictionary new];
         
-        CFErrorRef err;
-        
-        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &err);
-        
-        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
-            
-            // ABAddressBook doesn'tgaurantee execution of this block on main thread, but we want our callbacks tobe
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                if (!granted) {
-
-                    NSLog(@"error: %@", error);
-                    
-                } else {
-                    
-                    [self readAddressBookContacts:addressBook];
-                    
-                }
-                
-                CFRelease(addressBook);
-                
-            });
-            
-        });
+//        CFErrorRef err;
+//        
+//        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &err);
+//        
+//        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+//            
+//            // ABAddressBook doesn'tgaurantee execution of this block on main thread, but we want our callbacks tobe
+//            
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                
+//                if (!granted) {
+//
+//                    NSLog(@"error: %@", error);
+//                    
+//                } else {
+//                    
+//                    [self readAddressBookContacts:addressBook];
+//                    
+//                }
+//                
+//                CFRelease(addressBook);
+//                
+//            });
+//            
+//        });
     }
     return self;
 }
@@ -96,6 +96,44 @@
 }
 
 #pragma mark - WBWebridgeDelegate
+
+- (void)nativeGetPhoneContacts:(id)params completion:(WBWebridgeCompletionBlock)completion
+{
+    CFErrorRef err;
+    
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &err);
+    
+    ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+        
+        // ABAddressBook doesn'tgaurantee execution of this block on main thread, but we want our callbacks tobe
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (!granted) {
+                
+                NSLog(@"error: %@", error);
+                
+                if (completion)
+                {
+                    completion(nil, (__bridge NSError *)error);
+                }
+                
+            } else {
+                
+                [self readAddressBookContacts:addressBook];
+                
+                if (completion)
+                {
+                    completion(_contacts, nil);
+                }
+            }
+            
+            CFRelease(addressBook);
+            
+        });
+        
+    });
+}
 
 - (id)nativeGetPhoneContacts:(id)params
 {

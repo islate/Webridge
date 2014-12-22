@@ -9,9 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <WebKit/WebKit.h>
 
+typedef void (^WBWebridgeCompletionBlock)(id result, NSError *error);
+
+@protocol WBWebridgeDelegate <NSObject>
+@end
+
 @interface WBWebridge : NSObject
 
-@property (nonatomic, weak) id delegate;
+@property (nonatomic, weak) id<WBWebridgeDelegate> delegate;
 
 + (instancetype)bridge;
 

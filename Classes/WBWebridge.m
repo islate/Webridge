@@ -48,24 +48,92 @@
     }
     
     NSString *command = [body objectForKey:@"command"];
-    NSString *methodName = [NSString stringWithFormat:@"%@:", command];
     id params = [body objectForKey:@"params"];
     NSString *callback = [body objectForKey:@"callback"];
     
-    SEL aSelector = NSSelectorFromString(methodName);
-    NSMethodSignature *signature = [[self.delegate class] instanceMethodSignatureForSelector:aSelector];
+    if ([self asyncExecuteForCommand:command params:params callback:callback message:message])
+    {
+        // 异步返回
+        return;
+    }
+    
+    // 同步返回
+    [self executeForCommand:command params:params callback:callback message:message];
+}
+
+- (BOOL)asyncExecuteForCommand:(NSString *)command params:(id)params callback:(NSString *)callback message:(WKScriptMessage *)message
+{
     NSInvocation *invocation = nil;
+    
+    NSString *methodName = [NSString stringWithFormat:@"%@:completion:", command];
+    SEL selector = NSSelectorFromString(methodName);
+    NSMethodSignature *signature = [[self.delegate class] instanceMethodSignatureForSelector:selector];
+    
+    if (signature == nil)
+    {
+        return NO;
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    WBWebridgeCompletionBlock block = ^(id result, NSError *error) {
+        [weakSelf callback:callback result:result error:error.localizedDescription message:message];
+    };
+    
+    invocation = [NSInvocation invocationWithMethodSignature:signature];
+    [invocation retainArguments];
+    invocation.selector = selector;
+    invocation.target = self.delegate;
+    [invocation setArgument:&params atIndex:2];
+    [invocation setArgument:&block atIndex:3];
+    
+    if (invocation == nil || ![self.delegate respondsToSelector:selector])
+    {
+        return NO;
+    }
+
+    @try {
+        [invocation invoke];
+        NSLog(@"Webridge: %@ %@ %@", self.delegate, methodName, params);
+    }
+    @catch(NSException *exception) {
+        NSLog (@"WebBridge exception on %@ %@", self.delegate, methodName);
+        NSLog (@"%@ %@", [exception name], [exception reason]);
+        NSLog (@"%@", [[exception callStackSymbols] componentsJoinedByString:@"\n"]);
+        
+        if (self.delegate)
+        {
+            NSString *error = [NSString stringWithFormat:@"%@ exception on method: %@",
+                               NSStringFromClass([self.delegate class]),
+                               methodName];
+            error = [error stringByAppendingFormat:@"\nexception name:%@ reason:%@",
+                     [exception name],
+                     [exception reason]];
+            
+            [self callback:callback result:nil error:error message:message];
+        }
+    }
+    
+    return YES;
+}
+
+- (void)executeForCommand:(NSString *)command params:(id)params callback:(NSString *)callback message:(WKScriptMessage *)message
+{
+    NSInvocation *invocation = nil;
+    
+    NSString *methodName = [NSString stringWithFormat:@"%@:", command];
+    SEL selector = NSSelectorFromString(methodName);
+    NSMethodSignature *signature = [[self.delegate class] instanceMethodSignatureForSelector:selector];
     
     if (signature)
     {
         invocation = [NSInvocation invocationWithMethodSignature:signature];
         [invocation retainArguments];
-        invocation.selector = aSelector;
+        invocation.selector = selector;
         invocation.target = self.delegate;
         [invocation setArgument:&params atIndex:2];
     }
     
-    if (invocation && [self.delegate respondsToSelector:aSelector])
+    if (invocation && [self.delegate respondsToSelector:selector])
     {
         @try {
             [invocation invoke];
