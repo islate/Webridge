@@ -8,8 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^MockWKWebViewDidEvaluateJavaScriptBlock)(void);
+
 @interface MockWKWebView : NSObject
 
+@property (nonatomic, copy) MockWKWebViewDidEvaluateJavaScriptBlock didEvaluateJavaScript;
 @property (nonatomic, strong) NSString *javaScriptString;
 
 - (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^)(id, NSError *))completionHandler;

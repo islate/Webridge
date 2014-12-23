@@ -31,4 +31,19 @@
     return person;
 }
 
+- (void)testGetPersonAsync:(NSDictionary *)params completion:(WBWebridgeCompletionBlock)completion
+{
+    _params = params;
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        
+        NSString *name = [params objectForKey:@"name"];
+        id person = [_personDict objectForKey:name];
+        
+        if (completion) {
+            completion(person, nil);
+        }
+    });
+}
+
 @end

@@ -422,6 +422,43 @@
     XCTAssert(YES, @"Pass");
 }
 
+- (void)testBridge_jsToNativeAsync_jane {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"jsToNativeAsync"];
+    
+    NSString *name = @"jane";
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    __weak typeof(webView) weakWebView = webView;
+    webView.didEvaluateJavaScript = ^ {
+        
+        [jsExpectation fulfill];
+        
+        if (![[_bridgeDelegate.params objectForKey:@"name"] isEqualToString:name])
+        {
+            XCTAssert(NO, @"params name not match");
+            return;
+        }
+        
+        NSString *jsString = @"testCallback({\"result\":{\"name\":\"jane\",\"year\":21,\"gender\":\"female\"},\"error\":\"\"})";
+        if (![weakWebView.javaScriptString isEqualToString:jsString])
+        {
+            XCTAssert(NO, @"callback not match");
+            return;
+        }
+        
+        XCTAssert(YES, @"Pass");
+    };
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"body":@{@"command":@"testGetPersonAsync",@"params":@{@"name":name},@"callback":@"testCallback"}};
+    mockMessage.webView = webView;
+    
+    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
 
 /*
  * 要点：

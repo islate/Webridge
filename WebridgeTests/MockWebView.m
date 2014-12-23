@@ -19,6 +19,10 @@
     if (completionHandler) {
         completionHandler(@"123", nil);
     }
+    
+    if (self.didEvaluateJavaScript) {
+        self.didEvaluateJavaScript();
+    }
 }
 
 @end
