@@ -25,6 +25,8 @@ Webridge iOS
 	scheme 方案
 	command 命令
 	params 参数
+	
+	WBURI要符合URL的编码规则。
 
 1.2 WBWebBridge调用机制
 
