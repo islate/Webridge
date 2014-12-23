@@ -24,14 +24,14 @@
 
 - (void)unknownCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
 {
-    NSLog(@"未能识别的command %@ %@ %@", command, params, paramsArray);
+    NSLog(@"未能识别的command %@\n params %@\n paramsArray %@", command, params, paramsArray);
 }
 
 - (void)webCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
 {
-    NSLog(@"识别webCommand  params %@\n paramsArray %@", params, paramsArray);
+    NSLog(@"识别webCommand\n  params %@\n paramsArray %@", params, paramsArray);
     
-    NSString *message = [NSString stringWithFormat:@"识别webCommand  params %@\n paramsArray %@", params, paramsArray];
+    NSString *message = [NSString stringWithFormat:@"识别webCommand\n  params %@\n paramsArray %@", params, paramsArray];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"测试结果" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
@@ -39,9 +39,9 @@
 
 - (void)articleCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
 {
-    NSLog(@"识别articleCommand  params %@\n paramsArray %@", params, paramsArray);
+    NSLog(@"识别articleCommand\n  params %@\n paramsArray %@", params, paramsArray);
     
-    NSString *message = [NSString stringWithFormat:@"识别articleCommand  params %@\n paramsArray %@", params, paramsArray];
+    NSString *message = [NSString stringWithFormat:@"识别articleCommand\n  params %@\n paramsArray %@", params, paramsArray];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"测试结果" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
