@@ -137,7 +137,7 @@ Webridge iOS
 	@implementation WebridgeDelegate
 	- (void)nativeCommand:(id)params completion:(WBWebridgeCompletionBlock)completion
 	{
-		// todo: 得到结果后调用 completion(result, error)
+		// todo: 得到结果后调用 completion(result, error);
 	}
 
 	b. 创建webView
@@ -167,9 +167,15 @@ Webridge iOS
 				}
 			}];
 	
-	网页中相关js函数的实现
-	jsObject.jsCommand = function(params, callback) {
-		// todo: 得到结果result后，调用  callback(result)
+	网页中相关js函数的实现，异步方式：
+	jsObject.jsCommand_async = function(params, callback) {
+		// todo: 得到结果result后，调用  callback(result);
+	};
+	
+	同步方式:
+	jsObject.jsCommand = function(params) {
+		// todo: 得到结果result
+		return result;
 	};
 
 5、如何引入工程
