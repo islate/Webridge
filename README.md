@@ -57,7 +57,7 @@ Webridge iOS
 			参数个数：两个
 			参数1类型：{object}
 			参数2类型：block     void (^)(id result, NSError *error)
-			返回值：  {object}
+			返回值：   void
 
 	回调js函数格式约定：
 		参数个数：两个
@@ -81,13 +81,11 @@ Webridge iOS
 	_handler = [URIHandler new];
 	[WBURI registerURIHandler:_handler];
 
-
 	b. 实现URIHandler， 以article command为例
 	- (void)articleCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
 	{
 		NSLog(@"识别articleCommand\n  params %@\n paramsArray %@", params, paramsArray);
 	}
-
 
 	c. 实现WKNavigationDelegate 的webView:decidePolicyForNavigationAction:decisionHandler:
 	- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
@@ -106,14 +104,11 @@ Webridge iOS
 		}
 	}
 
-
 	网页中可以用超链接方式，引入WBURI
 	<a href="slate://article/1/2/3/4">view article</a>
 
-
 	或者用js打开WBURI
 	window.location.href = "slate://article/1/2/3/4";
-
 
 	或者用一个看不见的iframe加载WBURI
 	var uri = "slate://article/1/2/3/4";
@@ -123,7 +118,6 @@ Webridge iOS
 	document.documentElement.appendChild(iframe);
 	iframe.parentNode.removeChild(iframe);
 	iframe = null;
-
 
 4.2 js调用原生代码，并异步得到返回值
 
