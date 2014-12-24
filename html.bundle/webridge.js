@@ -43,13 +43,10 @@ function Webridge () {
      * @method nativeToJS
      * @param {string} jsCommand       要调用的js函数名
      * @param {object} jsParams        传递给js函数的参数，json对象
-     * @param {int}    nativeSequence  调用的序号，用于找到对应的原生调用
-     * @return {object} 返回json对象
+     * @param {int}    nativeSequence  调用的序号，用于找到对应的原生回调block
      *
      *
-     * js函数约定：
-     * 1、只有一个参数，参数格式为json对象；
-     * 2、返回一个json对象
+     * js函数约定：请查阅 https://github.com/linyize/Webridge/blob/master/README.md
      */
     this.nativeToJS = function(jsCommand, jsParams, nativeSequence) {
         try {
@@ -87,11 +84,9 @@ function Webridge () {
      * @param {function} jsCallback   js回调函数 function(result, error)，用于得到返回值
      *
      *
-     * 原生代码函数格式约定：
-     * 1、只有一个参数，参数格式为json对象
-     * 2、返回一个json对象
+     * 原生函数约定： 请查阅 https://github.com/linyize/Webridge/blob/master/README.md
      *
-     * js回调函数格式约定:    function(result, error)
+     * js回调函数约定:    function(result, error)
      * 1、 {object} result  原生代码返回的json对象
      *     {string} error   错误信息字符串
      * 2、无返回值
@@ -121,7 +116,7 @@ function Webridge () {
      * @param {string} error        错误信息字符串
      *
      *
-     * js回调函数格式约定:     function(result, error)
+     * js回调函数约定:     function(result, error)
      * 1、 {object} result  原生代码返回的json对象
      *     {string} error   错误信息字符串
      * 2、无返回值
