@@ -278,10 +278,10 @@
     MockWKWebView *webView = [MockWKWebView new];
     
     MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
-    mockMessage.body = @{@"body":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"callback":@"testCallback"}};
+    mockMessage.body = @{@"eval":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"sequence":@(1)}};
     mockMessage.webView = webView;
     
-    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
     
     if (![[_bridgeDelegate.params objectForKey:@"name"] isEqualToString:name])
     {
@@ -289,7 +289,7 @@
         return;
     }
     
-    NSString *jsString = @"testCallback({\"result\":{\"name\":\"peter\",\"year\":18,\"gender\":\"male\"},\"error\":\"\"})";
+    NSString *jsString = @"webridge.jsToNativeCallback(1, {\"name\":\"peter\",\"year\":18,\"gender\":\"male\"}, '')";
     if (![webView.javaScriptString isEqualToString:jsString])
     {
         XCTAssert(NO, @"callback not match");
@@ -306,10 +306,10 @@
     MockWKWebView *webView = [MockWKWebView new];
     
     MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
-    mockMessage.body = @{@"body":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"callback":@"testCallback"}};
+    mockMessage.body = @{@"eval":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"sequence":@(2)}};
     mockMessage.webView = webView;
     
-    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
     
     if (![[_bridgeDelegate.params objectForKey:@"name"] isEqualToString:name])
     {
@@ -317,7 +317,7 @@
         return;
     }
     
-    NSString *jsString = @"testCallback({\"result\":{\"name\":\"jane\",\"year\":21,\"gender\":\"female\"},\"error\":\"\"})";
+    NSString *jsString = @"webridge.jsToNativeCallback(2, {\"name\":\"jane\",\"year\":21,\"gender\":\"female\"}, '')";
     if (![webView.javaScriptString isEqualToString:jsString])
     {
         XCTAssert(NO, @"callback not match");
@@ -334,10 +334,10 @@
     MockWKWebView *webView = [MockWKWebView new];
     
     MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
-    mockMessage.body = @{@"body":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"callback":@"testCallback"}};
+    mockMessage.body = @{@"eval":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"sequence":@(3)}};
     mockMessage.webView = webView;
     
-    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
     
     if (![[_bridgeDelegate.params objectForKey:@"name"] isEqualToString:name])
     {
@@ -345,8 +345,7 @@
         return;
     }
     
-    NSString *jsString = @"testCallback({\"result\":\"\",\"error\":\"\"})";
-    NSLog(@"%@", webView.javaScriptString);
+    NSString *jsString = @"webridge.jsToNativeCallback(3, '', '')";
     if (![webView.javaScriptString isEqualToString:jsString])
     {
         XCTAssert(NO, @"callback not match");
@@ -363,13 +362,12 @@
     MockWKWebView *webView = [MockWKWebView new];
     
     MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
-    mockMessage.body = @{@"body":@{@"command":@"",@"params":@{@"name":name},@"callback":@"testCallback"}};
+    mockMessage.body = @{@"eval":@{@"command":@"",@"params":@{@"name":name},@"sequence":@(4)}};
     mockMessage.webView = webView;
     
-    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
     
-    NSString *jsString = @"testCallback({\"result\":\"\",\"error\":\"TestWebridgeDelegate doesn't know method: :\"})";
-    //NSLog(@"%@", webView.javaScriptString);
+    NSString *jsString = @"webridge.jsToNativeCallback(4, '', 'TestWebridgeDelegate doesn't know method: :')";
     if (![webView.javaScriptString isEqualToString:jsString])
     {
         XCTAssert(NO, @"callback not match");
@@ -386,12 +384,12 @@
     MockWKWebView *webView = [MockWKWebView new];
     
     MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
-    mockMessage.body = @{@"body":@{@"command":@"testGetPerson1",@"params":@{@"name":name},@"callback":@"testCallback"}};
+    mockMessage.body = @{@"eval":@{@"command":@"testGetPerson1",@"params":@{@"name":name},@"sequence":@(5)}};
     mockMessage.webView = webView;
     
-    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
     
-    NSString *jsString = @"testCallback({\"result\":\"\",\"error\":\"TestWebridgeDelegate doesn't know method: testGetPerson1:\"})";
+    NSString *jsString = @"webridge.jsToNativeCallback(5, '', 'TestWebridgeDelegate doesn't know method: testGetPerson1:')";
     //NSLog(@"%@", webView.javaScriptString);
     if (![webView.javaScriptString isEqualToString:jsString])
     {
@@ -407,12 +405,12 @@
     MockWKWebView *webView = [MockWKWebView new];
     
     MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
-    mockMessage.body = @{@"body":@{@"command":@"testGetPerson",@"params":@(111),@"callback":@"testCallback"}};
+    mockMessage.body = @{@"eval":@{@"command":@"testGetPerson",@"params":@(111),@"sequence":@(6)}};
     mockMessage.webView = webView;
     
-    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
     
-    NSString *jsStringPrefix = @"testCallback({\"result\":\"\",\"error\":\"TestWebridgeDelegate exception on method: testGetPerson:";
+    NSString *jsStringPrefix = @"webridge.jsToNativeCallback(6, '', 'TestWebridgeDelegate exception on method: testGetPerson:";
     if (![webView.javaScriptString hasPrefix:jsStringPrefix])
     {
         XCTAssert(NO, @"callback not match");
@@ -440,7 +438,7 @@
             return;
         }
         
-        NSString *jsString = @"testCallback({\"result\":{\"name\":\"jane\",\"year\":21,\"gender\":\"female\"},\"error\":\"\"})";
+        NSString *jsString = @"webridge.jsToNativeCallback(7, {\"name\":\"jane\",\"year\":21,\"gender\":\"female\"}, '')";
         if (![weakWebView.javaScriptString isEqualToString:jsString])
         {
             XCTAssert(NO, @"callback not match");
@@ -451,10 +449,10 @@
     };
     
     MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
-    mockMessage.body = @{@"body":@{@"command":@"testGetPersonAsync",@"params":@{@"name":name},@"callback":@"testCallback"}};
+    mockMessage.body = @{@"eval":@{@"command":@"testGetPersonAsync",@"params":@{@"name":name},@"sequence":@(7)}};
     mockMessage.webView = webView;
     
-    [_bridge executeFromMessage:(WKScriptMessage *)mockMessage];
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
     
     [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }
@@ -476,7 +474,7 @@
     
     WebViewFinishedBlock block = ^ {
 
-        [weakViewController.webView evaluateJavaScript:@"wbNativeToJS('jsGetPerson', {'name':'linyize'})" completionHandler:^(id object, NSError *error) {
+        [weakViewController.webView evalJSCommand:@"wbTest.jsGetPerson" jsParams:@{@"name":@"linyize"} completionHandler:^(id object, NSError *error) {
             
             [jsExpectation fulfill];
             
@@ -520,7 +518,7 @@
     
     WebViewFinishedBlock block = ^ {
         
-        [weakViewController.webView evaluateJavaScript:@"wbNativeToJS('jsGetPerson1', {'name':'linyize'})" completionHandler:^(id object, NSError *error) {
+        [weakViewController.webView evalJSCommand:@"wbTest.jsGetPerson1" jsParams:@{@"name":@"linyize"} completionHandler:^(id object, NSError *error) {
             
             [jsExpectation fulfill];
             
@@ -561,22 +559,17 @@
     
     WebViewFinishedBlock block = ^ {
         
-        [weakViewController.webView evaluateJavaScript:@"wbNativeToJS('jsGetPerson', null)" completionHandler:^(id object, NSError *error) {
+        [weakViewController.webView evalJSCommand:@"wbTest.jsGetPerson" jsParams:nil completionHandler:^(id object, NSError *error) {
             
             [jsExpectation fulfill];
             
             NSLog(@"object:%@  error:%@", object, error);
             
-            if (object != nil) {
-                XCTAssert(NO, @"object should be nil");
+            if ([object objectForKey:@"name"] != nil) {
+                XCTAssert(NO, @"name should be nil");
                 return;
             }
-            
-            if (error.code != 4) {
-                XCTAssert(NO, @"error code should be Code=4 \"A JavaScript exception occurred\"");
-                return;
-            }
-            
+
             XCTAssert(YES, @"Pass");
         }];
     };
@@ -602,7 +595,7 @@
     
     WebViewFinishedBlock block = ^ {
         
-        [weakViewController.webView evaluateJavaScript:@"wbNativeToJS('jsGetPerson', 'eeee')" completionHandler:^(id object, NSError *error) {
+        [weakViewController.webView evalJSCommand:@"wbTest.jsGetPerson" jsParams:@"eeee" completionHandler:^(id object, NSError *error) {
             
             [jsExpectation fulfill];
             

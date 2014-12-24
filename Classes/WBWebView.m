@@ -9,6 +9,7 @@
 #import "WBWebView.h"
 
 #import "WBWebridge.h"
+#import "WBUtils.h"
 
 @interface WBWebView () <WKScriptMessageHandler>
 
@@ -34,11 +35,40 @@
     return self;
 }
 
+- (void)evalJSCommand:(NSString *)jsCommand jsParams:(id)jsParams completionHandler:(void (^)(id, NSError *))completionHandler
+{
+    if (![NSThread isMainThread])
+    {
+        // 非主线程不允许调用
+        return;
+    }
+    
+    NSString *jsParamsString = @"''";
+    if (jsParams)
+    {
+        jsParamsString = [jsParams JSONString];
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    NSNumber *sequence = [_bridge sequenceOfNativeToJSCallback:completionHandler];
+    NSString *javaScriptString = [NSString stringWithFormat:@"webridge.nativeToJS('%@', %@, %@)", jsCommand, jsParamsString, sequence];
+    [self evaluateJavaScript:javaScriptString completionHandler:^(id result, NSError *error) {
+        if (error)
+        {
+            if (completionHandler)
+            {
+                completionHandler(nil, error);
+            }
+            [weakSelf.bridge removeSequence:sequence];
+        }
+    }];
+}
+
 #pragma mark - WKScriptMessageHandler
 
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message
 {
-    [_bridge executeFromMessage:message];
+    [_bridge handleMessage:message];
 }
 
 @end

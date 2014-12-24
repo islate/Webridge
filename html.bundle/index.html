@@ -4,62 +4,63 @@
     <meta charset='utf-8'>
 <script language="javascript" src="webridge.js"></script>
 <script language="javascript" type="text/javascript">
+
+var wbTest = {
     
-function jsGetPerson(object) {
-    var person = {"name":object.name, "year":31, "gender":"male"};
-    return person;
-}
-
-// 获取某个手机联系人的回调函数
-function getPersonCallback(object) {
-    var person = object.result;
-    var error = object.error;
-    if (error.length > 0) {
-        document.getElementById('person').innerHTML = error;
-    }
-    else {
-        var html = '<p>name: ' + person.name + '</p>';
-        html += '<p>phone: ' + person.phone + '</p>';
-        html += '<p>birthday: ' + person.birthday + '</p>';
-        document.getElementById('person').innerHTML = html;
-    }
-}
-
-// 获取手机联系人列表的回调函数
-function getPhoneContactsCallback(object) {
-    var contacts = object.result;
-    var error = object.error;
-    if (error.length > 0) {
-        document.getElementById('contacts').innerHTML = error;
-    }
-    else {
-        var html = '';
-        for (var key in contacts) {
-            var person = contacts[key];
-            html += '<p>' + person.name + ' ' + person.phone + '</p>';
+    // 弹出原生alert
+    alert : function (message) {
+        webridge.jsToNative("nativeShowAlert", message, null);
+    },
+    
+    // 异步调用
+    jsGetPerson_async : function (object, callback/* function(result) */) {
+        var person = {"name":object.name, "year":31, "gender":"male", "async": true};
+        if (typeof callback == 'function') {
+            callback(person);
         }
-        document.getElementById('contacts').innerHTML = html;
+    },
+    
+    // 同步调用
+    jsGetPerson : function (object) {
+        var person = {"name":object.name, "year":31, "gender":"male", "async": false};
+        return person;
+    },
+    
+    // 获取某个手机联系人
+    getPerson : function (personName) {
+        webridge.jsToNative("nativeGetPerson", {'name':personName}, function(result, error) {
+                            var person = result;
+                            if (error.length > 0) {
+                                document.getElementById('person').innerHTML = error;
+                            }
+                            else {
+                                var html = '<p>name: ' + person.name + '</p>';
+                                html += '<p>phone: ' + person.phone + '</p>';
+                                html += '<p>birthday: ' + person.birthday + '</p>';
+                                document.getElementById('person').innerHTML = html;
+                            }
+                        });
+    },
+    
+    // 获取手机联系人列表
+    getPhoneContacts : function () {
+        webridge.jsToNative("nativeGetPhoneContacts", null, function(result, error) {
+                            var contacts = result;
+                            if (error.length > 0) {
+                                document.getElementById('contacts').innerHTML = error;
+                            }
+                            else {
+                                var html = '';
+                                for (var key in contacts) {
+                                    var person = contacts[key];
+                                    html += '<p>' + person.name + ' ' + person.phone + '</p>';
+                                }
+                                document.getElementById('contacts').innerHTML = html;
+                            }
+                        });
     }
-}
-
-// 获取某个手机联系人
-function wbGetPerson(personName) {
-    wbJSToNative("nativeGetPerson", {'name':personName}, "getPersonCallback");
-}
-
-// 获取手机联系人列表
-function wbGetPhoneContacts() {
-    wbJSToNative("nativeGetPhoneContacts", null, "getPhoneContactsCallback");
-}
-
-// 弹出原生alert
-function wbAlert(message) {
-    wbJSToNative("nativeShowAlert", message, null);
-}
-
-window.onload = function() {
-
 };
+
 </script>
 </head>
 <body>
@@ -71,15 +72,15 @@ window.onload = function() {
     <br/>
     <br/>
     <h2>Bridge Examples:</h2>
-    <a href="javascript:wbAlert(document.getElementById('alertText').value)">弹出框</a><br/>
+    <a href="javascript:wbTest.alert(document.getElementById('alertText').value)">弹出框</a><br/>
     <input type="text" id="alertText" value="测试111"/>
     <br/>
     <br/>
-    <a href="javascript:wbGetPerson(document.getElementById('personName').value)">获取手机单个联系人</a><br/>
+    <a href="javascript:wbTest.getPerson(document.getElementById('personName').value)">获取手机单个联系人</a><br/>
     <input type="text" id="personName" value="John"/><br/>
     <div id="person"></div>
     <br/>
-    <a href="javascript:wbGetPhoneContacts()">获取手机全部联系人</a><br/>
+    <a href="javascript:wbTest.getPhoneContacts()">获取手机全部联系人</a><br/>
     <div id="contacts"></div>
 </body>
 </html>

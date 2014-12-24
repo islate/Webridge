@@ -20,6 +20,14 @@ typedef void (^WBWebridgeCompletionBlock)(id result, NSError *error);
 
 + (instancetype)bridge;
 
-- (void)executeFromMessage:(WKScriptMessage *)message;
+// 注册回调block，并获得序号
+- (NSNumber *)sequenceOfNativeToJSCallback:(WBWebridgeCompletionBlock)callback;
+
+// 移除序号对应的回调block
+- (void)removeSequence:(NSNumber *)sequence;
+
+// 处理webView得到的message
+// 1、执行函数 或 2、得到返回值
+- (void)handleMessage:(WKScriptMessage *)message;
 
 @end

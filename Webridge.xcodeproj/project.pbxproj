@@ -12,6 +12,7 @@
 		812125761A42BD8100BA6B7B /* MockWKScriptMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 812125751A42BD8100BA6B7B /* MockWKScriptMessage.m */; };
 		812125791A42BDB100BA6B7B /* TestURIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 812125781A42BDB100BA6B7B /* TestURIHandler.m */; };
 		812125871A43D09E00BA6B7B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 812125861A43D09E00BA6B7B /* AddressBook.framework */; };
+		814B58131A4970B80033C655 /* WBUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 814B58121A4970B80033C655 /* WBUtils.m */; };
 		81CCB8451A38221D0014D551 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8441A38221D0014D551 /* main.m */; };
 		81CCB8481A38221D0014D551 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8471A38221D0014D551 /* AppDelegate.m */; };
 		81CCB84B1A38221D0014D551 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB84A1A38221D0014D551 /* ViewController.m */; };
@@ -47,6 +48,8 @@
 		812125771A42BDB100BA6B7B /* TestURIHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestURIHandler.h; sourceTree = "<group>"; };
 		812125781A42BDB100BA6B7B /* TestURIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestURIHandler.m; sourceTree = "<group>"; };
 		812125861A43D09E00BA6B7B /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		814B58111A4970B80033C655 /* WBUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBUtils.h; sourceTree = "<group>"; };
+		814B58121A4970B80033C655 /* WBUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBUtils.m; sourceTree = "<group>"; };
 		81CCB83F1A38221D0014D551 /* Webridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Webridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81CCB8431A38221D0014D551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		81CCB8441A38221D0014D551 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -175,6 +178,8 @@
 				81CCB8B61A3A89450014D551 /* WBWebridge.m */,
 				81CCB8B71A3A89450014D551 /* WBWebView.h */,
 				81CCB8B81A3A89450014D551 /* WBWebView.m */,
+				814B58111A4970B80033C655 /* WBUtils.h */,
+				814B58121A4970B80033C655 /* WBUtils.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -287,6 +292,7 @@
 				81CCB8B91A3A89450014D551 /* WBURI.m in Sources */,
 				81CCB8BA1A3A89450014D551 /* WBWebridge.m in Sources */,
 				81CCB8481A38221D0014D551 /* AppDelegate.m in Sources */,
+				814B58131A4970B80033C655 /* WBUtils.m in Sources */,
 				81CCB8451A38221D0014D551 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

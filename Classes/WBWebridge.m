@@ -8,17 +8,19 @@
 
 #import "WBWebridge.h"
 
-@interface NSInvocation (webridge)
-- (id)returnValueAsObject;
-@end
-
-@interface NSObject (webridge)
-- (NSString *)JSONString;
-@end
+#import "WBUtils.h"
+#import "WBWebView.h"
 
 @interface WBWebridge ()
 
-- (void)callback:(NSString *)callback result:(id)result error:(NSString *)error message:(WKScriptMessage *)message;
+@property (nonatomic, assign) int sequence;
+@property (nonatomic, strong) NSMutableDictionary *callbackDict;
+
+- (void)nativeToJSCallback:(NSDictionary *)returnDict webView:(WKWebView *)webView;
+- (void)jsToNative:(NSDictionary *)evalDict webView:(WKWebView *)webView;
+- (BOOL)asyncExecuteForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView;
+- (void)executeForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView;
+- (void)callbackWithResult:(id)result error:(NSString *)error sequence:(NSNumber *)sequence webView:(WKWebView *)webView;
 
 @end
 
@@ -29,40 +31,122 @@
     return [[self alloc] init];
 }
 
-- (void)executeFromMessage:(WKScriptMessage *)message
+- (instancetype)init
 {
-    if (self.delegate == nil)
+    self = [super init];
+    if (self) {
+        _sequence = 0;
+        _callbackDict = [NSMutableDictionary new];
+    }
+    return self;
+}
+
+- (NSNumber *)sequenceOfNativeToJSCallback:(WBWebridgeCompletionBlock)callback
+{
+    if (!callback)
+    {
+        return @(0);
+    }
+    
+    @synchronized(self)
+    {
+        _sequence += 1;
+        [_callbackDict setObject:callback forKey:@(_sequence)];
+        return @(_sequence);
+    }
+}
+
+- (void)removeSequence:(NSNumber *)sequence
+{
+    if (!sequence)
     {
         return;
     }
     
+    @synchronized(self)
+    {
+        [_callbackDict removeObjectForKey:sequence];
+    }
+}
+
+- (void)handleMessage:(WKScriptMessage *)message
+{
     if (![message.body isKindOfClass:[NSDictionary class]])
     {
         return;
     }
-
-    NSDictionary *body = [message.body objectForKey:@"body"];
-    if (![body isKindOfClass:[NSDictionary class]])
+    
+    id returnDict = [message.body objectForKey:@"return"];
+    if ([returnDict isKindOfClass:[NSDictionary class]])
     {
+        // js返回值
+        [self nativeToJSCallback:returnDict webView:message.webView];
         return;
     }
     
-    NSString *command = [body objectForKey:@"command"];
-    id params = [body objectForKey:@"params"];
-    NSString *callback = [body objectForKey:@"callback"];
-    
-    if ([self asyncExecuteForCommand:command params:params callback:callback message:message])
+    id evalDict = [message.body objectForKey:@"eval"];
+    if ([evalDict isKindOfClass:[NSDictionary class]])
     {
-        // 异步返回
+        // 执行原生方法
+        [self jsToNative:evalDict webView:message.webView];
         return;
     }
-    
-    // 同步返回
-    [self executeForCommand:command params:params callback:callback message:message];
 }
 
-- (BOOL)asyncExecuteForCommand:(NSString *)command params:(id)params callback:(NSString *)callback message:(WKScriptMessage *)message
+- (void)nativeToJSCallback:(NSDictionary *)returnDict webView:(WKWebView *)webView
 {
+    WBWebView *wbWebView = (WBWebView *)webView;
+    if (![wbWebView isKindOfClass:[WBWebView class]])
+    {
+        return;
+    }
+    
+    NSNumber *sequence = [returnDict objectForKey:@"sequence"];
+    id result = [returnDict objectForKey:@"result"];
+    
+    if (!sequence || !result || sequence.integerValue == 0)
+    {
+        return;
+    }
+    
+    WBWebridgeCompletionBlock callback = nil;
+    @synchronized(self)
+    {
+        callback = [_callbackDict objectForKey:sequence];
+        [_callbackDict removeObjectForKey:sequence];
+    }
+    
+    if (callback)
+    {
+        callback(result, nil);
+    }
+}
+
+- (void)jsToNative:(NSDictionary *)evalDict webView:(WKWebView *)webView
+{
+    NSString *command = [evalDict objectForKey:@"command"];
+    id params = [evalDict objectForKey:@"params"];
+    NSNumber *sequence = [evalDict objectForKey:@"sequence"];
+
+    if (!command || !params)
+    {
+        return;
+    }
+    
+    if (![self asyncExecuteForCommand:command params:params sequence:sequence webView:webView])
+    {
+        // 异步调用失败，尝试同步调用
+        [self executeForCommand:command params:params sequence:sequence webView:webView];
+    }
+}
+
+- (BOOL)asyncExecuteForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView
+{
+    if (self.delegate == nil)
+    {
+        return NO;
+    }
+    
     NSInvocation *invocation = nil;
     
     NSString *methodName = [NSString stringWithFormat:@"%@:completion:", command];
@@ -76,7 +160,7 @@
     
     __weak typeof(self) weakSelf = self;
     WBWebridgeCompletionBlock block = ^(id result, NSError *error) {
-        [weakSelf callback:callback result:result error:error.localizedDescription message:message];
+        [weakSelf callbackWithResult:result error:error.localizedDescription sequence:sequence webView:webView];
     };
     
     invocation = [NSInvocation invocationWithMethodSignature:signature];
@@ -109,15 +193,22 @@
                      [exception name],
                      [exception reason]];
             
-            [self callback:callback result:nil error:error message:message];
+            [self callbackWithResult:nil error:error sequence:sequence webView:webView];
         }
     }
     
     return YES;
 }
 
-- (void)executeForCommand:(NSString *)command params:(id)params callback:(NSString *)callback message:(WKScriptMessage *)message
+- (void)executeForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView
 {
+    if (self.delegate == nil)
+    {
+        NSString *error = @"Webridge delegate is nil.";
+        [self callbackWithResult:nil error:error sequence:sequence webView:webView];
+        return;
+    }
+    
     NSInvocation *invocation = nil;
     
     NSString *methodName = [NSString stringWithFormat:@"%@:", command];
@@ -143,7 +234,7 @@
             
             NSLog(@"result: %@", result);
             
-            [self callback:callback result:result error:nil message:message];
+            [self callbackWithResult:result error:nil sequence:sequence webView:webView];
         }
         @catch(NSException *exception) {
             NSLog (@"WebBridge exception on %@ %@", self.delegate, methodName);
@@ -159,7 +250,7 @@
                          [exception name],
                          [exception reason]];
                 
-                [self callback:callback result:nil error:error message:message];
+                [self callbackWithResult:nil error:error sequence:sequence webView:webView];
             }
         }
     }
@@ -172,29 +263,29 @@
             NSString *error = [NSString stringWithFormat:@"%@ doesn't know method: %@",
                                NSStringFromClass([self.delegate class]),
                                methodName];
-            [self callback:callback result:nil error:error message:message];
+            [self callbackWithResult:nil error:error sequence:sequence webView:webView];
         }
     }
 }
 
-- (void)callback:(NSString *)callback result:(id)result error:(NSString *)error message:(WKScriptMessage *)message
+- (void)callbackWithResult:(id)result error:(NSString *)error sequence:(NSNumber *)sequence webView:(WKWebView *)webView
 {
-    if (!message.webView || !callback || ![callback isKindOfClass:[NSString class]] || callback.length == 0)
+    if (!webView || !sequence)
     {
         return;
     }
-    if (!result)
+    NSString *jsonResult = @"''";
+    if (result)
     {
-        result = @"";
+        jsonResult = [result JSONString];
     }
     if (!error)
     {
         error = @"";
     }
-    NSDictionary *resultDict = @{@"result": result, @"error": error};
     NSString *callbackJS = nil;
     @try {
-        callbackJS = [NSString stringWithFormat:@"%@(%@)", callback, [resultDict JSONString]];
+        callbackJS = [NSString stringWithFormat:@"webridge.jsToNativeCallback(%@, %@, '%@')", sequence, jsonResult, error];
     }
     @catch (NSException *exception) {
         NSLog (@"Webridge generate callbackJS exception name:%@ reason:%@", [exception name], [exception reason]);
@@ -202,133 +293,11 @@
     @finally {
         if (callbackJS.length > 0)
         {
-            [message.webView evaluateJavaScript:callbackJS completionHandler:^(id object, NSError *error) {
+            [webView evaluateJavaScript:callbackJS completionHandler:^(id object, NSError *error) {
                 NSLog(@"object:%@ error:%@", object, error);
             }];
         }
     }
-}
-
-@end
-
-@implementation NSInvocation (webridge)
-
-- (id)returnValueAsObject
-{
-    const char *methodReturnType = [[self methodSignature] methodReturnType];
-    switch (*methodReturnType)
-    {
-        case 'c':
-        {
-            int8_t value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithChar:value];
-        }
-        case 'C':
-        {
-            uint8_t value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithUnsignedChar:value];
-        }
-        case 'i':
-        {
-            int32_t value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithInt:value];
-        }
-        case 'I':
-        {
-            uint32_t value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithUnsignedInt:value];
-        }
-        case 's':
-        {
-            int16_t value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithShort:value];
-        }
-        case 'S':
-        {
-            uint16_t value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithUnsignedShort:value];
-        }
-        case 'f':
-        {
-            float value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithFloat:value];
-        }
-        case 'd':
-        {
-            double value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithDouble:value];
-        }
-        case 'B':
-        {
-            uint8_t value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithBool:(BOOL)value];
-        }
-        case 'l':
-        {
-            long value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithLong:value];
-        }
-        case 'L':
-        {
-            unsigned long value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithUnsignedLong:value];
-        }
-        case 'q':
-        {
-            long long value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithLongLong:value];
-        }
-        case 'Q':
-        {
-            unsigned long long value;
-            [self getReturnValue:&value];
-            return [NSNumber numberWithUnsignedLongLong:value];
-        }
-        case '@':
-        {
-            __unsafe_unretained id value;
-            [self getReturnValue:&value];
-            return [value copy];
-        }
-        case 'v':
-        case 'V':
-        {
-            return nil;
-        }
-        default:
-        {
-            return nil;
-        }
-    }
-    return nil;
-}
-
-@end
-
-@implementation NSObject (webridge)
-
-- (NSString *)JSONString
-{
-    @try {
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:kNilOptions error:nil];
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        return jsonString;
-    }
-    @catch (NSException *exception) {
-    }
-    return nil;
 }
 
 @end

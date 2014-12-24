@@ -74,13 +74,7 @@ static id <WBURIHandler> _handler = nil;
     {
         // 形如 slate://article/4/12/238/
         command = [uri host];
-        NSString *urlString = uri.absoluteString;
-        NSUInteger from = [[_handler scheme] length] + command.length + 3;
-        
-        if (urlString.length > from)
-        {
-            params = [urlString substringFromIndex:from];
-        }
+        params = [uri path];
     }
     else if ([scheme isEqualToString:@"http"] && [path hasPrefix:[NSString stringWithFormat:@"/%@", [_handler scheme]]])
     {
@@ -107,14 +101,16 @@ static id <WBURIHandler> _handler = nil;
     }
     
     NSMutableArray *paramsArray = [NSMutableArray arrayWithArray:[params componentsSeparatedByString:@"/"]];
-    for (NSString *param in [paramsArray copy]) {
+    for (NSString *param in [paramsArray copy])
+    {
         if (param.length == 0)
         {
             [paramsArray removeObject:param];
         }
     }
     
-    if ([params rangeOfString:@"/"].location == 0) {
+    if ([params rangeOfString:@"/"].location == 0)
+    {
         params = [params substringFromIndex:1];
     }
     

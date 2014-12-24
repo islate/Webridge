@@ -23,32 +23,6 @@
     self = [super init];
     if (self) {
         _contacts = [NSMutableDictionary new];
-        
-//        CFErrorRef err;
-//        
-//        ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &err);
-//        
-//        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
-//            
-//            // ABAddressBook doesn'tgaurantee execution of this block on main thread, but we want our callbacks tobe
-//            
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                
-//                if (!granted) {
-//
-//                    NSLog(@"error: %@", error);
-//                    
-//                } else {
-//                    
-//                    [self readAddressBookContacts:addressBook];
-//                    
-//                }
-//                
-//                CFRelease(addressBook);
-//                
-//            });
-//            
-//        });
     }
     return self;
 }
@@ -97,8 +71,18 @@
 
 #pragma mark - WBWebridgeDelegate
 
+// 异步返回
 - (void)nativeGetPhoneContacts:(id)params completion:(WBWebridgeCompletionBlock)completion
 {
+    if (_contacts.count > 0)
+    {
+        if (completion)
+        {
+            completion(_contacts, nil);
+        }
+        return;
+    }
+    
     CFErrorRef err;
     
     ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &err);
@@ -135,11 +119,64 @@
     });
 }
 
+// 异步返回
+- (void)nativeGetPerson:(id)params completion:(WBWebridgeCompletionBlock)completion
+{
+    NSString *name = [params objectForKey:@"name"];
+    if (_contacts.count > 0)
+    {
+        id result = [_contacts objectForKey:name];
+        if (completion)
+        {
+            completion(result, nil);
+        }
+        return;
+    }
+
+    CFErrorRef err;
+    
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &err);
+    
+    ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+        
+        // ABAddressBook doesn'tgaurantee execution of this block on main thread, but we want our callbacks tobe
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            if (!granted) {
+                
+                NSLog(@"error: %@", error);
+                
+                if (completion)
+                {
+                    completion(nil, (__bridge NSError *)error);
+                }
+                
+            } else {
+                
+                [self readAddressBookContacts:addressBook];
+                
+                id result = [_contacts objectForKey:name];
+                if (completion)
+                {
+                    completion(result, nil);
+                }
+            }
+            
+            CFRelease(addressBook);
+            
+        });
+        
+    });
+}
+
+// 同步返回
 - (id)nativeGetPhoneContacts:(id)params
 {
     return _contacts;
 }
 
+// 同步返回
 - (id)nativeGetPerson:(id)params
 {
     NSString *name = [params objectForKey:@"name"];
