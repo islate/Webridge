@@ -92,7 +92,7 @@ Webridge iOS
 	
 	- (void)articleCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
 	{
-		NSLog(@"识别articleCommand\n  params %@\n paramsArray %@", params, paramsArray);
+		// todo: 打开文章页
 	}
 
 
@@ -129,20 +129,35 @@ Webridge iOS
 	iframe.parentNode.removeChild(iframe);
 	iframe = null;
 
-4.2 js调用原生代码，并异步得到返回值
+4.2 iOS使用WBWebridge
 
-	webridge.jsToNative('commandName', {'param':'value'}, function (result, error) {
+	WBWebridge和WBWebView要结合起来一起使用。
+	
+	a. 实现WBWebridgeDelegate
+	@implementation WebridgeDelegate
+	- (void)nativeCommand:(id)params completion:(WBWebridgeCompletionBlock)completion
+	{
+		// todo: 得到结果后调用 completion(result, error)
+	}
+
+	b. 创建webView
+	self.webridgeDelegate = [WebridgeDelegate new];
+	self.webView = [[WBWebView alloc] initWithFrame:frame webridgeDelegate:self.webridgeDelegate];
+
+4.2.1 js调用原生代码，并异步得到返回值
+
+	webridge.jsToNative('nativeCommand', {'param':'value'}, function (result, error) {
 		if (error.length > 0) {
 			// 有错误，显示错误信息
 		}
 		else {
 			// 没有错误，得到结果 result
 		}
-	})
+	});
 
-4.3 iOS调用js函数，并异步得到返回值
+4.2.2 iOS调用js函数，并异步得到返回值
 
-	[self.webView evalJSCommand:@"commandName" jsParams:@{@"param": @"value"} 
+	[self.webView evalJSCommand:@"jsObject.jsCommand" jsParams:@{@"param": @"value"} 
 			completionHandler:^(id result, NSError *error) {
 				if (error) {
 					// 有错误，显示错误信息
@@ -151,6 +166,11 @@ Webridge iOS
 					// 没有错误，得到结果 result
 				}
 			}];
+	
+	网页中相关js函数的实现
+	jsObject.jsCommand = function(params, callback) {
+		// todo: 得到结果result后，调用  callback(result)
+	};
 
 5、如何引入工程
 
