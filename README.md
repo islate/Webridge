@@ -81,11 +81,20 @@ Webridge iOS
 	_handler = [URIHandler new];
 	[WBURI registerURIHandler:_handler];
 
+
 	b. 实现URIHandler， 以article command为例
+	@implementation URIHandler
+	
+	- (NSString *)scheme
+	{
+		return @"slate";
+	}
+	
 	- (void)articleCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
 	{
 		NSLog(@"识别articleCommand\n  params %@\n paramsArray %@", params, paramsArray);
 	}
+
 
 	c. 实现WKNavigationDelegate 的webView:decidePolicyForNavigationAction:decisionHandler:
 	- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
@@ -103,6 +112,7 @@ Webridge iOS
 			decisionHandler(WKNavigationActionPolicyAllow);
 		}
 	}
+
 
 	网页中可以用超链接方式，引入WBURI
 	<a href="slate://article/1/2/3/4">view article</a>
