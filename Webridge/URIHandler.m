@@ -17,7 +17,7 @@
     return @"slate";
 }
 
-- (void)unknownURI:(NSString *)uri
+- (void)unknownURI:(NSURL *)uri
 {
     NSLog(@"未能识别的uri %@", uri);
 }

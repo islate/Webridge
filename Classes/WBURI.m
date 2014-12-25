@@ -96,7 +96,7 @@ static id <WBURIHandler> _handler = nil;
     }
     else
     {
-        [_handler unknownURI:[uri  absoluteString]];
+        [_handler unknownURI:uri];
         return;
     }
     

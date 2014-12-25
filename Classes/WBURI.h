@@ -12,7 +12,7 @@
 @protocol WBURIHandler <NSObject>
 @required
 - (NSString *)scheme;
-- (void)unknownURI:(NSString *)uri;
+- (void)unknownURI:(NSURL *)uri;
 - (void)unknownCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray;
 
 @end
