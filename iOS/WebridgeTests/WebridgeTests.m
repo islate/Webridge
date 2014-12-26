@@ -19,6 +19,8 @@
 #import "ViewController.h"
 #import "AppDelegate.h"
 
+static NSString *bigParam = @"";
+
 @interface WebridgeTests : XCTestCase
 
 @property (nonatomic, strong) WBWebridge *bridge;
@@ -38,15 +40,30 @@
     _bridge = [WBWebridge bridge];
     _bridgeDelegate = [TestWebridgeDelegate new];
     _bridge.delegate = _bridgeDelegate;
+    
+    [self createBigParam];
 }
 
 - (void)tearDown {
-
+    
     _handler = nil;
     _bridge = nil;
     _bridgeDelegate = nil;
     
     [super tearDown];
+}
+
+- (void)createBigParam
+{
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSString *str = [[NSString alloc] initWithContentsOfFile:[bundle pathForResource:@"bigParam" ofType:@"txt"]
+                                                    encoding:NSUTF8StringEncoding
+                                                       error:nil];
+    
+    for (int i = 0; i < 1; i ++)
+    {
+        bigParam = [bigParam stringByAppendingString:str];
+    }
 }
 
 - (void)testStringForJavascript_nsstring
@@ -78,7 +95,7 @@
 }
 
 - (void)testURI_web_1 {
-
+    
     [WBURI openURI:[NSURL URLWithString:@"slate://web/http://www.baidu.com/"]];
     
     if (_handler.status != TestURIHandlerStatusWebCommand)
@@ -98,7 +115,7 @@
         XCTAssert(NO, @"Params not match");
         return;
     }
-
+    
     XCTAssert(YES, @"Pass");
 }
 
@@ -178,9 +195,9 @@
 }
 
 - (void)testURI_article_1 {
-
+    
     [WBURI openURI:[NSURL URLWithString:@"slate://article/123/456/789/"]];
-
+    
     if (_handler.status != TestURIHandlerStatusArticleCommand)
     {
         XCTAssert(NO, @"status not match");
@@ -562,7 +579,7 @@
 - (void)testBridge_jsToNative_peter {
     
     NSString *name = @"peter";
-
+    
     MockWKWebView *webView = [MockWKWebView new];
     
     MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
@@ -689,7 +706,7 @@
 }
 
 - (void)testBridge_jsToNative_wrongParams_exception {
-
+    
     MockWKWebView *webView = [MockWKWebView new];
     
     MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
@@ -745,6 +762,279 @@
     [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }
 
+- (void)testBridge_jsToNative_allKindsParam
+{
+    MockWKWebView *webView = [MockWKWebView new];
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.webView = webView;
+    
+    // 无参数
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@"",@"sequence":@(8)}};
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    NSString *jsString = @"webridge.jsToNativeCallback(8, '', '')";
+    if (![webView.javaScriptString isEqualToString:jsString])
+    {
+        XCTAssert(NO, @"empty param fault");
+    }
+    
+    // 字符串参数
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@"1111",@"sequence":@(8)}};
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    jsString = @"webridge.jsToNativeCallback(8, '1111', '')";
+    if (![webView.javaScriptString isEqualToString:jsString])
+    {
+        XCTAssert(NO, @"string param fault");
+    }
+    
+    // 数值参数
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@1111,@"sequence":@(8)}};
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    jsString = @"webridge.jsToNativeCallback(8, 1111, '')";
+    if (![webView.javaScriptString isEqualToString:jsString])
+    {
+        XCTAssert(NO, @"number param fault");
+    }
+    
+    // 数组参数
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@[@1,@2,@3,@4],@"sequence":@(8)}};
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    jsString = @"webridge.jsToNativeCallback(8, [1,2,3,4], '')";
+    if (![webView.javaScriptString isEqualToString:jsString])
+    {
+        XCTAssert(NO, @"array param fault");
+    }
+    
+    // 字典参数
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@{@"1":@1,@"2":@2},@"sequence":@(8)}};
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    jsString = @"webridge.jsToNativeCallback(8, {\"1\":1,\"2\":2}, '')";
+    if (![webView.javaScriptString isEqualToString:jsString])
+    {
+        XCTAssert(NO, @"dictionary param fault");
+    }
+    
+    // 中文参数
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@"中文",@"sequence":@(8)}};
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    jsString = @"webridge.jsToNativeCallback(8, '中文', '')";
+    if (![webView.javaScriptString isEqualToString:jsString])
+    {
+        XCTAssert(NO, @"chinese param fault");
+    }
+    
+    // 超长参数
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":bigParam,@"sequence":@(8)}};
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    jsString = [NSString stringWithFormat:@"webridge.jsToNativeCallback(8, '%@', '')",bigParam];
+    if (![webView.javaScriptString isEqualToString:jsString])
+    {
+        XCTAssert(NO, @"chinese param fault");
+    }
+}
+
+- (void)testBridge_jsToNativeAsync_nilParam
+{
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"jsToNativeAsync_nilParam"];
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    __weak typeof(webView) weakWebView = webView;
+    webView.didEvaluateJavaScript = ^ {
+        
+        [jsExpectation fulfill];
+        
+        NSString *jsString = @"webridge.jsToNativeCallback(9, '', '')";
+        if (![weakWebView.javaScriptString isEqualToString:jsString])
+        {
+            XCTAssert(NO, @"callback not match");
+            return;
+        }
+        
+        XCTAssert(YES, @"Pass");
+    };
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@"",@"sequence":@(9)}};
+    mockMessage.webView = webView;
+    
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_jsToNativeAsync_stringParam
+{
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"jsToNativeAsync_stringParam"];
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    __weak typeof(webView) weakWebView = webView;
+    webView.didEvaluateJavaScript = ^ {
+        
+        [jsExpectation fulfill];
+        
+        NSString *jsString = @"webridge.jsToNativeCallback(9, '1111', '')";
+        if (![weakWebView.javaScriptString isEqualToString:jsString])
+        {
+            XCTAssert(NO, @"callback not match");
+            return;
+        }
+        
+        XCTAssert(YES, @"Pass");
+    };
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@"1111",@"sequence":@(9)}};
+    mockMessage.webView = webView;
+    
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_jsToNativeAsync_numberParam
+{
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"jsToNativeAsync_numberParam"];
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    __weak typeof(webView) weakWebView = webView;
+    webView.didEvaluateJavaScript = ^ {
+        
+        [jsExpectation fulfill];
+        
+        NSString *jsString = @"webridge.jsToNativeCallback(9, 1111, '')";
+        if (![weakWebView.javaScriptString isEqualToString:jsString])
+        {
+            XCTAssert(NO, @"callback not match");
+            return;
+        }
+        
+        XCTAssert(YES, @"Pass");
+    };
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@1111,@"sequence":@(9)}};
+    mockMessage.webView = webView;
+    
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_jsToNativeAsync_arrayParam
+{
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"jsToNativeAsync_arrayParam"];
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    __weak typeof(webView) weakWebView = webView;
+    webView.didEvaluateJavaScript = ^ {
+        
+        [jsExpectation fulfill];
+        
+        NSString *jsString = @"webridge.jsToNativeCallback(9, [1,2,3,4], '')";
+        if (![weakWebView.javaScriptString isEqualToString:jsString])
+        {
+            XCTAssert(NO, @"callback not match");
+            return;
+        }
+        
+        XCTAssert(YES, @"Pass");
+    };
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@[@1,@2,@3,@4],@"sequence":@(9)}};
+    mockMessage.webView = webView;
+    
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_jsToNativeAsync_dictParam
+{
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"jsToNativeAsync_dictParam"];
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    __weak typeof(webView) weakWebView = webView;
+    webView.didEvaluateJavaScript = ^ {
+        
+        [jsExpectation fulfill];
+        
+        NSString *jsString = @"webridge.jsToNativeCallback(9, {\"1\":1,\"2\":2}, '')";
+        if (![weakWebView.javaScriptString isEqualToString:jsString])
+        {
+            XCTAssert(NO, @"callback not match");
+            return;
+        }
+        
+        XCTAssert(YES, @"Pass");
+    };
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@{@"1":@1,@"2":@2},@"sequence":@(9)}};
+    mockMessage.webView = webView;
+    
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_jsToNativeAsync_chineseParam
+{
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"jsToNativeAsync_chineseParam"];
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    __weak typeof(webView) weakWebView = webView;
+    webView.didEvaluateJavaScript = ^ {
+        
+        [jsExpectation fulfill];
+        
+        NSString *jsString = @"webridge.jsToNativeCallback(9, '中文', '')";
+        if (![weakWebView.javaScriptString isEqualToString:jsString])
+        {
+            XCTAssert(NO, @"callback not match");
+            return;
+        }
+        
+        XCTAssert(YES, @"Pass");
+    };
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@"中文",@"sequence":@(9)}};
+    mockMessage.webView = webView;
+    
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_jsToNativeAsync_longParam
+{
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"jsToNativeAsync_longParam"];
+    
+    MockWKWebView *webView = [MockWKWebView new];
+    __weak typeof(webView) weakWebView = webView;
+    webView.didEvaluateJavaScript = ^ {
+        
+        [jsExpectation fulfill];
+        
+        NSString *jsString = [NSString stringWithFormat:@"webridge.jsToNativeCallback(9, '%@', '')",bigParam];
+        if (![weakWebView.javaScriptString isEqualToString:jsString])
+        {
+            XCTAssert(NO, @"callback not match");
+            return;
+        }
+        
+        XCTAssert(YES, @"Pass");
+    };
+    
+    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
+    mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":bigParam,@"sequence":@(9)}};
+    mockMessage.webView = webView;
+    
+    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
 
 /*
  * 要点：
@@ -761,7 +1051,7 @@
     __weak typeof(viewController) weakViewController = viewController;
     
     WebViewFinishedBlock block = ^ {
-
+        
         [weakViewController.webView evalJSCommand:@"wbTest.jsGetPerson" jsParams:@{@"name":@"linyize"} completionHandler:^(id object, NSError *error) {
             
             [jsExpectation fulfill];
@@ -857,7 +1147,7 @@
                 XCTAssert(NO, @"name should be nil");
                 return;
             }
-
+            
             XCTAssert(YES, @"Pass");
         }];
     };
@@ -908,6 +1198,362 @@
     
     [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }
+
+- (void)testBridge_nativeToJS_allKindsParam {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJS_allKindsParam"];
+    
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.jsSendParam" jsParams:@"" completionHandler:^(id object, NSError *error) {
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if ([object length] != 0) {
+                XCTAssert(NO, @"length should be 0");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.jsSendParam" jsParams:@"1111" completionHandler:^(id object, NSError *error) {
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if (![object isEqualToString:@"1111"]) {
+                XCTAssert(NO, @"string should be '1111'");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.jsSendParam" jsParams:@1111 completionHandler:^(id object, NSError *error) {
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if ([object integerValue] != 1111) {
+                XCTAssert(NO, @"number should be 1111");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.jsSendParam" jsParams:@[@1,@2,@3,@4] completionHandler:^(id object, NSError *error) {
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if ([object count] != 4 || [object[0] integerValue] != 1) {
+                XCTAssert(NO, @"array should be [1,2,3,4]");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.jsSendParam" jsParams:@{@"1":@1,@"2":@2} completionHandler:^(id object, NSError *error) {
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if ([object count] != 2 || [object[@"1"] integerValue] != 1) {
+                XCTAssert(NO, @"dict should be {1:1,2:2}");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.jsSendParam" jsParams:@"中文" completionHandler:^(id object, NSError *error) {
+            
+            [jsExpectation fulfill];
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if (![object isEqualToString:@"中文"]) {
+                XCTAssert(NO, @"chinese should be 中文");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_nativeToJSAsync_nilParam {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJSAsync_nilParam"];
+    
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.asyncJSSendParam" jsParams:@"" completionHandler:^(id object, NSError *error) {
+            
+            [jsExpectation fulfill];
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if ([object length] != 0) {
+                XCTAssert(NO, @"length should be 0");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_nativeToJSAsync_stringParam {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJSAsync_stringParam"];
+    
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.asyncJSSendParam" jsParams:@"1111" completionHandler:^(id object, NSError *error) {
+            
+            [jsExpectation fulfill];
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if (![object isEqualToString:@"1111"]) {
+                XCTAssert(NO, @"string should be '1111'");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_nativeToJSAsync_numberParam {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJSAsync_numberParam"];
+    
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+        
+        [jsExpectation fulfill];
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.asyncJSSendParam" jsParams:@1111 completionHandler:^(id object, NSError *error) {
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if ([object integerValue] != 1111) {
+                XCTAssert(NO, @"number should be 1111");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_nativeToJSAsync_arrayParam {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJSAsync_arrayParam"];
+    
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.asyncJSSendParam" jsParams:@[@1,@2,@3,@4] completionHandler:^(id object, NSError *error) {
+            
+            [jsExpectation fulfill];
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if ([object count] != 4 || [object[0] integerValue] != 1) {
+                XCTAssert(NO, @"array should be [1,2,3,4]");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_nativeToJSAsync_dictParam {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJSAsync_dictParam"];
+    
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.asyncJSSendParam" jsParams:@{@"1":@1,@"2":@2} completionHandler:^(id object, NSError *error) {
+            
+            [jsExpectation fulfill];
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if ([object count] != 2 || [object[@"1"] integerValue] != 1) {
+                XCTAssert(NO, @"length should be 0");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_nativeToJSAsync_chineseParam {
+    
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJSAsync_chineseParam"];
+    
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+        
+        [weakViewController.webView evalJSCommand:@"wbTest.asyncJSSendParam" jsParams:@"中文" completionHandler:^(id object, NSError *error) {
+            
+            [jsExpectation fulfill];
+            
+            NSLog(@"object:%@  error:%@", object, error);
+            
+            if (![object isEqualToString:@"中文"]) {
+                XCTAssert(NO, @"chinese should be 中文");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+    
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+//- (void)testBridge_nativeToJSAsync_longParam {
+//
+//    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"nativeToJSAsync_longParam"];
+//
+//    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+//    __weak typeof(viewController) weakViewController = viewController;
+//
+//    WebViewFinishedBlock block = ^ {
+//
+//        [weakViewController.webView evalJSCommand:@"wbTest.asyncJSSendParam" jsParams:bigParam completionHandler:^(id object, NSError *error) {
+//
+//            [jsExpectation fulfill];
+//
+//            NSLog(@"object:%@  error:%@", object, error);
+//
+//            if (![object isEqualToString:bigParam]) {
+//                XCTAssert(NO, @"chinese should be 中文");
+//                return;
+//            }
+//
+//            XCTAssert(YES, @"Pass");
+//        }];
+//
+//    };
+//    if (viewController.webViewLoaded)
+//    {
+//        block();
+//    }
+//    else
+//    {
+//        viewController.webViewFinishedBlock = block;
+//    }
+//
+//    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+//}
 
 
 //- (void)testPerformanceExample {

@@ -26,6 +26,7 @@
 		81CCB8B91A3A89450014D551 /* WBURI.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B41A3A89450014D551 /* WBURI.m */; };
 		81CCB8BA1A3A89450014D551 /* WBWebridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B61A3A89450014D551 /* WBWebridge.m */; };
 		81CCB8BB1A3A89450014D551 /* WBWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B81A3A89450014D551 /* WBWebView.m */; };
+		CEE9D7931A4D6D7500423736 /* bigParam.txt in Resources */ = {isa = PBXBuildFile; fileRef = CEE9D7921A4D6D7500423736 /* bigParam.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		81CCB8B61A3A89450014D551 /* WBWebridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBWebridge.m; sourceTree = "<group>"; };
 		81CCB8B71A3A89450014D551 /* WBWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBWebView.h; sourceTree = "<group>"; };
 		81CCB8B81A3A89450014D551 /* WBWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBWebView.m; sourceTree = "<group>"; };
+		CEE9D7921A4D6D7500423736 /* bigParam.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bigParam.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +149,7 @@
 		81CCB85B1A38221D0014D551 /* WebridgeTests */ = {
 			isa = PBXGroup;
 			children = (
+				CEE9D7921A4D6D7500423736 /* bigParam.txt */,
 				81CCB85E1A38221D0014D551 /* WebridgeTests.m */,
 				812125771A42BDB100BA6B7B /* TestURIHandler.h */,
 				812125781A42BDB100BA6B7B /* TestURIHandler.m */,
@@ -275,6 +278,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEE9D7931A4D6D7500423736 /* bigParam.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
