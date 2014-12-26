@@ -267,7 +267,7 @@ public class WBWebridge {
 		if (jsParmas == null) {
 			js += "\"\"";
 		} else {
-			js += jsParmas.toString();
+			js += "'" + jsParmas.toString() + "'";
 		}
 		js += ",";
 		if (TextUtils.isEmpty(command)) {
@@ -355,5 +355,5 @@ public class WBWebridge {
 			}
 		});
 	}
-	
+
 }
