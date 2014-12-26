@@ -277,7 +277,7 @@
     NSString *jsonResult = @"''";
     if (result)
     {
-        jsonResult = [result JSONString];
+        jsonResult = [result stringForJavascript];
     }
     if (!error)
     {

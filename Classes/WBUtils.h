@@ -16,6 +16,13 @@
 
 @interface NSObject (webridge)
 
-- (NSString *)JSONString;
+- (NSString *)stringForJavascript;
+
+@end
+
+@interface NSString (webridge)
+
+- (NSString *)encodeWBURI;
+- (NSString *)decodeWBURI;
 
 @end

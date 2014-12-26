@@ -15,7 +15,7 @@
 #import "TestWebridgeDelegate.h"
 #import "MockWebView.h"
 #import "MockWKScriptMessage.h"
-
+#import "WBUtils.h"
 #import "ViewController.h"
 #import "AppDelegate.h"
 
@@ -49,6 +49,34 @@
     [super tearDown];
 }
 
+- (void)testStringForJavascript_nsstring
+{
+    NSString *object = @"123";
+    NSString *jsonString = [object stringForJavascript];
+    
+    if (![jsonString isEqualToString:@"'123'"])
+    {
+        XCTAssert(NO, @"string wrong");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
+- (void)testStringForJavascript_nsnumber
+{
+    NSNumber *object = @(123);
+    NSString *jsonString = [object stringForJavascript];
+    
+    if (![jsonString isEqualToString:@"123"])
+    {
+        XCTAssert(NO, @"string wrong");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
 - (void)testURI_web_1 {
 
     [WBURI openURI:[NSURL URLWithString:@"slate://web/http://www.baidu.com/"]];
@@ -71,6 +99,31 @@
         return;
     }
 
+    XCTAssert(YES, @"Pass");
+}
+
+- (void)testURI_http_web_1 {
+    
+    [WBURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/web/http://www.baidu.com/"]];
+    
+    if (_handler.status != TestURIHandlerStatusWebCommand)
+    {
+        XCTAssert(NO, @"status not match");
+        return;
+    }
+    
+    if (![_handler.currentCommand isEqualToString:@"web"])
+    {
+        XCTAssert(NO, @"command not match");
+        return;
+    }
+    
+    if (![_handler.currentParams isEqualToString:@"http://www.baidu.com/"])
+    {
+        XCTAssert(NO, @"Params not match");
+        return;
+    }
+    
     XCTAssert(YES, @"Pass");
 }
 
@@ -99,10 +152,84 @@
     XCTAssert(YES, @"Pass");
 }
 
+- (void)testURI_http_web_2 {
+    
+    [WBURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/web/http://www.baidu.com/index.php?data1=abc&data2=bbb#ttttt=1"]];
+    
+    if (_handler.status != TestURIHandlerStatusWebCommand)
+    {
+        XCTAssert(NO, @"status not match");
+        return;
+    }
+    
+    if (![_handler.currentCommand isEqualToString:@"web"])
+    {
+        XCTAssert(NO, @"command not match");
+        return;
+    }
+    
+    if (![_handler.currentParams isEqualToString:@"http://www.baidu.com/index.php?data1=abc&data2=bbb#ttttt=1"])
+    {
+        XCTAssert(NO, @"Params not match");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
 - (void)testURI_article_1 {
 
     [WBURI openURI:[NSURL URLWithString:@"slate://article/123/456/789/"]];
 
+    if (_handler.status != TestURIHandlerStatusArticleCommand)
+    {
+        XCTAssert(NO, @"status not match");
+        return;
+    }
+    
+    if (![_handler.currentCommand isEqualToString:@"article"])
+    {
+        XCTAssert(NO, @"command not match");
+        return;
+    }
+    
+    if (![_handler.currentParams isEqualToString:@"123/456/789/"])
+    {
+        XCTAssert(NO, @"Params not match");
+        return;
+    }
+    
+    if ([_handler.currentParamsArray count] != 3)
+    {
+        XCTAssert(NO, @"ParamsArray count not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:0] isEqualToString:@"123"])
+    {
+        XCTAssert(NO, @"ParamsArray[0] not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:1] isEqualToString:@"456"])
+    {
+        XCTAssert(NO, @"ParamsArray[1] not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:2] isEqualToString:@"789"])
+    {
+        XCTAssert(NO, @"ParamsArray[2] not match");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
+- (void)testURI_http_article_1 {
+    
+    [WBURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/article/123/456/789/"]];
+    
     if (_handler.status != TestURIHandlerStatusArticleCommand)
     {
         XCTAssert(NO, @"status not match");
@@ -217,6 +344,20 @@
     }
 }
 
+- (void)testURI_http_unknown_scheme {
+    
+    [WBURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/ddddd/article/123/456/789/"]];
+    
+    if (_handler.status == TestURIHandlerStatusUnknownURI)
+    {
+        XCTAssert(YES, @"Pass");
+    }
+    else
+    {
+        XCTAssert(NO, @"Fail");
+    }
+}
+
 - (void)testURI_unknown_command {
     
     [WBURI openURI:[NSURL URLWithString:@"slate://ddddd/123/456/789/"]];
@@ -258,6 +399,153 @@
     }
     
     if (![[_handler.currentParamsArray objectAtIndex:2] isEqualToString:@"789"])
+    {
+        XCTAssert(NO, @"ParamsArray[2] not match");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
+- (void)testURI_http_unknown_command {
+    
+    [WBURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/ddddd/123/456/789/"]];
+    
+    if (_handler.status != TestURIHandlerStatusUnknownCommand)
+    {
+        XCTAssert(NO, @"status not match");
+        return;
+    }
+    
+    if (![_handler.currentCommand isEqualToString:@"ddddd"])
+    {
+        XCTAssert(NO, @"command not match");
+        return;
+    }
+    
+    if (![_handler.currentParams isEqualToString:@"123/456/789/"])
+    {
+        XCTAssert(NO, @"Params not match");
+        return;
+    }
+    
+    if ([_handler.currentParamsArray count] != 3)
+    {
+        XCTAssert(NO, @"ParamsArray count not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:0] isEqualToString:@"123"])
+    {
+        XCTAssert(NO, @"ParamsArray[0] not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:1] isEqualToString:@"456"])
+    {
+        XCTAssert(NO, @"ParamsArray[1] not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:2] isEqualToString:@"789"])
+    {
+        XCTAssert(NO, @"ParamsArray[2] not match");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
+- (void)testURI_chinese {
+    
+    [WBURI openURI:[NSURL URLWithString:[@"slate://article/汉字1/汉字2/汉字3" encodeWBURI]]];
+    
+    if (_handler.status != TestURIHandlerStatusArticleCommand)
+    {
+        XCTAssert(NO, @"status not match");
+        return;
+    }
+    
+    if (![_handler.currentCommand isEqualToString:@"article"])
+    {
+        XCTAssert(NO, @"command not match");
+        return;
+    }
+    
+    if (![_handler.currentParams isEqualToString:@"汉字1/汉字2/汉字3"])
+    {
+        XCTAssert(NO, @"Params not match");
+        return;
+    }
+    
+    if ([_handler.currentParamsArray count] != 3)
+    {
+        XCTAssert(NO, @"ParamsArray count not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:0] isEqualToString:@"汉字1"])
+    {
+        XCTAssert(NO, @"ParamsArray[0] not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:1] isEqualToString:@"汉字2"])
+    {
+        XCTAssert(NO, @"ParamsArray[1] not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:2] isEqualToString:@"汉字3"])
+    {
+        XCTAssert(NO, @"ParamsArray[2] not match");
+        return;
+    }
+    
+    XCTAssert(YES, @"Pass");
+}
+
+- (void)testURI_http_chinese {
+    
+    [WBURI openURI:[NSURL URLWithString:[@"http://www.bbwc.cn/slate/article/汉字1/汉字2/汉字3" encodeWBURI]]];
+    
+    if (_handler.status != TestURIHandlerStatusArticleCommand)
+    {
+        XCTAssert(NO, @"status not match");
+        return;
+    }
+    
+    if (![_handler.currentCommand isEqualToString:@"article"])
+    {
+        XCTAssert(NO, @"command not match");
+        return;
+    }
+    
+    if (![_handler.currentParams isEqualToString:@"汉字1/汉字2/汉字3"])
+    {
+        XCTAssert(NO, @"Params not match");
+        return;
+    }
+    
+    if ([_handler.currentParamsArray count] != 3)
+    {
+        XCTAssert(NO, @"ParamsArray count not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:0] isEqualToString:@"汉字1"])
+    {
+        XCTAssert(NO, @"ParamsArray[0] not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:1] isEqualToString:@"汉字2"])
+    {
+        XCTAssert(NO, @"ParamsArray[1] not match");
+        return;
+    }
+    
+    if (![[_handler.currentParamsArray objectAtIndex:2] isEqualToString:@"汉字3"])
     {
         XCTAssert(NO, @"ParamsArray[2] not match");
         return;

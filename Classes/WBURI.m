@@ -8,6 +8,8 @@
 
 #import "WBURI.h"
 
+#import "WBUtils.h"
+
 @interface WBURI ()
 
 + (void)openURIInMainThread:(NSURL *)uri;
@@ -74,24 +76,33 @@ static id <WBURIHandler> _handler = nil;
     {
         // 形如 slate://article/4/12/238/
         command = [uri host];
-        params = [uri path];
+        
+        NSString *urlString = uri.absoluteString;
+        NSUInteger from = [[_handler scheme] length] + command.length + 4;
+        
+        if (urlString.length > from)
+        {
+            params = [urlString substringFromIndex:from];
+        }
     }
     else if ([scheme isEqualToString:@"http"] && [path hasPrefix:[NSString stringWithFormat:@"/%@", [_handler scheme]]])
     {
         // 形如 http://www.xxx.com/slate/article/4/12/238/
-        NSArray *pathArray = [[uri path] componentsSeparatedByString:@"/"];
         
+        NSArray *pathArray = [[uri path] componentsSeparatedByString:@"/"];
         if ([pathArray count] < 3)
         {
             return;
         }
         
         command = [pathArray objectAtIndex:2];
-        NSUInteger from = [[_handler scheme] length] + command.length + 2;
         
-        if ([uri path].length > from)
+        NSString *urlString = uri.absoluteString;
+        NSUInteger from = 10 + uri.host.length + [[_handler scheme] length] + command.length;
+        
+        if (urlString.length > from)
         {
-            params = [[uri path] substringFromIndex:from];
+            params = [urlString substringFromIndex:from];
         }
     }
     else
@@ -101,21 +112,19 @@ static id <WBURIHandler> _handler = nil;
     }
     
     NSMutableArray *paramsArray = [NSMutableArray arrayWithArray:[params componentsSeparatedByString:@"/"]];
-    for (NSString *param in [paramsArray copy])
+    NSMutableArray *newParamsArray = [NSMutableArray new];
+    for (NSString *param in paramsArray)
     {
-        if (param.length == 0)
+        if (param.length > 0)
         {
-            [paramsArray removeObject:param];
+            [newParamsArray addObject:[param decodeWBURI]];
         }
     }
-    
-    if ([params rangeOfString:@"/"].location == 0)
-    {
-        params = [params substringFromIndex:1];
-    }
+
+    params = [params decodeWBURI];
     
     // open uri
-    [self handleURICommand:command params:params paramsArray:paramsArray];
+    [self handleURICommand:command params:params paramsArray:newParamsArray];
 }
 
 + (void)handleURICommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray

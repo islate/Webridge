@@ -116,16 +116,44 @@
 
 @implementation NSObject (webridge)
 
-- (NSString *)JSONString
+- (NSString *)stringForJavascript
 {
-    @try {
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:kNilOptions error:nil];
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        return jsonString;
+    if ([self isKindOfClass:[NSString class]])
+    {
+        return [NSString stringWithFormat:@"'%@'", self];
     }
-    @catch (NSException *exception) {
+    else if ([self isKindOfClass:[NSNumber class]])
+    {
+        return [NSString stringWithFormat:@"%@", self];
     }
-    return nil;
+    else {
+        @try {
+            NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:kNilOptions error:nil];
+            NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            return jsonString;
+        }
+        @catch (NSException *exception) {
+            NSLog(@"%@", exception);
+        }
+        return nil;
+    }
+}
+
+@end
+
+@implementation NSString (webridge)
+
+- (NSString *)encodeWBURI
+{
+    return (NSString *) CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)self,
+                                                                                  // NULL, (CFStringRef)@";/?:@&=$+{}<>,",
+                                                                                  NULL, (CFStringRef)@";?@$+{}<>,",
+                                                                                  CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding)));
+}
+
+- (NSString *)decodeWBURI
+{
+    return (NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (CFStringRef)self, CFSTR("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.!~*'()"), kCFStringEncodingUTF8)) ;
 }
 
 @end

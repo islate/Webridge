@@ -46,7 +46,7 @@
     NSString *jsParamsString = @"''";
     if (jsParams)
     {
-        jsParamsString = [jsParams JSONString];
+        jsParamsString = [jsParams stringForJavascript];
     }
     
     __weak typeof(self) weakSelf = self;
