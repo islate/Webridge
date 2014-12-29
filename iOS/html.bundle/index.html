@@ -26,6 +26,18 @@ var wbTest = {
         return person;
     },
     
+    jsToNative : function(testSequence){
+        webridge.jsToNativeTest("testPassParam", '中文', testSequence, function(result, error) {
+                                    ;
+                                });
+    },
+    
+    asyncJSToNative : function(testSequence){
+        webridge.jsToNativeTest("testPassParamAsync", '中文', testSequence, function(result, error) {
+                                ;
+                                });
+    },
+    
     jsSendParam : function (object) {
         return object;
     },

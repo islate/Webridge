@@ -983,27 +983,69 @@
 {
     XCTestExpectation *jsExpectation = [self expectationWithDescription:@"jsToNativeAsync_chineseParam"];
     
-    MockWKWebView *webView = [MockWKWebView new];
-    __weak typeof(webView) weakWebView = webView;
-    webView.didEvaluateJavaScript = ^ {
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
         
-        [jsExpectation fulfill];
+        [weakViewController.webView triggerJSToNativeTest:@"wbTest.asyncJSToNative" completionHandler:^(id param, NSError *error){
+            [jsExpectation fulfill];
+            
+            if (![param isEqualToString:@"'中文'"])
+            {
+                XCTAssert(NO, @"chinese param fault");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
         
-        NSString *jsString = @"webridge.jsToNativeCallback(9, '中文', '')";
-        if (![weakWebView.javaScriptString isEqualToString:jsString])
-        {
-            XCTAssert(NO, @"callback not match");
-            return;
-        }
-        
-        XCTAssert(YES, @"Pass");
     };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
+
     
-    MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
-    mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@"中文",@"sequence":@(9)}};
-    mockMessage.webView = webView;
+    [self waitForExpectationsWithTimeout:30.0 handler:nil];
+}
+
+- (void)testBridge_jsToNative_chineseParam
+{
+    XCTestExpectation *jsExpectation = [self expectationWithDescription:@"jsToNative_chineseParam"];
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    AppDelegate* appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    ViewController *viewController = (ViewController *)appDelegate.window.rootViewController;
+    __weak typeof(viewController) weakViewController = viewController;
+    
+    WebViewFinishedBlock block = ^ {
+        
+        [weakViewController.webView triggerJSToNativeTest:@"wbTest.jsToNative" completionHandler:^(id param, NSError *error){
+            [jsExpectation fulfill];
+            
+            if (![param isEqualToString:@"'中文'"])
+            {
+                XCTAssert(NO, @"chinese param fault");
+                return;
+            }
+            
+            XCTAssert(YES, @"Pass");
+        }];
+        
+    };
+    if (viewController.webViewLoaded)
+    {
+        block();
+    }
+    else
+    {
+        viewController.webViewFinishedBlock = block;
+    }
     
     [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }
