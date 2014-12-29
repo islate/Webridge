@@ -263,13 +263,12 @@ public class WBWebridge {
 			return;
 		}
 		String js = "javascript:webridge.nativeToJS(";
+		// js方法名
 		js += "\"" + jsCommand + "\"" + ",";
-		if (jsParmas == null) {
-			js += "\"\"";
-		} else {
-			js += "'" + jsParmas.toString() + "'";
-		}
+		// js参数
+		js += Tools.convertJsParmas(jsParmas);
 		js += ",";
+		// 本地回调方法
 		if (TextUtils.isEmpty(command)) {
 			js += -1;
 		} else {
