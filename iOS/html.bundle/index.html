@@ -26,6 +26,16 @@ var wbTest = {
         return person;
     },
     
+    jsSendParam : function (object) {
+        return object;
+    },
+    
+    asyncJSSendParam_async : function (object, callback) {
+        if (typeof callback == 'function') {
+            callback(object);
+        }
+    },
+    
     // 获取某个手机联系人
     getPerson : function (personName) {
         webridge.jsToNative("nativeGetPerson", {'name':personName}, function(result, error) {
