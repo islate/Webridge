@@ -64,6 +64,30 @@
     }];
 }
 
+- (void)triggerJSToNativeTest:(NSString *)jsCommand completionHandler:(void (^)(id, NSError *))completionHandler
+{
+    if (![NSThread isMainThread])
+    {
+        // 非主线程不允许调用
+        return;
+    }
+    
+    __weak typeof(self) weakSelf = self;
+    NSNumber *sequence = [_bridge sequenceOfNativeToJSCallback:completionHandler];
+    NSString *javaScriptString = [NSString stringWithFormat:@"webridge.triggerJSToNative('%@', %@)", jsCommand,sequence];
+    
+    [self evaluateJavaScript:javaScriptString completionHandler:^(id object, NSError *error) {
+        if (error)
+        {
+            if (completionHandler)
+            {
+                completionHandler(nil, error);
+            }
+            [weakSelf.bridge removeSequence:sequence];
+        }
+    }];
+}
+
 #pragma mark - WKScriptMessageHandler
 
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message

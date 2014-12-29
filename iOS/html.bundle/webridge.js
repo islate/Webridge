@@ -126,6 +126,37 @@ function Webridge () {
         jsCallback(result, error);
         delete callbackArray[jsSequence];
     };
+    
+    /**
+     * 用于单元测试的函数
+     */
+    this.triggerJSToNative = function(jsCommand, testSequence) {
+        var jsCommandFunction = eval(jsCommand);
+        if (typeof(jsCommandFunction) == 'function') {
+            jsCommandFunction(testSequence);
+        }
+        else
+        {
+            throw 'wrong type';
+        }
+    };
+    
+    this.jsToNativeTest = function(command, params, testSequence, jsCallback) {
+        var message = {"test":{"command":command, "params":params, "testSequence":testSequence} };
+        
+        if (typeof(jsCallback) == 'function') {
+            sequence += 1;
+            callbackArray[sequence] = jsCallback;
+            message["test"]["sequence"] = sequence;
+        }
+        
+        if (isiOS) {
+            window.webkit.messageHandlers.webridge.postMessage(message);
+        }
+        else if (isAndroid) {
+            window.androidWebridge.postMessage(JSON.stringify(message));
+        }
+    };
 }
 
 // 全局对象 webridge
