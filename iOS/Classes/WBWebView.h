@@ -15,7 +15,4 @@
 // 原生代码 调用 js
 - (void)evalJSCommand:(NSString *)jsCommand jsParams:(id)jsParams completionHandler:(void (^)(id, NSError *))completionHandler;
 
-// 触发JSToNative测试
-- (void)triggerJSToNativeTest:(NSString *)jsCommand completionHandler:(void (^)(id, NSError *))completionHandler;
-
 @end

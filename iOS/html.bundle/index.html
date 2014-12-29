@@ -26,16 +26,20 @@ var wbTest = {
         return person;
     },
     
-    jsToNative : function(testSequence){
-        webridge.jsToNativeTest("testPassParam", '中文', testSequence, function(result, error) {
-                                    ;
-                                });
+    jsToNative_async : function(object, callback){
+        webridge.jsToNative("testPassParam", '中文', function(result, error) {
+                            if (typeof callback == 'function') {
+                                callback(result);
+                            }
+                        });
     },
     
-    asyncJSToNative : function(testSequence){
-        webridge.jsToNativeTest("testPassParamAsync", '中文', testSequence, function(result, error) {
-                                ;
-                                });
+    asyncJSToNative_async : function(object, callback){
+        webridge.jsToNative("testPassParamAsync", '中文', function(result, error) {
+                            if (typeof callback == 'function') {
+                                callback(result);
+                            }
+                        });
     },
     
     jsSendParam : function (object) {
