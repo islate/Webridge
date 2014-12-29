@@ -87,4 +87,17 @@ public class MyTest extends AndroidTestCase {
 		assertEquals(0, implement.uriStatus);
 		assertEquals(-1, implement.commandStatus);
 	}
+	
+	public void testURI_long_param() {
+		TestUriImplement implement = new TestUriImplement();
+		StringBuffer uri = new StringBuffer("slate://article/");
+		int len = (int)Math.pow(10, 6);
+		for (int i=0; i<len; i++) {
+			uri.append("abcdefghij");
+		}
+		new WBUri(mContext, implement).openURI(uri.toString());
+		assertEquals(0, implement.uriStatus);
+		assertEquals(-1, implement.commandStatus);
+	}
+	
 }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Get data From web:"
+        android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <Button
+            android:id="@+id/nativeToJsWithNoParam"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:text="no param" />
+
+        <Button
+            android:id="@+id/nativeToJsWithOneParam"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:text="one param(&apos;jc&apos;)" />
+
+        <Button
+            android:id="@+id/nativeToJsWithChineseParam"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:text="one param(&apos;中文&apos;)" />
+
+        <Button
+            android:id="@+id/nativeToJsWithNumberParam"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:text="number param(25)" />
+
+        <Button
+            android:id="@+id/nativeToJsWithArrayParam"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:text="array param(&apos;jc&apos;,&apos;ccx&apos;)" />
+
+        <Button
+            android:id="@+id/nativeToJsWithMultyParam"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:text="json param({&apos;name&apos;:&apos;jc&apos;...}" />
+    </LinearLayout>
+
+    <com.zq.webridge.util.WBWebView
+        android:id="@+id/test_method_wv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
