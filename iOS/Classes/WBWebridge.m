@@ -18,9 +18,9 @@
 
 - (void)nativeToJSCallback:(NSDictionary *)returnDict webView:(WKWebView *)webView;
 - (void)jsToNative:(NSDictionary *)evalDict webView:(WKWebView *)webView;
-- (BOOL)asyncExecuteForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView testSequence:(NSNumber *)testSequence;
-- (void)executeForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView testSequence:(NSNumber *)testSequence;
-- (void)callbackWithResult:(id)result error:(NSString *)error sequence:(NSNumber *)sequence webView:(WKWebView *)webView testSequence:(NSNumber *)testSequence;
+- (BOOL)asyncExecuteForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView;
+- (void)executeForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView;
+- (void)callbackWithResult:(id)result error:(NSString *)error sequence:(NSNumber *)sequence webView:(WKWebView *)webView;
 
 @end
 
@@ -91,12 +91,6 @@
         [self jsToNative:evalDict webView:message.webView];
         return;
     }
-    
-    id testDict = [message.body objectForKey:@"test"];
-    if ([testDict isKindOfClass:[NSDictionary class]])
-    {
-        [self testJSToNative:testDict webView:message.webView];
-    }
 }
 
 - (void)nativeToJSCallback:(NSDictionary *)returnDict webView:(WKWebView *)webView
@@ -139,33 +133,14 @@
         return;
     }
     
-    if (![self asyncExecuteForCommand:command params:params sequence:sequence webView:webView testSequence:nil])
+    if (![self asyncExecuteForCommand:command params:params sequence:sequence webView:webView])
     {
         // 异步调用失败，尝试同步调用
-        [self executeForCommand:command params:params sequence:sequence webView:webView testSequence:nil];
+        [self executeForCommand:command params:params sequence:sequence webView:webView];
     }
 }
 
-- (void)testJSToNative:(NSDictionary *)testDict webView:(WKWebView *)webView
-{
-    NSString *command = [testDict objectForKey:@"command"];
-    id params = [testDict objectForKey:@"params"];
-    NSNumber *sequence = [testDict objectForKey:@"sequence"];
-    NSNumber *testSequence = [testDict objectForKey:@"testSequence"];
-    
-    if (!command || !params)
-    {
-        return;
-    }
-    
-    if (![self asyncExecuteForCommand:command params:params sequence:sequence webView:webView testSequence:testSequence])
-    {
-        // 异步调用失败，尝试同步调用
-        [self executeForCommand:command params:params sequence:sequence webView:webView testSequence:testSequence];
-    }
-}
-
-- (BOOL)asyncExecuteForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView testSequence:(NSNumber *)testSequence
+- (BOOL)asyncExecuteForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView
 {
     if (self.delegate == nil)
     {
@@ -185,7 +160,7 @@
     
     __weak typeof(self) weakSelf = self;
     WBWebridgeCompletionBlock block = ^(id result, NSError *error) {
-        [weakSelf callbackWithResult:result error:error.localizedDescription sequence:sequence webView:webView testSequence:testSequence];
+        [weakSelf callbackWithResult:result error:error.localizedDescription sequence:sequence webView:webView];
     };
     
     invocation = [NSInvocation invocationWithMethodSignature:signature];
@@ -218,19 +193,19 @@
                      [exception name],
                      [exception reason]];
             
-            [self callbackWithResult:nil error:error sequence:sequence webView:webView testSequence:testSequence];
+            [self callbackWithResult:nil error:error sequence:sequence webView:webView];
         }
     }
     
     return YES;
 }
 
-- (void)executeForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView testSequence:(NSNumber *)testSequence
+- (void)executeForCommand:(NSString *)command params:(id)params sequence:(NSNumber *)sequence webView:(WKWebView *)webView
 {
     if (self.delegate == nil)
     {
         NSString *error = @"Webridge delegate is nil.";
-        [self callbackWithResult:nil error:error sequence:sequence webView:webView testSequence:testSequence];
+        [self callbackWithResult:nil error:error sequence:sequence webView:webView];
         return;
     }
     
@@ -259,7 +234,7 @@
             
             NSLog(@"result: %@", result);
             
-            [self callbackWithResult:result error:nil sequence:sequence webView:webView testSequence:testSequence];
+            [self callbackWithResult:result error:nil sequence:sequence webView:webView];
         }
         @catch(NSException *exception) {
             NSLog (@"WebBridge exception on %@ %@", self.delegate, methodName);
@@ -275,7 +250,7 @@
                          [exception name],
                          [exception reason]];
                 
-                [self callbackWithResult:nil error:error sequence:sequence webView:webView testSequence:testSequence];
+                [self callbackWithResult:nil error:error sequence:sequence webView:webView];
             }
         }
     }
@@ -288,12 +263,12 @@
             NSString *error = [NSString stringWithFormat:@"%@ doesn't know method: %@",
                                NSStringFromClass([self.delegate class]),
                                methodName];
-            [self callbackWithResult:nil error:error sequence:sequence webView:webView testSequence:testSequence];
+            [self callbackWithResult:nil error:error sequence:sequence webView:webView];
         }
     }
 }
 
-- (void)callbackWithResult:(id)result error:(NSString *)error sequence:(NSNumber *)sequence webView:(WKWebView *)webView testSequence:(NSNumber *)testSequence
+- (void)callbackWithResult:(id)result error:(NSString *)error sequence:(NSNumber *)sequence webView:(WKWebView *)webView
 {
     if (!webView || !sequence)
     {
@@ -311,21 +286,6 @@
     NSString *callbackJS = nil;
     @try {
         callbackJS = [NSString stringWithFormat:@"webridge.jsToNativeCallback(%@, %@, '%@')", sequence, jsonResult, error];
-        
-        // 用于JSToNative单元测试
-        WBWebridgeCompletionBlock callback = nil;
-        @synchronized(self)
-        {
-            if (testSequence)
-            {
-                callback = [_callbackDict objectForKey:testSequence];
-                [_callbackDict removeObjectForKey:testSequence];
-                if (callback)
-                {
-                    callback(jsonResult, nil);
-                }
-            }
-        }
     }
     @catch (NSException *exception) {
         NSLog (@"Webridge generate callbackJS exception name:%@ reason:%@", [exception name], [exception reason]);

@@ -989,17 +989,20 @@
     
     WebViewFinishedBlock block = ^ {
         
-        [weakViewController.webView triggerJSToNativeTest:@"wbTest.asyncJSToNative" completionHandler:^(id param, NSError *error){
-            [jsExpectation fulfill];
-            
-            if (![param isEqualToString:@"'中文'"])
-            {
-                XCTAssert(NO, @"chinese param fault");
-                return;
-            }
-            
-            XCTAssert(YES, @"Pass");
-        }];
+        [weakViewController.webView evalJSCommand:@"wbTest.jsToNative"
+                                         jsParams:nil
+                                completionHandler:^(id param, NSError *error) {
+                                    
+                                    [jsExpectation fulfill];
+                                    
+                                    if (![param isEqualToString:@"中文"])
+                                    {
+                                        XCTAssert(NO, @"chinese param fault");
+                                        return;
+                                    }
+                                    
+                                    XCTAssert(YES, @"Pass");
+                                }];
         
     };
     if (viewController.webViewLoaded)
@@ -1025,17 +1028,20 @@
     
     WebViewFinishedBlock block = ^ {
         
-        [weakViewController.webView triggerJSToNativeTest:@"wbTest.jsToNative" completionHandler:^(id param, NSError *error){
-            [jsExpectation fulfill];
-            
-            if (![param isEqualToString:@"'中文'"])
-            {
-                XCTAssert(NO, @"chinese param fault");
-                return;
-            }
-            
-            XCTAssert(YES, @"Pass");
-        }];
+        [weakViewController.webView evalJSCommand:@"wbTest.jsToNative"
+                                         jsParams:nil
+                                completionHandler:^(id param, NSError *error) {
+                                    
+                                    [jsExpectation fulfill];
+                                    
+                                    if (![param isEqualToString:@"中文"])
+                                    {
+                                        XCTAssert(NO, @"chinese param fault");
+                                        return;
+                                    }
+                                    
+                                    XCTAssert(YES, @"Pass");
+                                }];
         
     };
     if (viewController.webViewLoaded)
