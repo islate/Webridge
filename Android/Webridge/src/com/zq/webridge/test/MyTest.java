@@ -91,13 +91,12 @@ public class MyTest extends AndroidTestCase {
 	public void testURI_long_param() {
 		TestUriImplement implement = new TestUriImplement();
 		StringBuffer uri = new StringBuffer("slate://article/");
-		int len = (int)Math.pow(10, 6);
-		for (int i=0; i<len; i++) {
+		for (int i=0; i<1000000; i++) {
 			uri.append("abcdefghij");
 		}
 		new WBUri(mContext, implement).openURI(uri.toString());
 		assertEquals(0, implement.uriStatus);
-		assertEquals(-1, implement.commandStatus);
+		assertEquals(0, implement.commandStatus);
 	}
 	
 }

@@ -116,6 +116,13 @@ public class WBWebridgeImplement implements WBWebridgeListener {
 		}
 		return "";
 	}
+	
+	
+	public void nativeGetPerson(JSONObject paramObject, AsynExecuteCommandListener listener) {
+		if (listener != null) {
+			listener.onCallBack(nativeGetPerson(paramObject));
+		}
+	}
 
 	public String nativeGetPersons(JSONObject paramObject) {
 		if (JSONObject.NULL.equals(paramObject)) {
@@ -207,5 +214,20 @@ public class WBWebridgeImplement implements WBWebridgeListener {
 		});
 		build.create().show();
 	}
+	
+	public void nativeToJSCallbackByLargeDataDialog(String data) {
+		Builder build = new AlertDialog.Builder(mContext);
+		build.setMessage("succes! data length is:" + data.length());
+		build.setNegativeButton("确定", new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		build.create().show();
+		
+	}
+	
 
 }

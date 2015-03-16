@@ -12,35 +12,27 @@ import com.zq.webridge.util.WBWebView;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 	private WBWebView wv;
+	private boolean isWebToNative = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		// setContentView(R.layout.activity_main);
-		setContentView(R.layout.activity_test_uri);
-//		setContentView(R.layout.activity_test_method);
+		if (isWebToNative) {
+			setContentView(R.layout.activity_test_webtonative);
+		} else {
+			setContentView(R.layout.activity_test_nativetoweb);
+		}
 		init();
 	}
 
 	@SuppressLint("SetJavaScriptEnabled")
 	private void init() {
-		// URI以及js调用本地方法测试
-		boolean testUri = true;
-		wv = (WBWebView) findViewById(R.id.test_uri_wv);
-		String url = "file:///android_asset/webtonative.html";
-		wv.loadUrl(url);
-		// 本地调用js测试
-//		boolean testUri = false;
-//		wv = (WBWebView) findViewById(R.id.test_method_wv);
-//		String url = "file:///android_asset/nativetoweb.html";
-//		wv.loadUrl(url);
-
-		
 		// wv = (WBWebView) findViewById(R.id.wv);
 		//
 		// String url = "file:///android_asset/index.html";
 		// wv.loadUrl(url);
-		
+
 		// findViewById(R.id.nativeToJsIncludeReturn).setOnClickListener(
 		// new OnClickListener() {
 		//
@@ -53,7 +45,18 @@ public class MainActivity extends Activity implements View.OnClickListener {
 		// }
 		// }
 		// });
-		if (!testUri) {
+
+		// URI以及js调用本地方法测试
+		if (isWebToNative) {
+			wv = (WBWebView) findViewById(R.id.test_webtonative_wv);
+			String url = "file:///android_asset/webtonative.html";
+			wv.loadUrl(url);
+		} else {
+			// 本地调用js测试
+			wv = (WBWebView) findViewById(R.id.test_nativetoweb_wv);
+			String url = "file:///android_asset/nativetoweb.html";
+			wv.loadUrl(url);
+
 			findViewById(R.id.nativeToJsWithNoParam).setOnClickListener(this);
 			findViewById(R.id.nativeToJsWithOneParam).setOnClickListener(this);
 			findViewById(R.id.nativeToJsWithChineseParam).setOnClickListener(
@@ -64,6 +67,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
 					.setOnClickListener(this);
 			findViewById(R.id.nativeToJsWithMultyParam)
 					.setOnClickListener(this);
+			findViewById(R.id.nativeToJsWithLargeDataParam).setOnClickListener(
+					this);
 		}
 
 	}
@@ -83,6 +88,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
 	@Override
 	public void onClick(View v) {
+		if (isWebToNative)
+			return;
+
 		int id = v.getId();
 		switch (id) {
 		case R.id.nativeToJsWithNoParam:
@@ -102,6 +110,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			break;
 		case R.id.nativeToJsWithMultyParam:
 			testNativeToJsWithMultyParam();
+			break;
+		case R.id.nativeToJsWithLargeDataParam:
+			testNativeToJsWithLargeDataParam();
 			break;
 		default:
 			break;
@@ -148,4 +159,14 @@ public class MainActivity extends Activity implements View.OnClickListener {
 			e.printStackTrace();
 		}
 	}
+
+	private void testNativeToJsWithLargeDataParam() {
+		StringBuffer dataBuf = new StringBuffer();
+		for (int i = 0; i < 1000000; i++) {
+			dataBuf.append("abcdefghij");
+		}
+		wv.getWebridge().nativeToJs("wbTest.jsGetPersonByLargeDataParam",
+				dataBuf.toString(), "nativeToJSCallbackByLargeDataDialog");
+	}
+
 }

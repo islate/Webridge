@@ -59,31 +59,7 @@
 	                            }
 	                        });
 			
-		},
-		
-		getDataByLargeParam: function () {
-	    	var data = "";
-			for (var i=0; i< 10000000; i++) {
-				data += "abcefghijk";
-			}
-			webridge.jsToNative("nativeTestLargeParam", {'datas':data}, function(result, error) {
-	                            var datas = result;
-	                            if (error.length > 0) {
-	                                document.getElementById('result').innerHTML = error;
-	                            }
-	                            else {
-	                                var html = '';
-	                                for (var key in datas) {
-	                                    var person = contacts[key];
-	                                    html += '<p>' + person.data  + '</p>';
-	                                }
-	                                document.getElementById('result').innerHTML = html;
-	                            }
-	                        });
-			
 		}
-		  
-
 	};
 
 </script>
@@ -121,8 +97,6 @@
 	 <div id="persons"></div>
     <a href="javascript:wbTest.getPhoneContacts()">获取手机全部联系人</a><br/>
     <div id="contacts"></div>
-    <a href="javascript:wbTest.getDataByLargeParam()">10M参数测试</a><br/>
-    <div id="result"></div>
      <br/><br/>
 </body>
 </html>

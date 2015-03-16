@@ -57,10 +57,17 @@
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:text="json param({&apos;name&apos;:&apos;jc&apos;...}" />
+
+        <Button
+            android:id="@+id/nativeToJsWithLargeDataParam"
+            android:layout_width="300dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:text="json param({&apos;data&apos;:&apos;10M data&apos;}" />
     </LinearLayout>
 
     <com.zq.webridge.util.WBWebView
-        android:id="@+id/test_method_wv"
+        android:id="@+id/test_nativetoweb_wv"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
