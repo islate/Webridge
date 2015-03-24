@@ -27,6 +27,19 @@
         }
     }
     
+    //this is a 'new window action' (aka target="_blank") > open this URL externally. If we´re doing nothing here, WKWebView will also just do nothing. Maybe this will change in a later stage of the iOS 8 Beta
+    if (!navigationAction.targetFrame) {
+        NSURL *url = navigationAction.request.URL;
+        UIApplication *app = [UIApplication sharedApplication];
+        if ([app canOpenURL:url]) {
+            [app openURL:url];
+            if (decisionHandler) {
+                decisionHandler(WKNavigationActionPolicyCancel);
+            }
+            return;
+        }
+    }
+    
     if (decisionHandler) {
         decisionHandler(WKNavigationActionPolicyAllow);
     }
@@ -59,7 +72,13 @@
     
     NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:@"html.bundle"];
     NSURL *url = [NSURL fileURLWithPath:htmlPath];
+    
+    
+    url = [NSURL URLWithString:@"http://html5demos.com/offlineapp"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    
+    
+    
     
     [self.webView loadRequest:request];
 }

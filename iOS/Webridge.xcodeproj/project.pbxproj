@@ -13,6 +13,7 @@
 		812125791A42BDB100BA6B7B /* TestURIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 812125781A42BDB100BA6B7B /* TestURIHandler.m */; };
 		812125871A43D09E00BA6B7B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 812125861A43D09E00BA6B7B /* AddressBook.framework */; };
 		814B58131A4970B80033C655 /* WBUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 814B58121A4970B80033C655 /* WBUtils.m */; };
+		81C054CA1AC14E560041EA1A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81C054C91AC14E560041EA1A /* WebKit.framework */; };
 		81CCB8451A38221D0014D551 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8441A38221D0014D551 /* main.m */; };
 		81CCB8481A38221D0014D551 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8471A38221D0014D551 /* AppDelegate.m */; };
 		81CCB84B1A38221D0014D551 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB84A1A38221D0014D551 /* ViewController.m */; };
@@ -51,6 +52,7 @@
 		812125861A43D09E00BA6B7B /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		814B58111A4970B80033C655 /* WBUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBUtils.h; sourceTree = "<group>"; };
 		814B58121A4970B80033C655 /* WBUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBUtils.m; sourceTree = "<group>"; };
+		81C054C91AC14E560041EA1A /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		81CCB83F1A38221D0014D551 /* Webridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Webridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81CCB8431A38221D0014D551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		81CCB8441A38221D0014D551 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				81C054CA1AC14E560041EA1A /* WebKit.framework in Frameworks */,
 				812125871A43D09E00BA6B7B /* AddressBook.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -100,6 +103,7 @@
 		81CCB8361A38221D0014D551 = {
 			isa = PBXGroup;
 			children = (
+				81C054C91AC14E560041EA1A /* WebKit.framework */,
 				812125861A43D09E00BA6B7B /* AddressBook.framework */,
 				81CCB8B21A3A89450014D551 /* Classes */,
 				81CCB8AE1A3A7DF70014D551 /* html.bundle */,
