@@ -73,13 +73,11 @@
     NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:@"html.bundle"];
     NSURL *url = [NSURL fileURLWithPath:htmlPath];
     
+    // test html5
+    //url = [NSURL URLWithString:@"http://html5demos.com"];
     
-    url = [NSURL URLWithString:@"http://html5demos.com/offlineapp"];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    
-    
-    
-    
+
     [self.webView loadRequest:request];
 }
 
