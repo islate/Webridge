@@ -1,0 +1,95 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <meta charset='utf-8'>
+<script language="javascript" src="webridge.js"></script>
+<script language="javascript" type="text/javascript">
+    
+var wbTest = {
+        
+    // 单个参数异步调用
+    jsGetPerson_async : function (object, callback/* function(result) */) {
+        var person = {"name":object, "year":31, "gender":"male", "async": true};
+        if (typeof callback == 'function') {
+            callback(person);
+        }
+    },
+    
+    // 单个参数同步调用
+    jsGetPerson : function (object) {
+        var person = {"name":object, "year":31, "gender":"male", "async": false};
+        return person;
+    },
+    
+    // 数值参数同步调用
+    jsGetPersonByAge : function (object) {
+		var person = {"name":"jc", "year":object, "async": false};
+        return person;
+    },
+    
+    // 数值参数异步调用
+    jsGetPersonByAge_async : function (object, callback/* function(result) */) {
+    	var person = {"name":"jc", "year":object,  "async": true};
+    	 if (typeof callback == 'function') {
+            callback(person);
+        }
+    },
+    
+    // 数组参数同步调用
+    jsGetPersonByArrayParam : function (object) {
+     	var names = eval(object);
+    	var persons = [{"name":names[0], "year":26, "gender":"male", "async": false},
+  		               {"name":names[1], "year":27, "gender":"male", "async": false}]; 
+  		return persons;
+    },
+    
+    // 数组参数异步调用
+    jsGetPersonByArrayParam_async : function (object, callback/* function(result) */) {
+    	var names = eval(object);
+    	var persons = [{"name":names[0], "year":26, "gender":"male", "async": true},
+  		               {"name":names[1], "year":27, "gender":"male", "async": true}]; 
+  		 if (typeof callback == 'function') {
+            callback(persons);
+        }
+    },
+    
+    // 字典参数同步调用
+    jsGetPersonByDictionaryParam : function (object) {
+   		 var names = eval(object);
+         var persons = [{"name":names[0].name, "year":26, "gender":"male", "async": false},
+  		               {"name":names[1].name, "year":27, "gender":"male", "async": false},
+  		               {"name":names[2].name, "year":27, "gender":"male", "async": false}]; 
+        return persons;
+    },
+    
+	// 字典参数异步调用
+    jsGetPersonByDictionaryParam_async : function (object, callback/* function(result) */) {
+    	var names = eval(object);
+      	var persons = [{"name":names[0].name, "year":26, "gender":"male", "async": true},
+  		               {"name":names[1].name, "year":27, "gender":"male", "async": true},
+  		               {"name":names[2].name, "year":27, "gender":"male", "async": true}]; 
+        if (typeof callback == 'function') {
+            callback(persons);
+        }
+    },
+    
+    // 大数据参数异步调用
+    jsGetPersonByLargeDataParam_async : function (object, callback/* function(result) */) {
+        if (typeof callback == 'function') {
+            callback(object);
+        }
+    },
+    
+     // 大数据参数同步调用
+    jsGetPersonByLargeDataParam : function (object) {
+		return 'faied';
+    }
+};
+
+</script>
+
+</head>
+<body>
+    <br/>
+</body>
+</html>
