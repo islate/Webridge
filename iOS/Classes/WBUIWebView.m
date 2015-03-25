@@ -123,7 +123,7 @@
                 if (![WBURI canOpenURI:[NSURL URLWithString:iFrameURL]]
                     && ![url.scheme.lowercaseString isEqualToString:@"webridge"])
                 {
-                    // 不是slateuri
+                    // 不是wburi 或者 不是webridge消息
                     // 说明是个iFrame，要在webView内打开它
                     return YES;
                 }
