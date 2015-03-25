@@ -3,10 +3,11 @@
 //  Webridge
 //
 //  Created by linyize on 14/12/23.
-//  Copyright (c) 2014年 eletech. All rights reserved.
 //
 
 #import "WBUtils.h"
+
+#import <CommonCrypto/CommonDigest.h>
 
 @implementation NSInvocation (webridge)
 
@@ -154,6 +155,123 @@
 - (NSString *)decodeWBURI
 {
     return (NSString *)CFBridgingRelease(CFURLCreateStringByReplacingPercentEscapesUsingEncoding(NULL, (CFStringRef)self, CFSTR("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.!~*'()"), kCFStringEncodingUTF8)) ;
+}
+
+@end
+
+@implementation NSString (MD5)
+
+- (NSString *)md5
+{
+    const char      *cStr = [self UTF8String];
+    unsigned char   result[CC_MD5_DIGEST_LENGTH];
+    
+    CC_MD5(cStr, strlen(cStr), result);
+    
+    NSMutableString *resultStr = [NSMutableString stringWithCapacity:CC_MD5_DIGEST_LENGTH * 2];
+    
+    for (int i = 0; i < CC_MD5_DIGEST_LENGTH; i++)
+    {
+        [resultStr appendFormat:@"%02x", result[i]];
+    }
+    
+    return resultStr;
+}
+
+@end
+
+@implementation NSString (json)
+
+- (id)JSONObject
+{
+    if (self.length == 0)
+    {
+        return nil;
+    }
+    
+    return [[self dataUsingEncoding:NSUTF8StringEncoding] JSONObject];
+}
+
+@end
+
+@implementation NSData (json)
+
+- (id)JSONObject
+{
+    if (self.length == 0)
+    {
+        return nil;
+    }
+    
+    @try {
+        return [NSJSONSerialization JSONObjectWithData:self options:kNilOptions error:nil];
+    }
+    @catch (NSException *exception) {
+    }
+    return nil;
+}
+
+@end
+
+@implementation NSObject (json)
+
+- (NSString *)JSONString
+{
+    @try {
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:kNilOptions error:nil];
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        return jsonString;
+    }
+    @catch (NSException *exception) {
+    }
+    return nil;
+}
+
+@end
+
+@implementation UIWebView (slate)
+
+- (NSInteger)getiFrameCount
+{
+    NSString *script = @"function getiFrameCount() {"
+    "  return document.querySelectorAll('iframe').length;"
+    "}"
+    "getiFrameCount();";
+    NSString *result = [self stringByEvaluatingJavaScriptFromString:script];
+    return [result integerValue];
+}
+
+- (NSString *)getiFrameSrcWithIndex:(NSUInteger)index
+{
+    NSString *script = [NSString stringWithFormat:
+                        @"function getiFrameSrc() {"
+                        "  return document.querySelectorAll('iframe')[%lu].src;"
+                        "}"
+                        "getiFrameSrc();", (unsigned long)index];
+    NSString *result = [self stringByEvaluatingJavaScriptFromString:script];
+    return result;
+}
+
+- (NSString *)metaTag:(NSString *)metaTagName
+{
+    NSString *getMetaTagJS = [NSString stringWithFormat:
+                              @"function getMetaTag() {"
+                              @"  var m = document.getElementsByTagName('meta');"
+                              @"  for(var i in m) { "
+                              @"    if(m[i].name == '%@') {"
+                              @"      return m[i].content;"
+                              @"    }"
+                              @"  }"
+                              @"  return '';"
+                              @"}"
+                              @"getMetaTag();", metaTagName];
+    
+    return [self stringByEvaluatingJavaScriptFromString:getMetaTagJS];
+}
+
+- (NSString *)title
+{
+    return [self stringByEvaluatingJavaScriptFromString:@"document.title"];
 }
 
 @end

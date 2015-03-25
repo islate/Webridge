@@ -27,6 +27,11 @@
 		81CCB8B91A3A89450014D551 /* WBURI.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B41A3A89450014D551 /* WBURI.m */; };
 		81CCB8BA1A3A89450014D551 /* WBWebridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B61A3A89450014D551 /* WBWebridge.m */; };
 		81CCB8BB1A3A89450014D551 /* WBWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B81A3A89450014D551 /* WBWebView.m */; };
+		81EADB891AC25971005FC31E /* WBURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 81EADB841AC25971005FC31E /* WBURLProtocol.m */; };
+		81EADB8A1AC25971005FC31E /* WBURLProtocolCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 81EADB861AC25971005FC31E /* WBURLProtocolCache.m */; };
+		81EADB8B1AC25971005FC31E /* WBUIWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81EADB881AC25971005FC31E /* WBUIWebView.m */; };
+		81EADB8E1AC25F90005FC31E /* WBReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 81EADB8D1AC25F90005FC31E /* WBReachability.m */; };
+		81EADB911AC25FB2005FC31E /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 81EADB901AC25FB2005FC31E /* AFNetworkReachabilityManager.m */; };
 		CEE9D7931A4D6D7500423736 /* bigParam.txt in Resources */ = {isa = PBXBuildFile; fileRef = CEE9D7921A4D6D7500423736 /* bigParam.txt */; };
 /* End PBXBuildFile section */
 
@@ -77,6 +82,16 @@
 		81CCB8B61A3A89450014D551 /* WBWebridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBWebridge.m; sourceTree = "<group>"; };
 		81CCB8B71A3A89450014D551 /* WBWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBWebView.h; sourceTree = "<group>"; };
 		81CCB8B81A3A89450014D551 /* WBWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBWebView.m; sourceTree = "<group>"; };
+		81EADB831AC25971005FC31E /* WBURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBURLProtocol.h; sourceTree = "<group>"; };
+		81EADB841AC25971005FC31E /* WBURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBURLProtocol.m; sourceTree = "<group>"; };
+		81EADB851AC25971005FC31E /* WBURLProtocolCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBURLProtocolCache.h; sourceTree = "<group>"; };
+		81EADB861AC25971005FC31E /* WBURLProtocolCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBURLProtocolCache.m; sourceTree = "<group>"; };
+		81EADB871AC25971005FC31E /* WBUIWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBUIWebView.h; sourceTree = "<group>"; };
+		81EADB881AC25971005FC31E /* WBUIWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBUIWebView.m; sourceTree = "<group>"; };
+		81EADB8C1AC25F90005FC31E /* WBReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBReachability.h; sourceTree = "<group>"; };
+		81EADB8D1AC25F90005FC31E /* WBReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBReachability.m; sourceTree = "<group>"; };
+		81EADB8F1AC25FB2005FC31E /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
+		81EADB901AC25FB2005FC31E /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
 		CEE9D7921A4D6D7500423736 /* bigParam.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bigParam.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -179,6 +194,16 @@
 		81CCB8B21A3A89450014D551 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				81EADB8F1AC25FB2005FC31E /* AFNetworkReachabilityManager.h */,
+				81EADB901AC25FB2005FC31E /* AFNetworkReachabilityManager.m */,
+				81EADB8C1AC25F90005FC31E /* WBReachability.h */,
+				81EADB8D1AC25F90005FC31E /* WBReachability.m */,
+				81EADB831AC25971005FC31E /* WBURLProtocol.h */,
+				81EADB841AC25971005FC31E /* WBURLProtocol.m */,
+				81EADB851AC25971005FC31E /* WBURLProtocolCache.h */,
+				81EADB861AC25971005FC31E /* WBURLProtocolCache.m */,
+				81EADB871AC25971005FC31E /* WBUIWebView.h */,
+				81EADB881AC25971005FC31E /* WBUIWebView.m */,
 				81CCB8B31A3A89450014D551 /* WBURI.h */,
 				81CCB8B41A3A89450014D551 /* WBURI.m */,
 				81CCB8B51A3A89450014D551 /* WBWebridge.h */,
@@ -298,10 +323,15 @@
 				81CCB84B1A38221D0014D551 /* ViewController.m in Sources */,
 				81CCB8AA1A3A78D40014D551 /* URIHandler.m in Sources */,
 				81CCB8B91A3A89450014D551 /* WBURI.m in Sources */,
+				81EADB891AC25971005FC31E /* WBURLProtocol.m in Sources */,
 				81CCB8BA1A3A89450014D551 /* WBWebridge.m in Sources */,
 				81CCB8481A38221D0014D551 /* AppDelegate.m in Sources */,
 				814B58131A4970B80033C655 /* WBUtils.m in Sources */,
 				81CCB8451A38221D0014D551 /* main.m in Sources */,
+				81EADB911AC25FB2005FC31E /* AFNetworkReachabilityManager.m in Sources */,
+				81EADB8A1AC25971005FC31E /* WBURLProtocolCache.m in Sources */,
+				81EADB8B1AC25971005FC31E /* WBUIWebView.m in Sources */,
+				81EADB8E1AC25F90005FC31E /* WBReachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

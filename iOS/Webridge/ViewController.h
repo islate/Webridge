@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "WBURI.h"
+#import "WBUIWebView.h"
 #import "WBWebView.h"
 #import "WBWebridge.h"
 #import "WebridgeDelegate.h"
@@ -16,6 +17,8 @@
 typedef void (^WebViewFinishedBlock)(void);
 
 @interface ViewController : UIViewController
+
+@property (nonatomic, strong) WBUIWebView *uiWebView;
 
 @property (nonatomic, strong) WBWebView *webView;
 @property (nonatomic, strong) WebridgeDelegate *webridgeDelegate;

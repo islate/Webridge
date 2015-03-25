@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 
-@interface ViewController () <WKNavigationDelegate>
+@interface ViewController () <WKNavigationDelegate, UIWebViewDelegate>
 
 @end
 
@@ -66,19 +66,107 @@
     _webViewLoaded = NO;
     _webridgeDelegate = [WebridgeDelegate new];
 
-    self.webView = [[WBWebView alloc] initWithFrame:self.view.bounds webridgeDelegate:self.webridgeDelegate];
-    self.webView.navigationDelegate = self;
-    [self.view addSubview:self.webView];
+//    self.webView = [[WBWebView alloc] initWithFrame:self.view.bounds webridgeDelegate:self.webridgeDelegate];
+//    self.webView.navigationDelegate = self;
+//    [self.view addSubview:self.webView];
+    
+    self.uiWebView = [[WBUIWebView alloc] initWithFrame:self.view.bounds];
+    [self.uiWebView setWebridgeDelegate:self.webridgeDelegate];
+    self.uiWebView.delegate = self;
+    [self.view addSubview:self.uiWebView];
     
     NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:@"html.bundle"];
     NSURL *url = [NSURL fileURLWithPath:htmlPath];
     
     // test html5
-    //url = [NSURL URLWithString:@"http://html5demos.com"];
+    //url = [NSURL URLWithString:@"http://106.186.123.223/icalendar"];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
 
-    [self.webView loadRequest:request];
+//    [self.webView loadRequest:request];
+    [self.uiWebView loadRequest:request];
+}
+
+#pragma mark - UIWebViewDelegate
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    // todo: startAnimating
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    // todo: stopAnimating
+    
+    [self.uiWebView evalJSCommand:@"wbTest.jsGetPerson" jsParams:@{@"name":@"linyize"} completionHandler:^(id object, NSError *error) {
+        NSLog(@"object:%@ error:%@", object, error);
+    }];
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    // todo: stopAnimating  and  showError / retry button
+}
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    BOOL    clickNavType = (navigationType == UIWebViewNavigationTypeLinkClicked);
+    BOOL    otherNavType = (navigationType == UIWebViewNavigationTypeOther);
+    
+    if (request.URL.fragment && webView.request.mainDocumentURL)
+    {
+        NSURL *oldURL = [[NSURL alloc] initWithScheme:webView.request.mainDocumentURL.scheme host:webView.request.mainDocumentURL.host path:webView.request.mainDocumentURL.path];
+        NSURL *anchorURL = [[NSURL alloc] initWithScheme:request.URL.scheme host:request.URL.host path:request.URL.path];
+        if ([oldURL.absoluteString isEqualToString:anchorURL.absoluteString])
+        {
+            // 打开本页锚点  linyize 2014.09.15
+            return YES;
+        }
+    }
+    
+    if (clickNavType || (otherNavType && ![webView isLoading]))
+    {
+        if ([[request.URL.scheme lowercaseString] isEqualToString:@"tel"])
+        {
+            // 拨打电话
+            return YES;
+        }
+        
+        if ([[request.URL.scheme lowercaseString] isEqualToString:@"mailto"])
+        {
+            // todo: 写邮件
+            return NO;
+        }
+        
+        if ([[request.URL.host lowercaseString] isEqualToString:@"itunes.apple.com"])
+        {
+            // 苹果商店链接
+            [[UIApplication sharedApplication] openURL:request.URL];
+            return NO;
+        }
+        
+        if (otherNavType && [self.uiWebView isiFrameURL:request.URL])
+        {
+            // 加载iframe
+            return YES;
+        }
+        
+        if ([self.uiWebView isWebridgeMessage:request.URL])
+        {
+            // webridge 消息
+            [self.uiWebView handleWebridgeMessage:request.URL];
+            return NO;
+        }
+        
+        if ([WBURI canOpenURI:request.URL])
+        {
+            // 自定义uri
+            [WBURI openURI:request.URL];
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 @end

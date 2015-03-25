@@ -3,7 +3,6 @@
 //  Webridge
 //
 //  Created by linyize on 14/12/8.
-//  Copyright (c) 2014年 eletech. All rights reserved.
 //
 
 #import "WBWebridge.h"
@@ -95,11 +94,11 @@
 
 - (void)nativeToJSCallback:(NSDictionary *)returnDict webView:(WKWebView *)webView
 {
-    WBWebView *wbWebView = (WBWebView *)webView;
-    if (![wbWebView isKindOfClass:[WBWebView class]])
-    {
-        return;
-    }
+//    WBWebView *wbWebView = (WBWebView *)webView;
+//    if (![wbWebView isKindOfClass:[WBWebView class]])
+//    {
+//        return;
+//    }
     
     NSNumber *sequence = [returnDict objectForKey:@"sequence"];
     id result = [returnDict objectForKey:@"result"];
