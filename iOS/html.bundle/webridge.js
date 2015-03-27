@@ -1,6 +1,6 @@
 /*!
  * Webridge Javascript Library
- * yizelin - v0.0.2 (2014-12-24T17:30:00+0800)
+ * yizelin - v0.0.3 (2015-3-27T11:20:00+0800)
  * https://github.com/linyize/Webridge
  */
 

@@ -1,6 +1,6 @@
 /*!
  * Webridge Javascript Library
- * yizelin - v0.0.2 (2014-12-24T17:30:00+0800)
+ * yizelin - v0.0.3 (2015-3-27T11:20:00+0800)
  * https://github.com/linyize/Webridge
  */
 
@@ -13,6 +13,9 @@ function Webridge () {
     var isAndroid = navigator.userAgent.match('Android');
     var sequence = 0;
     var callbackArray = new Array();
+    
+    // 公有变量
+    this.isWKWebView = false;
     
     // 私有方法
     
@@ -28,13 +31,31 @@ function Webridge () {
         var message = {"return":{"sequence":nativeSequence, "result":result} };
         
         if (isiOS) {
-            window.webkit.messageHandlers.webridge.postMessage(message);
+            if (this.isWKWebView) {
+                window.webkit.messageHandlers.webridge.postMessage(message);
+            }
+            else {
+                postMessage_UIWebView(message);
+            }
         }
         else if (isAndroid) {
             window.androidWebridge.returnMessage(JSON.stringify(message));
         }
     };
     
+    var postMessage_UIWebView = function(message) {
+        var url = "webridge://" + encodeURIComponent(JSON.stringify(message));
+        fireIFrame(url);
+    };
+    
+    var fireIFrame = function(url) {
+        var iframe = document.createElement("IFRAME");
+        iframe.setAttribute("src", url);
+        iframe.setAttribute("style","position:absolute; top:0; left:0; width:0; height:0; border:none; margin:0");
+        document.documentElement.appendChild(iframe);
+        iframe.parentNode.removeChild(iframe);
+        iframe = null;
+    };
 
     // 公有方法
     
@@ -101,7 +122,12 @@ function Webridge () {
         }
 
         if (isiOS) {
-            window.webkit.messageHandlers.webridge.postMessage(message);
+            if (this.isWKWebView) {
+                window.webkit.messageHandlers.webridge.postMessage(message);
+            }
+            else {
+                postMessage_UIWebView(message);
+            }
         }
         else if (isAndroid) {
             window.androidWebridge.postMessage(JSON.stringify(message));
@@ -126,6 +152,7 @@ function Webridge () {
         jsCallback(result, error);
         delete callbackArray[jsSequence];
     };
+    
 }
 
 // 全局对象 webridge
