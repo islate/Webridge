@@ -75,12 +75,23 @@ Webridge iOS
 
 4、Usage
 
-4.1 iOS使用WBURI
+4.1 初始化WBURLProtocol（拦截请求，管理http缓存，支持离线浏览），WBReachability（监测网络状态），并注册URIHandler
 
-	a. 注册URIHandler
+	- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+
+    // 注册自定义NSURLProtocol
+    [WBURLProtocol registerClass];
+    
+    // 开始观察网络状态
+    [WBReachability sharedReachability];
+    
+    // 注册URIHandler
 	_handler = [URIHandler new];
 	[WBURI registerURIHandler:_handler];
 
+4.2 iOS使用WBURI
+
+	a. 启动时注册URIHandler
 
 	b. 实现URIHandler， 以article command为例
 	@implementation URIHandler
@@ -96,21 +107,24 @@ Webridge iOS
 	}
 
 
-	c. 实现WKNavigationDelegate 的webView:decidePolicyForNavigationAction:decisionHandler:
-	- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler
+	c. 实现UIWebViewDelegate 的webView:shouldStartLoadWithRequest:navigationType:
+	- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 	{
-		NSURL *url = navigationAction.request.URL;
-		if ([WBURI canOpenURI:url]) {
-			if (decisionHandler) {
-				[WBURI openURI:url];
-				decisionHandler(WKNavigationActionPolicyCancel);
-				return;
-			}
-		}
-		
-		if (decisionHandler) {
-			decisionHandler(WKNavigationActionPolicyAllow);
-		}
+        if ([self.webView isWebridgeMessage:request.URL])
+        {
+            // 处理webridge消息
+            [self.webView handleWebridgeMessage:request.URL];
+            return NO;
+        }
+        
+        if ([WBURI canOpenURI:request.URL])
+        {
+            // 处理自定义uri
+            [WBURI openURI:request.URL];
+            return NO;
+        }
+        
+        return YES;
 	}
 
 
@@ -129,9 +143,9 @@ Webridge iOS
 	iframe.parentNode.removeChild(iframe);
 	iframe = null;
 
-4.2 iOS使用WBWebridge
+4.3 iOS使用WBWebridge
 
-	WBWebridge和WBWebView要结合起来一起使用。
+	WBWebridge和WBUIWebView要结合起来一起使用。
 	
 	a. 实现WBWebridgeDelegate
 	@implementation WebridgeDelegate
@@ -142,9 +156,11 @@ Webridge iOS
 
 	b. 创建webView
 	self.webridgeDelegate = [WebridgeDelegate new];
-	self.webView = [[WBWebView alloc] initWithFrame:frame webridgeDelegate:self.webridgeDelegate];
+	self.webView = [[WBUIWebView alloc] initWithFrame:frame];
+	[self.webView setWebridgeDelegate:self.webridgeDelegate];
+	self.webView.delegate = self;
 
-4.2.1 js调用原生代码，并异步得到返回值
+4.3.1 js调用原生代码，并异步得到返回值
 
 	webridge.jsToNative('nativeCommand', {'param':'value'}, function (result, error) {
 		if (error.length > 0) {
@@ -155,7 +171,7 @@ Webridge iOS
 		}
 	});
 
-4.2.2 iOS调用js函数，并异步得到返回值
+4.3.2 iOS调用js函数，并异步得到返回值
 
 	[self.webView evalJSCommand:@"jsObject.jsCommand" jsParams:@{@"param": @"value"} 
 			completionHandler:^(id result, NSError *error) {
@@ -180,9 +196,10 @@ Webridge iOS
 
 5、如何引入工程
 
-	1 将WBURI WBWebView WBWebridge WBUtils 四个类添加到工程
-	2 使用WBWebView作为网页容器，指定webridgeDelegate
-	3 注册URIHandler
-	4 使用[WBURI openURI:]打开网页内触发的各种WBURI
-	5 网页中引入webridge.js，使得网页可调用webridgeDelegate的方法
+	1 将WBURI WBUIWebView WBWebridge WBUtils WBURLProtocol WBURLProtocolCache WBReachability AFNetworkReachabilityManager 添加到工程
+	2 启动时，初始化WBURLProtocol和WBReachability
+	3 使用WBUIWebView作为网页容器，指定webridgeDelegate
+	4 注册URIHandler
+	5 使用[WBURI openURI:]打开网页内触发的各种WBURI
+	6 网页中引入webridge.js，使得网页可调用webridgeDelegate的方法
 
