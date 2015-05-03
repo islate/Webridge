@@ -90,6 +90,14 @@ function Webridge () {
                 var result = jsCommandFunction(jsParams);
                 nativeToJSCallback(nativeSequence, result);
             }
+            else if (typeof(jsCommandFunction) == 'string') {
+                var result = jsCommandFunction;
+                nativeToJSCallback(nativeSequence, result);
+            }
+            else if (typeof(jsCommandFunction) == 'int') {
+                var result = jsCommandFunction;
+                nativeToJSCallback(nativeSequence, result);
+            }
             else
             {
                 throw 'wrong type';
