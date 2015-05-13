@@ -27,15 +27,6 @@
     _handler = [URIHandler new];
     [WBURI registerURIHandler:_handler];
     
-    // 注册自定义NSURLProtocol
-    [WBURLProtocol registerClass];
-    
-    // 开始观察网络状态
-    [WBReachability sharedReachability];
-    
-    // 忽略SIGPIPE，避免SIGPIPE闪退
-    signal(SIGPIPE, SIG_IGN);
-    
     return YES;
 }
 

@@ -8,6 +8,8 @@
 #import "WBUIWebView.h"
 
 #import "WBURI.h"
+#import "WBURLProtocol.h"
+#import "WBReachability.h"
 
 @interface FakeWKWebView : NSObject
 
@@ -132,6 +134,53 @@
         }
     }
     return NO;
+}
+
+#pragma mark - 初始化，设置ua
+
++ (void)initialize
+{
+    [super initialize];
+    
+    // 注册自定义NSURLProtocol
+    [WBURLProtocol registerClass];
+    
+    // 开始观察网络状态
+    [WBReachability sharedReachability];
+    
+    // 修改默认UserAgent
+    [self setDefaultUserAgent];
+    
+    // 忽略SIGPIPE，避免SIGPIPE闪退
+    signal(SIGPIPE, SIG_IGN);
+}
+
+static UIWebView* setDefaultUserAgentWebView = nil;
++ (void)setDefaultUserAgent
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        // uiwebview必须在主线程使用
+        if (!setDefaultUserAgentWebView)
+        {
+            setDefaultUserAgentWebView = [[UIWebView alloc] initWithFrame:CGRectZero];
+        }
+        NSString *originalUserAgent = [setDefaultUserAgentWebView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+        
+        if (originalUserAgent)
+        {
+            NSBundle *bundle = [NSBundle mainBundle];
+            NSString *bundleName = [bundle objectForInfoDictionaryKey:@"CFBundleName"];
+            NSString *appVersion = [bundle objectForInfoDictionaryKey:@"CFBundleShortVersionString"];
+            NSString *slateUserAgent = [originalUserAgent stringByAppendingString:[NSString stringWithFormat:@" Webridge/1.0 %@/%@", bundleName, appVersion]];
+            
+            [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"UserAgent": slateUserAgent}];
+        }
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            setDefaultUserAgentWebView = nil;
+        });
+    });
 }
 
 @end
