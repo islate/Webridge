@@ -124,7 +124,7 @@
         }
     }
     
-    if (clickNavType || (otherNavType && ![webView isLoading]))
+    if (clickNavType || otherNavType)
     {
         if ([[request.URL.scheme lowercaseString] isEqualToString:@"tel"])
         {

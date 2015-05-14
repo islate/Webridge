@@ -1,6 +1,6 @@
 /*!
  * Webridge Javascript Library
- * yizelin - v0.0.3 (2015-3-27T11:20:00+0800)
+ * yizelin - v0.0.4 (2015-5-14T16:50:00+0800)
  * https://github.com/linyize/Webridge
  */
 
@@ -90,6 +90,14 @@ function Webridge () {
                 var result = jsCommandFunction(jsParams);
                 nativeToJSCallback(nativeSequence, result);
             }
+            else if (typeof(jsCommandFunction) == 'string') {
+                var result = jsCommandFunction;
+                nativeToJSCallback(nativeSequence, result);
+            }
+            else if (typeof(jsCommandFunction) == 'int') {
+                var result = jsCommandFunction;
+                nativeToJSCallback(nativeSequence, result);
+            }
             else
             {
                 throw 'wrong type';
@@ -157,3 +165,8 @@ function Webridge () {
 
 // 全局对象 webridge
 var webridge = new Webridge();
+
+// 当dom加载完毕时，通知WebridgeDelegate
+document.addEventListener("DOMContentLoaded",function(){
+                          webridge.jsToNative("domReady", null, null);},
+                          false);

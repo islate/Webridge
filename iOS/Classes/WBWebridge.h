@@ -11,6 +11,9 @@
 typedef void (^WBWebridgeCompletionBlock)(id result, NSError *error);
 
 @protocol WBWebridgeDelegate <NSObject>
+@optional
+- (void)domReady:(id)params;
+
 @end
 
 @interface WBWebridge : NSObject

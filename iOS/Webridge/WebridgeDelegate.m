@@ -205,4 +205,10 @@
     });
 }
 
+// 网页dom加载完毕
+- (void)domReady:(id)params
+{
+    NSLog(@"domReady");
+}
+
 @end
