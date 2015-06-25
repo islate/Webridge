@@ -65,26 +65,40 @@
     
     _webViewLoaded = NO;
     _webridgeDelegate = [WebridgeDelegate new];
-
-//    self.webView = [[WBWebView alloc] initWithFrame:self.view.bounds webridgeDelegate:self.webridgeDelegate];
-//    self.webView.navigationDelegate = self;
-//    [self.view addSubview:self.webView];
     
-    self.uiWebView = [[WBUIWebView alloc] initWithFrame:self.view.bounds];
-    [self.uiWebView setWebridgeDelegate:self.webridgeDelegate];
-    self.uiWebView.delegate = self;
-    [self.view addSubview:self.uiWebView];
-    
-    NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:@"html.bundle"];
-    NSURL *url = [NSURL fileURLWithPath:htmlPath];
-    
-    // test html5
-    //url = [NSURL URLWithString:@"http://106.186.123.223/icalendar"];
-    
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-
-//    [self.webView loadRequest:request];
-    [self.uiWebView loadRequest:request];
+    BOOL useWKWebView = YES;
+    if (useWKWebView)
+    {
+        self.webView = [[WBWebView alloc] initWithFrame:self.view.bounds webridgeDelegate:self.webridgeDelegate];
+        self.webView.navigationDelegate = self;
+        [self.view addSubview:self.webView];
+        
+        NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:@"html.bundle"];
+        NSURL *url = [NSURL fileURLWithPath:htmlPath];
+        
+        // test html5
+        //url = [NSURL URLWithString:@"http://106.186.123.223/icalendar"];
+        
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        
+        [self.webView loadRequest:request];
+    }
+    else // uiwebview
+    {
+        self.uiWebView = [[WBUIWebView alloc] initWithFrame:self.view.bounds];
+        [self.uiWebView setWebridgeDelegate:self.webridgeDelegate];
+        self.uiWebView.delegate = self;
+        [self.view addSubview:self.uiWebView];
+        
+        NSString *htmlPath = [[NSBundle mainBundle] pathForResource:@"index" ofType:@"html" inDirectory:@"html.bundle"];
+        NSURL *url = [NSURL fileURLWithPath:htmlPath];
+        
+        // test html5
+        //url = [NSURL URLWithString:@"http://106.186.123.223/icalendar"];
+        
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        [self.uiWebView loadRequest:request];
+    }
 }
 
 #pragma mark - UIWebViewDelegate
