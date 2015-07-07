@@ -4,6 +4,8 @@
  * https://github.com/linyize/Webridge
  */
 
+var isWKWebView = true;
+
 function Webridge () {
     
     // 私有变量
@@ -13,9 +15,6 @@ function Webridge () {
     var isAndroid = navigator.userAgent.match('Android');
     var sequence = 0;
     var callbackArray = new Array();
-    
-    // 公有变量
-    this.isWKWebView = false;
     
     // 私有方法
     
@@ -31,7 +30,7 @@ function Webridge () {
         var message = {"return":{"sequence":nativeSequence, "result":result} };
         
         if (isiOS) {
-            if (this.isWKWebView) {
+            if (isWKWebView) {
                 window.webkit.messageHandlers.webridge.postMessage(message);
             }
             else {
@@ -81,7 +80,7 @@ function Webridge () {
             }
             else
             {
-                throw 'wrong type';
+                throw jsCommandAsync + ' is a ' + typeof(jsCommandAsyncFunction) + ', not a function!';
             }
         } catch (e) {
             // 调用异步方式失败时，再采用同步方式
@@ -100,7 +99,7 @@ function Webridge () {
             }
             else
             {
-                throw 'wrong type';
+                throw e;
             }
         }
     };
@@ -130,7 +129,7 @@ function Webridge () {
         }
 
         if (isiOS) {
-            if (this.isWKWebView) {
+            if (isWKWebView) {
                 window.webkit.messageHandlers.webridge.postMessage(message);
             }
             else {
