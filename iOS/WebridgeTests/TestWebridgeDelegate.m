@@ -2,11 +2,13 @@
 //  TestWebridgeDelegate.m
 //  Webridge
 //
-//  Created by linyize on 14/12/18.
-//  Copyright (c) 2014年 eletech. All rights reserved.
+//  Created by linyize on 16-6-23.
+//  Copyright (c) 2016年 islate. All rights reserved.
 //
 
 #import "TestWebridgeDelegate.h"
+
+#import "SlateWebView.h"
 
 @implementation TestWebridgeDelegate
 
@@ -22,7 +24,7 @@
 
 #pragma mark - WBWebridgeDelegate
 
-- (NSString *)testGetPerson:(NSDictionary *)params
+- (NSString *)testGetPerson:(NSDictionary *)params webView:(SlateWebView *)webView
 {
     _params = params;
     
@@ -31,7 +33,7 @@
     return person;
 }
 
-- (void)testGetPersonAsync:(NSDictionary *)params completion:(WBWebridgeCompletionBlock)completion
+- (void)testGetPersonAsync:(NSDictionary *)params completion:(SlateWebridgeCompletionBlock)completion webView:(SlateWebView *)webView
 {
     _params = params;
     
@@ -51,7 +53,7 @@
     return params;
 }
 
-- (void)testPassParamAsync:(id)params completion:(WBWebridgeCompletionBlock)completion
+- (void)testPassParamAsync:(id)params completion:(SlateWebridgeCompletionBlock)completion webView:(SlateWebView *)webView
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (completion) {

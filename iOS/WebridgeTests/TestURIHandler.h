@@ -2,13 +2,13 @@
 //  TestURIHandler.h
 //  Webridge
 //
-//  Created by linyize on 14/12/18.
-//  Copyright (c) 2014年 eletech. All rights reserved.
+//  Created by linyize on 16-6-23.
+//  Copyright (c) 2016年 islate. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-#import "WBURI.h"
+#import "SlateURI.h"
 
 typedef NS_ENUM(NSInteger, TestURIHandlerStatus) {
     TestURIHandlerStatusUnknownURI = 0,
@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, TestURIHandlerStatus) {
     TestURIHandlerStatusArticleCommand,
 };
 
-@interface TestURIHandler : NSObject <WBURIHandler>
+@interface TestURIHandler : NSObject <SlateURIHandler>
 
 @property (nonatomic, assign) TestURIHandlerStatus status;
 @property (nonatomic, strong) NSString *currentCommand;

@@ -2,26 +2,19 @@
 //  ViewController.h
 //  Webridge
 //
-//  Created by linyize on 14/12/10.
-//  Copyright (c) 2014年 eletech. All rights reserved.
+//  Created by linyize on 16-6-23.
+//  Copyright (c) 2016年 islate. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
-#import "WBURI.h"
-#import "WBUIWebView.h"
-#import "WBWebView.h"
-#import "WBWebridge.h"
-#import "WebridgeDelegate.h"
+#import "SlateWebView.h"
 
 typedef void (^WebViewFinishedBlock)(void);
 
 @interface ViewController : UIViewController
 
-@property (nonatomic, strong) WBUIWebView *uiWebView;
-
-@property (nonatomic, strong) WBWebView *webView;
-@property (nonatomic, strong) WebridgeDelegate *webridgeDelegate;
+@property (nonatomic, strong) SlateWebView *webView;
 
 // for unit test
 @property (nonatomic, assign) BOOL webViewLoaded;

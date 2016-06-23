@@ -1,0 +1,7 @@
+target 'Webridge' do
+  pod 'SlateWebView'
+end
+
+target 'WebridgeTests' do
+  pod 'SlateWebView'
+end

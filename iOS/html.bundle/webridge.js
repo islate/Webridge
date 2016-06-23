@@ -4,7 +4,7 @@
  * https://github.com/linyize/Webridge
  */
 
-var isWKWebView = true;
+var isWKWebView = false;
 
 function Webridge () {
     

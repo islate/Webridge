@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5B8099AF063D0E988300193B /* libPods-WebridgeTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D81EB1527136E32DA8812BD /* libPods-WebridgeTests.a */; };
 		812125701A42BD1E00BA6B7B /* TestWebridgeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8121256F1A42BD1E00BA6B7B /* TestWebridgeDelegate.m */; };
 		812125731A42BD5D00BA6B7B /* MockWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 812125721A42BD5D00BA6B7B /* MockWebView.m */; };
 		812125761A42BD8100BA6B7B /* MockWKScriptMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 812125751A42BD8100BA6B7B /* MockWKScriptMessage.m */; };
 		812125791A42BDB100BA6B7B /* TestURIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 812125781A42BDB100BA6B7B /* TestURIHandler.m */; };
 		812125871A43D09E00BA6B7B /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 812125861A43D09E00BA6B7B /* AddressBook.framework */; };
-		814B58131A4970B80033C655 /* WBUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 814B58121A4970B80033C655 /* WBUtils.m */; };
 		81C054CA1AC14E560041EA1A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81C054C91AC14E560041EA1A /* WebKit.framework */; };
 		81CCB8451A38221D0014D551 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8441A38221D0014D551 /* main.m */; };
 		81CCB8481A38221D0014D551 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8471A38221D0014D551 /* AppDelegate.m */; };
@@ -22,16 +22,9 @@
 		81CCB8531A38221D0014D551 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81CCB8511A38221D0014D551 /* LaunchScreen.xib */; };
 		81CCB85F1A38221D0014D551 /* WebridgeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB85E1A38221D0014D551 /* WebridgeTests.m */; };
 		81CCB8AA1A3A78D40014D551 /* URIHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8A91A3A78D40014D551 /* URIHandler.m */; };
-		81CCB8AD1A3A79420014D551 /* WebridgeDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8AC1A3A79420014D551 /* WebridgeDelegate.m */; };
+		81CCB8AD1A3A79420014D551 /* WebridgeHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8AC1A3A79420014D551 /* WebridgeHandler.m */; };
 		81CCB8AF1A3A7DF70014D551 /* html.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 81CCB8AE1A3A7DF70014D551 /* html.bundle */; };
-		81CCB8B91A3A89450014D551 /* WBURI.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B41A3A89450014D551 /* WBURI.m */; };
-		81CCB8BA1A3A89450014D551 /* WBWebridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B61A3A89450014D551 /* WBWebridge.m */; };
-		81CCB8BB1A3A89450014D551 /* WBWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81CCB8B81A3A89450014D551 /* WBWebView.m */; };
-		81EADB891AC25971005FC31E /* WBURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 81EADB841AC25971005FC31E /* WBURLProtocol.m */; };
-		81EADB8A1AC25971005FC31E /* WBURLProtocolCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 81EADB861AC25971005FC31E /* WBURLProtocolCache.m */; };
-		81EADB8B1AC25971005FC31E /* WBUIWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 81EADB881AC25971005FC31E /* WBUIWebView.m */; };
-		81EADB8E1AC25F90005FC31E /* WBReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 81EADB8D1AC25F90005FC31E /* WBReachability.m */; };
-		81EADB911AC25FB2005FC31E /* AFNetworkReachabilityManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 81EADB901AC25FB2005FC31E /* AFNetworkReachabilityManager.m */; };
+		A5DFEDB9C350A7A03AE5EF5C /* libPods-Webridge.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 259E8049A72B523B8A379C17 /* libPods-Webridge.a */; };
 		CEE9D7931A4D6D7500423736 /* bigParam.txt in Resources */ = {isa = PBXBuildFile; fileRef = CEE9D7921A4D6D7500423736 /* bigParam.txt */; };
 /* End PBXBuildFile section */
 
@@ -46,6 +39,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F6096076F2F3AC2A08F05F6 /* Pods-WebridgeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WebridgeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WebridgeTests/Pods-WebridgeTests.release.xcconfig"; sourceTree = "<group>"; };
+		259E8049A72B523B8A379C17 /* libPods-Webridge.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Webridge.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3D81EB1527136E32DA8812BD /* libPods-WebridgeTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WebridgeTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8121256E1A42BD1E00BA6B7B /* TestWebridgeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestWebridgeDelegate.h; sourceTree = "<group>"; };
 		8121256F1A42BD1E00BA6B7B /* TestWebridgeDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestWebridgeDelegate.m; sourceTree = "<group>"; };
 		812125711A42BD5D00BA6B7B /* MockWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockWebView.h; sourceTree = "<group>"; };
@@ -55,8 +51,6 @@
 		812125771A42BDB100BA6B7B /* TestURIHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestURIHandler.h; sourceTree = "<group>"; };
 		812125781A42BDB100BA6B7B /* TestURIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestURIHandler.m; sourceTree = "<group>"; };
 		812125861A43D09E00BA6B7B /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
-		814B58111A4970B80033C655 /* WBUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBUtils.h; sourceTree = "<group>"; };
-		814B58121A4970B80033C655 /* WBUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBUtils.m; sourceTree = "<group>"; };
 		81C054C91AC14E560041EA1A /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		81CCB83F1A38221D0014D551 /* Webridge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Webridge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81CCB8431A38221D0014D551 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -73,25 +67,10 @@
 		81CCB85E1A38221D0014D551 /* WebridgeTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebridgeTests.m; sourceTree = "<group>"; };
 		81CCB8A81A3A78D40014D551 /* URIHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URIHandler.h; sourceTree = "<group>"; };
 		81CCB8A91A3A78D40014D551 /* URIHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URIHandler.m; sourceTree = "<group>"; };
-		81CCB8AB1A3A79420014D551 /* WebridgeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebridgeDelegate.h; sourceTree = "<group>"; };
-		81CCB8AC1A3A79420014D551 /* WebridgeDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebridgeDelegate.m; sourceTree = "<group>"; };
+		81CCB8AB1A3A79420014D551 /* WebridgeHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebridgeHandler.h; sourceTree = "<group>"; };
+		81CCB8AC1A3A79420014D551 /* WebridgeHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebridgeHandler.m; sourceTree = "<group>"; };
 		81CCB8AE1A3A7DF70014D551 /* html.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = html.bundle; sourceTree = "<group>"; };
-		81CCB8B31A3A89450014D551 /* WBURI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBURI.h; sourceTree = "<group>"; };
-		81CCB8B41A3A89450014D551 /* WBURI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBURI.m; sourceTree = "<group>"; };
-		81CCB8B51A3A89450014D551 /* WBWebridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBWebridge.h; sourceTree = "<group>"; };
-		81CCB8B61A3A89450014D551 /* WBWebridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBWebridge.m; sourceTree = "<group>"; };
-		81CCB8B71A3A89450014D551 /* WBWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBWebView.h; sourceTree = "<group>"; };
-		81CCB8B81A3A89450014D551 /* WBWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBWebView.m; sourceTree = "<group>"; };
-		81EADB831AC25971005FC31E /* WBURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBURLProtocol.h; sourceTree = "<group>"; };
-		81EADB841AC25971005FC31E /* WBURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBURLProtocol.m; sourceTree = "<group>"; };
-		81EADB851AC25971005FC31E /* WBURLProtocolCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBURLProtocolCache.h; sourceTree = "<group>"; };
-		81EADB861AC25971005FC31E /* WBURLProtocolCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBURLProtocolCache.m; sourceTree = "<group>"; };
-		81EADB871AC25971005FC31E /* WBUIWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBUIWebView.h; sourceTree = "<group>"; };
-		81EADB881AC25971005FC31E /* WBUIWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBUIWebView.m; sourceTree = "<group>"; };
-		81EADB8C1AC25F90005FC31E /* WBReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBReachability.h; sourceTree = "<group>"; };
-		81EADB8D1AC25F90005FC31E /* WBReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBReachability.m; sourceTree = "<group>"; };
-		81EADB8F1AC25FB2005FC31E /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
-		81EADB901AC25FB2005FC31E /* AFNetworkReachabilityManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFNetworkReachabilityManager.m; sourceTree = "<group>"; };
+		83DE057E7F6396C44F251D03 /* Pods-Webridge.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Webridge.release.xcconfig"; path = "Pods/Target Support Files/Pods-Webridge/Pods-Webridge.release.xcconfig"; sourceTree = "<group>"; };
 		CEE9D7921A4D6D7500423736 /* bigParam.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bigParam.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -102,6 +81,7 @@
 			files = (
 				81C054CA1AC14E560041EA1A /* WebKit.framework in Frameworks */,
 				812125871A43D09E00BA6B7B /* AddressBook.framework in Frameworks */,
+				A5DFEDB9C350A7A03AE5EF5C /* libPods-Webridge.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,22 +89,33 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B8099AF063D0E988300193B /* libPods-WebridgeTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		28220F82E0E8B69D3CEF836E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				259E8049A72B523B8A379C17 /* libPods-Webridge.a */,
+				3D81EB1527136E32DA8812BD /* libPods-WebridgeTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		81CCB8361A38221D0014D551 = {
 			isa = PBXGroup;
 			children = (
 				81C054C91AC14E560041EA1A /* WebKit.framework */,
 				812125861A43D09E00BA6B7B /* AddressBook.framework */,
-				81CCB8B21A3A89450014D551 /* Classes */,
 				81CCB8AE1A3A7DF70014D551 /* html.bundle */,
 				81CCB8411A38221D0014D551 /* Webridge */,
 				81CCB85B1A38221D0014D551 /* WebridgeTests */,
 				81CCB8401A38221D0014D551 /* Products */,
+				E33E675ECF96D7AC61D57C0C /* Pods */,
+				28220F82E0E8B69D3CEF836E /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -146,8 +137,8 @@
 				81CCB84A1A38221D0014D551 /* ViewController.m */,
 				81CCB8A81A3A78D40014D551 /* URIHandler.h */,
 				81CCB8A91A3A78D40014D551 /* URIHandler.m */,
-				81CCB8AB1A3A79420014D551 /* WebridgeDelegate.h */,
-				81CCB8AC1A3A79420014D551 /* WebridgeDelegate.m */,
+				81CCB8AB1A3A79420014D551 /* WebridgeHandler.h */,
+				81CCB8AC1A3A79420014D551 /* WebridgeHandler.m */,
 				81CCB84C1A38221D0014D551 /* Main.storyboard */,
 				81CCB84F1A38221D0014D551 /* Images.xcassets */,
 				81CCB8511A38221D0014D551 /* LaunchScreen.xib */,
@@ -191,29 +182,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		81CCB8B21A3A89450014D551 /* Classes */ = {
+		E33E675ECF96D7AC61D57C0C /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				81EADB8F1AC25FB2005FC31E /* AFNetworkReachabilityManager.h */,
-				81EADB901AC25FB2005FC31E /* AFNetworkReachabilityManager.m */,
-				81EADB8C1AC25F90005FC31E /* WBReachability.h */,
-				81EADB8D1AC25F90005FC31E /* WBReachability.m */,
-				81EADB831AC25971005FC31E /* WBURLProtocol.h */,
-				81EADB841AC25971005FC31E /* WBURLProtocol.m */,
-				81EADB851AC25971005FC31E /* WBURLProtocolCache.h */,
-				81EADB861AC25971005FC31E /* WBURLProtocolCache.m */,
-				81EADB871AC25971005FC31E /* WBUIWebView.h */,
-				81EADB881AC25971005FC31E /* WBUIWebView.m */,
-				81CCB8B31A3A89450014D551 /* WBURI.h */,
-				81CCB8B41A3A89450014D551 /* WBURI.m */,
-				81CCB8B51A3A89450014D551 /* WBWebridge.h */,
-				81CCB8B61A3A89450014D551 /* WBWebridge.m */,
-				81CCB8B71A3A89450014D551 /* WBWebView.h */,
-				81CCB8B81A3A89450014D551 /* WBWebView.m */,
-				814B58111A4970B80033C655 /* WBUtils.h */,
-				814B58121A4970B80033C655 /* WBUtils.m */,
+				83DE057E7F6396C44F251D03 /* Pods-Webridge.release.xcconfig */,
+				1F6096076F2F3AC2A08F05F6 /* Pods-WebridgeTests.release.xcconfig */,
 			);
-			path = Classes;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -223,9 +198,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 81CCB8621A38221D0014D551 /* Build configuration list for PBXNativeTarget "Webridge" */;
 			buildPhases = (
+				E8D0464597B0FD10583657DA /* Check Pods Manifest.lock */,
 				81CCB83B1A38221D0014D551 /* Sources */,
 				81CCB83C1A38221D0014D551 /* Frameworks */,
 				81CCB83D1A38221D0014D551 /* Resources */,
+				8F35BD06849068F27662A51D /* Embed Pods Frameworks */,
+				B6435B196F438A7D117CA18C /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -240,9 +218,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 81CCB8651A38221D0014D551 /* Build configuration list for PBXNativeTarget "WebridgeTests" */;
 			buildPhases = (
+				43E28E5EDAE12368F71F2DEC /* Check Pods Manifest.lock */,
 				81CCB8541A38221D0014D551 /* Sources */,
 				81CCB8551A38221D0014D551 /* Frameworks */,
 				81CCB8561A38221D0014D551 /* Resources */,
+				EB74A55926A08D37B02B257A /* Embed Pods Frameworks */,
+				8D22D30E29AB85D51B6AEA0A /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -260,8 +241,8 @@
 		81CCB8371A38221D0014D551 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = eletech;
+				LastUpgradeCheck = 0800;
+				ORGANIZATIONNAME = islate;
 				TargetAttributes = {
 					81CCB83E1A38221D0014D551 = {
 						CreatedOnToolsVersion = 6.1.1;
@@ -313,25 +294,109 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		43E28E5EDAE12368F71F2DEC /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8D22D30E29AB85D51B6AEA0A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WebridgeTests/Pods-WebridgeTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8F35BD06849068F27662A51D /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Webridge/Pods-Webridge-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B6435B196F438A7D117CA18C /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Webridge/Pods-Webridge-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E8D0464597B0FD10583657DA /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		EB74A55926A08D37B02B257A /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WebridgeTests/Pods-WebridgeTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		81CCB83B1A38221D0014D551 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81CCB8BB1A3A89450014D551 /* WBWebView.m in Sources */,
-				81CCB8AD1A3A79420014D551 /* WebridgeDelegate.m in Sources */,
+				81CCB8AD1A3A79420014D551 /* WebridgeHandler.m in Sources */,
 				81CCB84B1A38221D0014D551 /* ViewController.m in Sources */,
 				81CCB8AA1A3A78D40014D551 /* URIHandler.m in Sources */,
-				81CCB8B91A3A89450014D551 /* WBURI.m in Sources */,
-				81EADB891AC25971005FC31E /* WBURLProtocol.m in Sources */,
-				81CCB8BA1A3A89450014D551 /* WBWebridge.m in Sources */,
 				81CCB8481A38221D0014D551 /* AppDelegate.m in Sources */,
-				814B58131A4970B80033C655 /* WBUtils.m in Sources */,
 				81CCB8451A38221D0014D551 /* main.m in Sources */,
-				81EADB911AC25FB2005FC31E /* AFNetworkReachabilityManager.m in Sources */,
-				81EADB8A1AC25971005FC31E /* WBURLProtocolCache.m in Sources */,
-				81EADB8B1AC25971005FC31E /* WBUIWebView.m in Sources */,
-				81EADB8E1AC25F90005FC31E /* WBReachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,47 +442,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		81CCB8601A38221D0014D551 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
-				CLANG_CXX_LIBRARY = "libc++";
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				COPY_PHASE_STRIP = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
-			};
-			name = Debug;
-		};
 		81CCB8611A38221D0014D551 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -440,60 +464,35 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		81CCB8631A38221D0014D551 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = Webridge/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
 		81CCB8641A38221D0014D551 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 83DE057E7F6396C44F251D03 /* Pods-Webridge.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Webridge/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "eletech.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
-		81CCB8661A38221D0014D551 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = WebridgeTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Webridge.app/Webridge";
-			};
-			name = Debug;
-		};
 		81CCB8671A38221D0014D551 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1F6096076F2F3AC2A08F05F6 /* Pods-WebridgeTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -502,6 +501,7 @@
 				);
 				INFOPLIST_FILE = WebridgeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "eletech.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Webridge.app/Webridge";
 			};
@@ -513,7 +513,6 @@
 		81CCB83A1A38221D0014D551 /* Build configuration list for PBXProject "Webridge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				81CCB8601A38221D0014D551 /* Debug */,
 				81CCB8611A38221D0014D551 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -522,7 +521,6 @@
 		81CCB8621A38221D0014D551 /* Build configuration list for PBXNativeTarget "Webridge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				81CCB8631A38221D0014D551 /* Debug */,
 				81CCB8641A38221D0014D551 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -531,7 +529,6 @@
 		81CCB8651A38221D0014D551 /* Build configuration list for PBXNativeTarget "WebridgeTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				81CCB8661A38221D0014D551 /* Debug */,
 				81CCB8671A38221D0014D551 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

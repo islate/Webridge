@@ -2,32 +2,18 @@
 //  URIHandler.m
 //  Webridge
 //
-//  Created by linyize on 14/12/12.
-//  Copyright (c) 2014年 eletech. All rights reserved.
+//  Created by linyize on 16-6-23.
+//  Copyright (c) 2016年 islate. All rights reserved.
 //
 
 #import "URIHandler.h"
 
 @implementation URIHandler
 
-#pragma mark - WBURIHandler
-
-- (NSString *)scheme
-{
-    return @"slate";
-}
-
-- (void)unknownURI:(NSURL *)uri
-{
-    NSLog(@"未能识别的uri %@", uri);
-}
-
-- (void)unknownCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
-{
-    NSLog(@"未能识别的command %@\n params %@\n paramsArray %@", command, params, paramsArray);
-}
-
-- (void)webCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
+- (void)webCommand:(NSString *)command
+            params:(NSString *)params
+       paramsArray:(NSArray *)paramsArray
+        completion:(SlateURICompletionBlock)completion
 {
     NSLog(@"识别webCommand\n  params %@\n paramsArray %@", params, paramsArray);
     
@@ -37,7 +23,10 @@
     [alert show];
 }
 
-- (void)articleCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray
+- (void)articleCommand:(NSString *)command
+                params:(NSString *)params
+           paramsArray:(NSArray *)paramsArray
+            completion:(SlateURICompletionBlock)completion
 {
     NSLog(@"识别articleCommand\n  params %@\n paramsArray %@", params, paramsArray);
     

@@ -2,26 +2,25 @@
 //  WebridgeTests.m
 //  WebridgeTests
 //
-//  Created by linyize on 14/12/10.
-//  Copyright (c) 2014年 eletech. All rights reserved.
+//  Created by linyize on 16-6-23.
+//  Copyright (c) 2016年 islate. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "WBURI.h"
-#import "WBWebridge.h"
 #import "TestURIHandler.h"
 #import "TestWebridgeDelegate.h"
 #import "MockWebView.h"
 #import "MockWKScriptMessage.h"
-#import "WBUtils.h"
+#import "SlateUtils.h"
 #import "ViewController.h"
 #import "AppDelegate.h"
+#import "NSObject+webridge.h"
 
 @interface WebridgeTests : XCTestCase
 
-@property (nonatomic, strong) WBWebridge *bridge;
+@property (nonatomic, strong) SlateWebridge *bridge;
 @property (nonatomic, strong) TestURIHandler *handler;
 @property (nonatomic, strong) TestWebridgeDelegate *bridgeDelegate;
 
@@ -33,11 +32,12 @@
     [super setUp];
     
     _handler = [[TestURIHandler alloc] init];
-    [WBURI registerURIHandler:_handler];
+    [SlateURI setPriorHandler:_handler];
     
-    _bridge = [WBWebridge bridge];
+    _bridge = [SlateWebridge sharedBridge];
     _bridgeDelegate = [TestWebridgeDelegate new];
-    _bridge.delegate = _bridgeDelegate;
+
+    [_bridge setPriorHandler:_bridgeDelegate];
 }
 
 - (void)tearDown {
@@ -96,7 +96,7 @@
 
 - (void)testURI_web_1 {
     
-    [WBURI openURI:[NSURL URLWithString:@"slate://web/http://www.baidu.com/"]];
+    [SlateURI openURI:[NSURL URLWithString:@"slate://web/http://www.baidu.com/"]];
     
     if (_handler.status != TestURIHandlerStatusWebCommand)
     {
@@ -121,7 +121,7 @@
 
 - (void)testURI_http_web_1 {
     
-    [WBURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/web/http://www.baidu.com/"]];
+    [SlateURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/web/http://www.baidu.com/"]];
     
     if (_handler.status != TestURIHandlerStatusWebCommand)
     {
@@ -146,7 +146,7 @@
 
 - (void)testURI_web_2 {
     
-    [WBURI openURI:[NSURL URLWithString:@"slate://web/http://www.baidu.com/index.php?data1=abc&data2=bbb#ttttt=1"]];
+    [SlateURI openURI:[NSURL URLWithString:@"slate://web/http://www.baidu.com/index.php?data1=abc&data2=bbb#ttttt=1"]];
     
     if (_handler.status != TestURIHandlerStatusWebCommand)
     {
@@ -171,7 +171,7 @@
 
 - (void)testURI_http_web_2 {
     
-    [WBURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/web/http://www.baidu.com/index.php?data1=abc&data2=bbb#ttttt=1"]];
+    [SlateURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/web/http://www.baidu.com/index.php?data1=abc&data2=bbb#ttttt=1"]];
     
     if (_handler.status != TestURIHandlerStatusWebCommand)
     {
@@ -196,7 +196,7 @@
 
 - (void)testURI_article_1 {
     
-    [WBURI openURI:[NSURL URLWithString:@"slate://article/123/456/789/"]];
+    [SlateURI openURI:[NSURL URLWithString:@"slate://article/123/456/789/"]];
     
     if (_handler.status != TestURIHandlerStatusArticleCommand)
     {
@@ -245,7 +245,7 @@
 
 - (void)testURI_http_article_1 {
     
-    [WBURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/article/123/456/789/"]];
+    [SlateURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/article/123/456/789/"]];
     
     if (_handler.status != TestURIHandlerStatusArticleCommand)
     {
@@ -294,7 +294,7 @@
 
 - (void)testURI_article_2 {
     
-    [WBURI openURI:[NSURL URLWithString:@"slate://article/123/456/789/1111()()"]];
+    [SlateURI openURI:[NSURL URLWithString:@"slate://article/123/456/789/1111()()"]];
     
     if (_handler.status != TestURIHandlerStatusArticleCommand)
     {
@@ -349,7 +349,7 @@
 
 - (void)testURI_unknown_scheme {
     
-    [WBURI openURI:[NSURL URLWithString:@"ddddd://article/123/456/789/"]];
+    [SlateURI openURI:[NSURL URLWithString:@"ddddd://article/123/456/789/"]];
     
     if (_handler.status == TestURIHandlerStatusUnknownURI)
     {
@@ -363,7 +363,7 @@
 
 - (void)testURI_http_unknown_scheme {
     
-    [WBURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/ddddd/article/123/456/789/"]];
+    [SlateURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/ddddd/article/123/456/789/"]];
     
     if (_handler.status == TestURIHandlerStatusUnknownURI)
     {
@@ -377,7 +377,7 @@
 
 - (void)testURI_unknown_command {
     
-    [WBURI openURI:[NSURL URLWithString:@"slate://ddddd/123/456/789/"]];
+    [SlateURI openURI:[NSURL URLWithString:@"slate://ddddd/123/456/789/"]];
     
     if (_handler.status != TestURIHandlerStatusUnknownCommand)
     {
@@ -426,7 +426,7 @@
 
 - (void)testURI_http_unknown_command {
     
-    [WBURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/ddddd/123/456/789/"]];
+    [SlateURI openURI:[NSURL URLWithString:@"http://www.bbwc.cn/slate/ddddd/123/456/789/"]];
     
     if (_handler.status != TestURIHandlerStatusUnknownCommand)
     {
@@ -475,7 +475,7 @@
 
 - (void)testURI_chinese {
     
-    [WBURI openURI:[NSURL URLWithString:[@"slate://article/汉字1/汉字2/汉字3" encodeWBURI]]];
+    [SlateURI openURI:[NSURL URLWithString:[@"slate://article/汉字1/汉字2/汉字3" stringEscapedAsURI]]];
     
     if (_handler.status != TestURIHandlerStatusArticleCommand)
     {
@@ -524,7 +524,7 @@
 
 - (void)testURI_http_chinese {
     
-    [WBURI openURI:[NSURL URLWithString:[@"http://www.bbwc.cn/slate/article/汉字1/汉字2/汉字3" encodeWBURI]]];
+    [SlateURI openURI:[NSURL URLWithString:[@"http://www.bbwc.cn/slate/article/汉字1/汉字2/汉字3" stringEscapedAsURI]]];
     
     if (_handler.status != TestURIHandlerStatusArticleCommand)
     {
@@ -576,6 +576,12 @@
  * 1、使用Mock方式进行单元测试
  *
  */
+- (void)handleMessage:(MockWKScriptMessage *)mockMessage
+{
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"webridge://%@", [[mockMessage.body JSONString] stringEscapedAsURIComponent]]];
+    [_bridge handleWebridgeMessage:url webView:(UIWebView *)mockMessage.webView];
+}
+
 - (void)testBridge_jsToNative_peter {
     
     NSString *name = @"peter";
@@ -585,8 +591,8 @@
     MockWKScriptMessage *mockMessage = [MockWKScriptMessage new];
     mockMessage.body = @{@"eval":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"sequence":@(1)}};
     mockMessage.webView = webView;
-    
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+
+    [self handleMessage:mockMessage];
     
     if (![[_bridgeDelegate.params objectForKey:@"name"] isEqualToString:name])
     {
@@ -614,7 +620,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"sequence":@(2)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     if (![[_bridgeDelegate.params objectForKey:@"name"] isEqualToString:name])
     {
@@ -642,7 +648,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"testGetPerson",@"params":@{@"name":name},@"sequence":@(3)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     if (![[_bridgeDelegate.params objectForKey:@"name"] isEqualToString:name])
     {
@@ -670,7 +676,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"",@"params":@{@"name":name},@"sequence":@(4)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     NSString *jsString = @"webridge.jsToNativeCallback(4, '', 'TestWebridgeDelegate doesn't know method: :')";
     if (![webView.javaScriptString isEqualToString:jsString])
@@ -692,7 +698,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"testGetPerson1",@"params":@{@"name":name},@"sequence":@(5)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     NSString *jsString = @"webridge.jsToNativeCallback(5, '', 'TestWebridgeDelegate doesn't know method: testGetPerson1:')";
     //NSLog(@"%@", webView.javaScriptString);
@@ -713,7 +719,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"testGetPerson",@"params":@(111),@"sequence":@(6)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     NSString *jsStringPrefix = @"webridge.jsToNativeCallback(6, '', 'TestWebridgeDelegate exception on method: testGetPerson:";
     if (![webView.javaScriptString hasPrefix:jsStringPrefix])
@@ -757,7 +763,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"testGetPersonAsync",@"params":@{@"name":name},@"sequence":@(7)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }
@@ -771,7 +777,7 @@
     
     // 无参数
     mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@"",@"sequence":@(8)}};
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     NSString *jsString = @"webridge.jsToNativeCallback(8, '', '')";
     if (![webView.javaScriptString isEqualToString:jsString])
     {
@@ -780,7 +786,7 @@
     
     // 字符串参数
     mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@"1111",@"sequence":@(8)}};
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     jsString = @"webridge.jsToNativeCallback(8, '1111', '')";
     if (![webView.javaScriptString isEqualToString:jsString])
     {
@@ -789,7 +795,7 @@
     
     // 数值参数
     mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@1111,@"sequence":@(8)}};
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     jsString = @"webridge.jsToNativeCallback(8, 1111, '')";
     if (![webView.javaScriptString isEqualToString:jsString])
     {
@@ -798,7 +804,7 @@
     
     // 数组参数
     mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@[@1,@2,@3,@4],@"sequence":@(8)}};
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     jsString = @"webridge.jsToNativeCallback(8, [1,2,3,4], '')";
     if (![webView.javaScriptString isEqualToString:jsString])
     {
@@ -807,7 +813,7 @@
     
     // 字典参数
     mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@{@"1":@1,@"2":@2},@"sequence":@(8)}};
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     jsString = @"webridge.jsToNativeCallback(8, {\"1\":1,\"2\":2}, '')";
     if (![webView.javaScriptString isEqualToString:jsString])
     {
@@ -816,7 +822,7 @@
     
     // 中文参数
     mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":@"中文",@"sequence":@(8)}};
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     jsString = @"webridge.jsToNativeCallback(8, '中文', '')";
     if (![webView.javaScriptString isEqualToString:jsString])
     {
@@ -826,7 +832,7 @@
     // 超长参数
     NSString *bigParam = [self bigParam];
     mockMessage.body = @{@"eval":@{@"command":@"testPassParam",@"params":bigParam,@"sequence":@(8)}};
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     jsString = [NSString stringWithFormat:@"webridge.jsToNativeCallback(8, '%@', '')",bigParam];
     if (![webView.javaScriptString isEqualToString:jsString])
     {
@@ -858,7 +864,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@"",@"sequence":@(9)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }
@@ -887,7 +893,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@"1111",@"sequence":@(9)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }
@@ -916,7 +922,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@1111,@"sequence":@(9)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }
@@ -945,7 +951,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@[@1,@2,@3,@4],@"sequence":@(9)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }
@@ -974,7 +980,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":@{@"1":@1,@"2":@2},@"sequence":@(9)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }
@@ -1081,7 +1087,7 @@
     mockMessage.body = @{@"eval":@{@"command":@"testPassParamAsync",@"params":bigParam,@"sequence":@(9)}};
     mockMessage.webView = webView;
     
-    [_bridge handleMessage:(WKScriptMessage *)mockMessage];
+    [self handleMessage:mockMessage];
     
     [self waitForExpectationsWithTimeout:30.0 handler:nil];
 }

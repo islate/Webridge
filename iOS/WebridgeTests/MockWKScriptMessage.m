@@ -2,8 +2,8 @@
 //  MockWKScriptMessage.m
 //  Webridge
 //
-//  Created by linyize on 14/12/18.
-//  Copyright (c) 2014年 eletech. All rights reserved.
+//  Created by linyize on 16-6-23.
+//  Copyright (c) 2016年 islate. All rights reserved.
 //
 
 #import "MockWKScriptMessage.h"

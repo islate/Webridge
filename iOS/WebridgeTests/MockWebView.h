@@ -2,8 +2,8 @@
 //  MockWebView.h
 //  Webridge
 //
-//  Created by linyize on 14/12/18.
-//  Copyright (c) 2014年 eletech. All rights reserved.
+//  Created by linyize on 16-6-23.
+//  Copyright (c) 2016年 islate. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -15,6 +15,6 @@ typedef void (^MockWKWebViewDidEvaluateJavaScriptBlock)(void);
 @property (nonatomic, copy) MockWKWebViewDidEvaluateJavaScriptBlock didEvaluateJavaScript;
 @property (nonatomic, strong) NSString *javaScriptString;
 
-- (void)evaluateJavaScript:(NSString *)javaScriptString completionHandler:(void (^)(id, NSError *))completionHandler;
+- (NSString *)stringByEvaluatingJavaScriptFromString:(NSString *)javaScriptString;
 
 @end

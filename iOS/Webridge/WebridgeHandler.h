@@ -1,5 +1,5 @@
 //
-//  URIHandler.h
+//  WebridgeHandler.h
 //  Webridge
 //
 //  Created by linyize on 16-6-23.
@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "SlateURI.h"
+#import "SlateWebridge.h"
 
-@interface URIHandler : NSObject <SlateURIHandler>
+@interface WebridgeHandler : NSObject <SlateWebridgeHandler>
 
 @end

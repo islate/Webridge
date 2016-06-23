@@ -1,22 +1,24 @@
 //
-//  WebridgeDelegate.m
+//  WebridgeHandler.m
 //  Webridge
 //
-//  Created by linyize on 14/12/12.
-//  Copyright (c) 2014年 eletech. All rights reserved.
+//  Created by linyize on 16-6-23.
+//  Copyright (c) 2016年 islate. All rights reserved.
 //
 
-#import "WebridgeDelegate.h"
+#import "WebridgeHandler.h"
 
+#import <UIKit/UIKit.h>
 #import <AddressBook/AddressBook.h>
+#import "SlateWebView.h"
 
-@interface WebridgeDelegate ()
+@interface WebridgeHandler ()
 
 @property (nonatomic, strong) NSMutableDictionary *contacts;
 
 @end
 
-@implementation WebridgeDelegate
+@implementation WebridgeHandler
 
 - (instancetype)init
 {
@@ -72,7 +74,7 @@
 #pragma mark - WBWebridgeDelegate
 
 // 异步返回
-- (void)nativeGetPhoneContacts:(id)params completion:(WBWebridgeCompletionBlock)completion
+- (void)nativeGetPhoneContacts:(id)params completion:(SlateWebridgeCompletionBlock)completion webView:(SlateWebView *)webView
 {
     if (_contacts.count > 0)
     {
@@ -120,7 +122,7 @@
 }
 
 // 异步返回
-- (void)nativeGetPerson:(id)params completion:(WBWebridgeCompletionBlock)completion
+- (void)nativeGetPerson:(id)params completion:(SlateWebridgeCompletionBlock)completion webView:(SlateWebView *)webView
 {
     NSString *name = [params objectForKey:@"name"];
     if (_contacts.count > 0)
@@ -171,44 +173,38 @@
 }
 
 // 同步返回
-- (id)nativeGetPhoneContacts:(id)params
+- (id)nativeGetPhoneContacts:(id)params webView:(SlateWebView *)webView
 {
     return _contacts;
 }
 
 // 同步返回
-- (id)nativeGetPerson:(id)params
+- (id)nativeGetPerson:(id)params webView:(SlateWebView *)webView
 {
     NSString *name = [params objectForKey:@"name"];
     return [_contacts objectForKey:name];
 }
 
-- (void)nativeShowAlert:(NSString *)message
+- (void)nativeShowAlert:(NSString *)message webView:(UIWebView *)webView
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     [alert show];
 }
 
 // 同步JSToNative测试
-- (id)testPassParam:(id)params
+- (id)testPassParam:(id)params webView:(SlateWebView *)webView
 {
     return params;
 }
 
 // 异步JSToNative测试
-- (void)testPassParamAsync:(id)params completion:(WBWebridgeCompletionBlock)completion
+- (void)testPassParamAsync:(id)params completion:(SlateWebridgeCompletionBlock)completion webView:(SlateWebView *)webView
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         if (completion) {
             completion(params, nil);
         }
     });
-}
-
-// 网页dom加载完毕
-- (void)domReady:(id)params
-{
-    NSLog(@"domReady");
 }
 
 @end
