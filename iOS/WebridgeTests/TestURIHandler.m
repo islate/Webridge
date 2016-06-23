@@ -11,7 +11,10 @@
 
 @implementation TestURIHandler
 
-- (void)webCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray completion:(SlateURICompletionBlock)completion
+- (void)webCommand:(NSString *)command
+            params:(NSString *)params
+       paramsArray:(NSArray *)paramsArray
+        completion:(SlateURICompletionBlock)completion
 {
     NSLog(@"识别webCommand  params %@\n paramsArray %@", params, paramsArray);
     
@@ -21,7 +24,10 @@
     _currentParamsArray = paramsArray;
 }
 
-- (void)articleCommand:(NSString *)command params:(NSString *)params paramsArray:(NSArray *)paramsArray completion:(SlateURICompletionBlock)completion
+- (void)articleCommand:(NSString *)command
+                params:(NSString *)params
+           paramsArray:(NSArray *)paramsArray
+            completion:(SlateURICompletionBlock)completion
 {
     NSLog(@"识别articleCommand  params %@\n paramsArray %@", params, paramsArray);
     
